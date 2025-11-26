@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js", // Add a start script for convenience
+    "start": "node index.js"
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -15,6 +15,6 @@
   },
   "devDependencies": {
     "@types/node": "^22.13.11",
-    "openai": "^6.9.1" // Move unused/dev packages here or remove entirely
+    "openai": "^6.9.1" 
   }
 }

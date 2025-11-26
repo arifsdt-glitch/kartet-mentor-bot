@@ -1,0 +1,2997 @@
+[ 
+  { 
+    "id": "EN_P2_001", 
+    "subjectId": "English", 
+    "categoryId": "Reading Comprehension", 
+    "topicId": "RC_Inference", 
+    "source": "PYQ", 
+    "passage": "A small crowd had gathered around the entrance to the park. His curiosity 
+aroused, Robert crossed the road to see what was happening. He found that the centre 
+of attraction was an old man with a performing monkey. The monkey's tricks, he soon 
+discovered, were in no way remarkable. So, after throwing a few pennies in the dirty hat 
+which the man had placed on the pavement, Robert moved oA, along with other 
+members of the crowd.\nAt this point the man suddenly let out a loud cry. Everyone 
+turned to see what had happened. The man was bending over his monkey, which now 
+lay quite still on the pavement. He picked up the apparently lifeless body and holding it 
+close to him, began to weep. A young man stepped forward from the crowd and taking 
+some money from his pocket, dropped it into the hat. Robert and several other people 
+did likewise, until the pennies in the hat were covered with silver coins.\nA few months 
+later, Robert came across the old man, again in another part of the city. The man had a 
+monkey, bought no doubt, with the money the crowd had given him. It did not, however, 
+seem any better at its tricks than the previous one. Robert was pleased to see that the 
+old man was still able to earn a living, though on this occasion, having partly paid for the 
+monkey out of his own pocket, he did not feel inclined to throw any money into the 
+hat.\nBut the performance was not yet over. Once again the old man let out a loud cry. 
+Once again the monkey lay still on the pavement. The man picked up the \"dead\" 
+monkey and clutching it in his arms began to weep. The same young man stepped 
+forward and threw some money into the hat. Again the crowd followed suit - except 
+Robert. Smiling to himself, he went on his way, amazed at the man's audacity.", 
+    "question": "Robert went to the other side of the road because", 
+    "options": [ 
+      "he wanted to help the old man by giving him some money", 
+      "he wanted to see why the crowd had gathered", 
+      "he was curious to watch the monkey's tricks", 
+      "he had seen one of his friends over there" 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "Robert’s curiosity was aroused by the crowd and he crossed the road 
+to see what was happening, so he wanted to see why the crowd had gathered.", 
+    "tip": "For ‘why’ questions, look for the sentence that directly states the motive behind 
+a character’s action.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_002", 
+    "subjectId": "English", 
+    "categoryId": "Reading Comprehension", 
+    "topicId": "RC_VocabInContext", 
+    "source": "PYQ", 
+    "passage": "So, after throwing a few pennies in the dirty hat which the man had placed 
+on the pavement, Robert moved oA, along with other members of the crowd.", 
+    "question": "The word 'pavement' in the passage means", 
+    "options": [ 
+      "a temporary tent which is used for public entertainment", 
+      "a path at the side of a road for people to walk on", 
+      "a small building made of wood", 
+      "a roadside room" 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "The hat is placed on the pavement beside the road, so here 'pavement' 
+refers to the path at the side of a road for people to walk on.", 
+    "tip": "Use the situation in the sentence to visualise the scene; your mental picture 
+often reveals the correct word meaning.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_003", 
+    "subjectId": "English", 
+    "categoryId": "Vocabulary", 
+    "topicId": "Vocab_WordForms", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The noun form of 'perform'", 
+    "options": [ 
+      "performs", 
+      "performed", 
+      "performing", 
+      "performance" 
+    ], 
+    "correctIndex": 3, 
+    "explanation": "'Performance' is the noun formed from the verb 'perform'; the other 
+options are verb forms or participles.", 
+    "tip": "To identify noun forms of verbs, look for familiar noun endings like -ment, -tion, 
+or -ance.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_004", 
+    "subjectId": "English", 
+    "categoryId": "Reading Comprehension", 
+    "topicId": "RC_Inference", 
+    "source": "PYQ", 
+    "passage": "At this point the man suddenly let out a loud cry. Everyone turned to see 
+what had happened. The man was bending over his monkey, which now lay quite still on 
+the pavement. He picked up the apparently lifeless body and holding it close to him, 
+began to weep. A young man stepped forward from the crowd and taking some money 
+from his pocket, dropped it into the hat. Robert and several other people did likewise, 
+until the pennies in the hat were covered with silver coins.", 
+    "question": "The old man let out a loud cry suddenly in order to", 
+    "options": [ 
+      "keep the monkey quiet for sometime", 
+      "let the crowd know that his monkey was dead", 
+      "let the crowd know that he was a poor man", 
+      "show that he was in grief" 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "The loud cry draws attention to the monkey lying still, making people 
+think it is dead and prompting donations, so he wanted the crowd to believe his monkey 
+was dead.", 
+    "tip": "For inference questions, connect the action to what happens immediately 
+afterwards in the passage.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_005", 
+    "subjectId": "English", 
+    "categoryId": "Grammar", 
+    "topicId": "Grammar_PartsOfSpeech", 
+    "source": "PYQ", 
+    "passage": "The monkey's tricks, he soon discovered, were in no way remarkable.", 
+    "question": "The monkey's tricks, he soon discovered, were in no way remarkable. The 
+underlined word (remarkable) in the above sentence is", 
+    "options": [ 
+      "Noun", 
+      "Verb", 
+      "Adverb", 
+      "Adjective" 
+    ], 
+    "correctIndex": 3, 
+    "explanation": "'Remarkable' describes the noun 'tricks', telling us what kind of tricks 
+they were, so it is an adjective.", 
+    "tip": "If a word tells more about a noun (its quality or state), it functions as an 
+adjective.", 
+    "highlight": "remarkable", 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_006", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poem_Speaker", 
+    "source": "PYQ", 
+    "passage": "Silent goblet! Red from head to heel,\nHow did you feel\nWhen you were 
+being twirled\nUpon the potter's wheel\nBefore the potter gave you to the world?\n'I felt 
+a conscious impulse in my clay\nTo break away\nFrom the great potter's hand that 
+burned so warm,\nI felt a vast\nFeeling of sorrow to be cast\nInto my present 
+form.'\n'Before that fatal hour\nThat was me captive on the potter's wheel\nAnd cast 
+into his crimson goblet - sleep,\nI used to feel\nThe fragrant friendship of a little 
+flower\nWhose root was in my bosom buried deep.\n'The potter has drawn out the living 
+breath of me\nAnd given me a form which is the death of me,\nMy past unshapely 
+natural stage was best\nWith just one flower flaming through my breast'", 
+    "question": "The poem is a conversation between", 
+    "options": [ 
+      "the flower and the poet", 
+      "the goblet and the poet", 
+      "the clay and potter's wheel", 
+      "the goblet and the flower" 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "The poet addresses the goblet and the goblet replies in the first 
+person, so the conversation is between the goblet and the poet.", 
+    "tip": "To identify speakers in a poem, notice who is being addressed and who replies 
+using 'I'.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_007", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poem_Speaker", 
+    "source": "PYQ", 
+    "passage": "Silent goblet! Red from head to heel,\nHow did you feel\nWhen you were 
+being twirled\nUpon the potter's wheel\nBefore the potter gave you to the world?\n'I felt 
+a conscious impulse in my clay\nTo break away\nFrom the great potter's hand that 
+burned so warm,\nI felt a vast\nFeeling of sorrow to be cast\nInto my present 
+form.'\n'Before that fatal hour\nThat was me captive on the potter's wheel\nAnd cast 
+into his crimson goblet - sleep,\nI used to feel\nThe fragrant friendship of a little 
+flower\nWhose root was in my bosom buried deep.\n'The potter has drawn out the living 
+breath of me\nAnd given me a form which is the death of me,\nMy past unshapely 
+natural stage was best\nWith just one flower flaming through my breast'", 
+    "question": "In the poem 'I' refers to", 
+    "options": [ 
+      "the poet", 
+      "the flower", 
+      "the goblet", 
+      "the potter's wheel" 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "The voice speaking describes being shaped on the potter’s wheel and 
+turned into a goblet, so 'I' refers to the goblet.", 
+    "tip": "When an object describes its own making or form, it is being personified as the 
+speaker.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_008", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poem_Theme", 
+    "source": "PYQ", 
+    "passage": "The potter has drawn out the living breath of me\nAnd given me a form 
+which is the death of me,\nMy past unshapely natural stage was best\nWith just one 
+flower flaming through my breast.", 
+    "question": "According to the poem, the correct statement is", 
+    "options": [ 
+      "The goblet was eager to be cast in the present form", 
+      "The goblet was a free bird on the potter's wheel", 
+      "The goblet was happy with its past life", 
+      "The goblet was happy in its present form" 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "The goblet says that its past 'unshapely natural stage was best', 
+showing that it was happier with its past life than with its present form.", 
+    "tip": "Look for value words like 'best' and emotional clues like 'sorrow' to understand 
+the speaker’s real feelings.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_009", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poem_Theme", 
+    "source": "PYQ", 
+    "passage": "I felt a conscious impulse in my clay\nTo break away\nFrom the great 
+potter's hand that burned so warm...", 
+    "question": "The expression which states that the goblet wanted freedom is", 
+    "options": [ 
+      "fragrant friendship", 
+      "burned so warm", 
+      "bosom buried deep", 
+      "to break away" 
+    ], 
+    "correctIndex": 3, 
+    "explanation": "The phrase 'to break away' directly expresses the goblet’s desire to 
+escape the potter’s control, symbolising its wish for freedom.", 
+    "tip": "Freedom is often expressed with verbs like 'escape', 'break away', or 'run free'.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_010", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poem_FigureOfSpeech", 
+    "source": "PYQ", 
+    "passage": "Silent goblet! Red from head to heel, ...", 
+    "question": "Sleep: deep :: Wheel:", 
+    "options": [ 
+      "feel", 
+      "twirl", 
+      "fatal", 
+      "natural" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "'Sleep' rhymes with 'deep' in the poem, and 'wheel' rhymes with 'feel', 
+so the analogy is based on rhyme pairs: sleep–deep and wheel–feel.", 
+    "tip": "In poetic analogies, check for rhyme and sound patterns, not just meaning.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_011", 
+    "subjectId": "English", 
+    "categoryId": "Reading Comprehension", 
+    "topicId": "RC_MapDiagram", 
+    "source": "PYQ", 
+    "passage": "[Map-based question: A street map showing First St., Second Street, Third 
+Street, Market Street, and Center Drive with various landmarks including church, park, 
+museum, government center, police and fire station, community center, forest, 
+hospital, and train station.]", 
+    "question": "The train stops on the", 
+    "options": [ 
+      "Centre drive", 
+      "Third street", 
+      "Market street", 
+      "Second street" 
+    ], 
+    "correctIndex": null, 
+    "explanation": "The correct answer depends on the exact location of the train station 
+on the original map, which is not visible in this text version. Please fill the correct option 
+after checking the map or oAicial key.", 
+    "tip": "For map questions, always match the relevant symbol with the street name it 
+touches on the map.", 
+    "highlight": null, 
+    "isDiagramBased": true 
+  }, 
+  { 
+    "id": "EN_P2_012", 
+    "subjectId": "English", 
+    "categoryId": "Reading Comprehension", 
+    "topicId": "RC_MapDiagram", 
+    "source": "PYQ", 
+    "passage": "[Same map description as in EN_P2_011.]", 
+    "question": "If you are at the junction of the Third street and the Market street, the 
+museum is in this corner", 
+    "options": [ 
+      "North-west", 
+      "South-west", 
+      "North-east", 
+      "South-east" 
+    ], 
+    "correctIndex": null, 
+    "explanation": "The position of the museum at that junction can only be determined 
+by viewing the actual map. Please fill the correct option after verifying with the map or 
+oAicial key.", 
+    "tip": "Use the map’s orientation (north at the top) and the labelled corners to answer 
+direction questions accurately.", 
+    "highlight": null, 
+    "isDiagramBased": true 
+  }, 
+  { 
+    "id": "EN_P2_013", 
+    "subjectId": "English", 
+    "categoryId": "Reading Comprehension", 
+    "topicId": "RC_MapDiagram", 
+    "source": "PYQ", 
+    "passage": "[Same map description as in EN_P2_011.]", 
+    "question": "The Market street has a", 
+    "options": [ 
+      "Government centre", 
+      "Hospital", 
+      "Community centre", 
+      "Forest" 
+    ], 
+    "correctIndex": null, 
+    "explanation": "The correct landmark on Market Street depends on the original map 
+image, which is not accessible in this text. Please fill the correct option after checking 
+the map or oAicial key.", 
+    "tip": "Carefully read the labels on the map for each street before choosing the 
+matching landmark.", 
+    "highlight": null, 
+    "isDiagramBased": true 
+  }, 
+  { 
+    "id": "EN_P2_014", 
+    "subjectId": "English", 
+    "categoryId": "Reading Comprehension", 
+    "topicId": "RC_MapDiagram", 
+    "source": "PYQ", 
+    "passage": "[Same map description as in EN_P2_011.]", 
+    "question": "The symbol +++++ indicates", 
+    "options": [ 
+      "Railway track", 
+      "Police and fire station", 
+      "Railway station", 
+      "Park" 
+    ], 
+    "correctIndex": null, 
+    "explanation": "The meaning of the +++++ symbol should be taken from the legend of 
+the original map. Please fill the correct option after consulting the map or oAicial key.", 
+    "tip": "Map legends explain each symbol; always check the legend before answering 
+symbol-based questions.", 
+    "highlight": null, 
+    "isDiagramBased": true 
+  }, 
+  { 
+    "id": "EN_P2_015", 
+    "subjectId": "English", 
+    "categoryId": "Reading Comprehension", 
+    "topicId": "RC_MapDiagram", 
+    "source": "PYQ", 
+    "passage": "[Same map description as in EN_P2_011.]", 
+    "question": "The community centre is ______ the police and fire station. The correct 
+word to be filled in the blank is", 
+    "options": [ 
+      "between", 
+      "next to", 
+      "opposite to", 
+      "in front of" 
+    ], 
+    "correctIndex": null, 
+    "explanation": "The spatial relation between the community centre and the police and 
+fire station can only be seen on the original map. Please fill the correct option after 
+referring to the map or oAicial key.", 
+    "tip": "In preposition questions based on maps, visualise the exact positions of 
+buildings before choosing words like 'next to', 'between' or 'opposite'.", 
+    "highlight": null, 
+    "isDiagramBased": true 
+  }, 
+  { 
+    "id": "EN_P2_016", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Ped_MethodsApproaches", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "While developing the skill of reading through the phonic method, a 
+teacher facilitates learning through", 
+    "options": [ 
+      "Word chunks", 
+      "Sounds", 
+      "Phrases", 
+      "Sentences" 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "The phonic method focuses on sound–symbol relationships, so 
+learners work with sounds and their combinations rather than whole sentences first.", 
+    "tip": "Link 'phonic method' with 'sounds'; phonics always begins at the sound level.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_017", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Ped_MethodsApproaches", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The full form of TPR, a method evolved by James Asher, an experimental 
+psychologist is", 
+    "options": [ 
+      "Total Physical Response", 
+      "Teaching Physical Response", 
+      "Total Pedagogic Response", 
+      "Teaching Pedagogic Response" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "TPR stands for Total Physical Response, a language teaching method 
+that connects language input to physical actions.", 
+    "tip": "Remember this association: TPR = Total Physical Response, a key method in 
+language pedagogy.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_018", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Ped_TeachingAids", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Listening to a speech to comprehend using a radio is learning through", 
+    "options": [ 
+      "Print media", 
+      "Audio-Visual aids", 
+      "Visual aids", 
+      "Audio- aids" 
+    ], 
+    "correctIndex": 3, 
+    "explanation": "Radio provides only sound without any visual support, so it is an 
+example of an audio aid.", 
+    "tip": "Classify aids by the senses they use: radio = only hearing → audio aid.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_019", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Ped_ClassroomActivities", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "In this activity some choose to speak in favour of the topic and some 
+present their views against the topic i.e they argue.", 
+    "options": [ 
+      "Just A Minute", 
+      "Extempore", 
+      "Debate", 
+      "Pick and speak" 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "The activity where participants speak for and against a topic and argue 
+is called a debate.", 
+    "tip": "Whenever you see 'for and against' and 'argue', think of a debate as the activity.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_020", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Ped_RemedialTeaching", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Lathesh writes the words 'Photo' as 'foto', 'College' as 'colege'. He needs 
+remedial teaching in", 
+    "options": [ 
+      "Spelling and vocabulary", 
+      "Grammar and vocabulary", 
+      "Phonetics and grammar", 
+      "Spelling and grammar" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "The errors are in the written forms of known words, so the main 
+diAiculty is with spellings, which is linked to word knowledge and vocabulary.", 
+    "tip": "If learners know the word but write it wrongly, focus your remedial work on 
+spelling patterns and word forms.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  } 
+] 
+[ 
+  { 
+    "id": "EN_P2_051", 
+    "year": "unknown", 
+    "paper": 2, 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Ped_Skills_Listening", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "When the teacher instructs the class to \"Listen to the story to get a 
+general idea of what it is about\", she is aiming at the lesson stage of", 
+    "options": [ 
+      "reading for gist", 
+      "listening for gist", 
+      "focussing on structures", 
+      "listening for specific information" 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "Listening for gist means understanding the overall meaning without 
+focusing on details.", 
+    "tip": "For 'general idea', choose gist." 
+  }, 
+  { 
+    "id": "EN_P2_052", 
+    "year": "unknown", 
+    "paper": 2, 
+    "subjectId": "English", 
+    "categoryId": "Vocabulary", 
+    "topicId": "Vocab_Syllables", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Improvement, Practical, Substitute, Photograph. These words fall into the 
+group of", 
+    "options": [ 
+      "Monosyllabic words", 
+      "Disyllabic words", 
+      "Trisyllabic words", 
+      "Polysyllabic words" 
+    ], 
+    "correctIndex": 3, 
+    "explanation": "All words contain more than three syllables, therefore they are 
+polysyllabic.", 
+    "tip": "Count the number of beats when pronouncing to identify syllables." 
+  }, 
+  { 
+    "id": "EN_P2_053", 
+    "year": "unknown", 
+    "paper": 2, 
+    "subjectId": "English", 
+    "categoryId": "Vocabulary", 
+    "topicId": "Vocab_Homophones", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The statement with the correct usage of a homophone is seen in", 
+    "options": [ 
+      "The bus collided with a stationery car carrying some stationary.", 
+      "In need some oAice stationary, to be brought in the car which has been stationery 
+for some time", 
+      "The population growth has remained stationary for a long time, though we have 
+wasted a lot of stationery on its analysis", 
+      "Why do you waste the oAice stationary to research on stationery oAice vehicles" 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "'Stationary' means not moving, and 'stationery' refers to paper items. 
+Option C uses both correctly.", 
+    "tip": "Remember: stationEry = papEr." 
+  }, 
+  { 
+    "id": "EN_P2_054", 
+    "year": "unknown", 
+    "paper": 2, 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Ped_Skills_Writing", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Proficiency in writing in second language English learning is required", 
+    "options": [ 
+      "to record documents which may be of use in future", 
+      "to comprehend spoken words", 
+      "to encourage extensive reading", 
+      "to practise good speech habits" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "Writing skills are essential for documentation and practical 
+communication purposes.", 
+    "tip": "Writing is mostly related to maintaining written records." 
+  }, 
+  { 
+    "id": "EN_P2_055", 
+    "year": "unknown", 
+    "paper": 2, 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Ped_Activity_Dialogue", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The interactional technique that is commonly used to practise language 
+functions is", 
+    "options": [ 
+      "Story building", 
+      "Dialogue chains", 
+      "Debating", 
+      "Brain storming" 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "Dialogue chains encourage turn-taking and interaction practice.", 
+    "tip": "Activities using back-and-forth speaking build functional communication." 
+  }, 
+  { 
+    "id": "EN_P2_056", 
+    "year": "unknown", 
+    "paper": 2, 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Ped_Assessment_Objective", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The kind of objective type test item that falls out of the group is", 
+    "options": [ 
+      "Completion type item", 
+      "Matching type item", 
+      "Multiple choice type item", 
+      "Short answer type item" 
+    ], 
+    "correctIndex": 3, 
+    "explanation": "Short answer is subjective because answers vary, unlike fixed
+response objective items.", 
+    "tip": "Objective questions always have a single correct fixed answer." 
+  }, 
+  { 
+    "id": "EN_P2_057", 
+    "year": "unknown", 
+    "paper": 2, 
+    "subjectId": "English", 
+    "categoryId": "Grammar & Structure", 
+    "topicId": "Grammar_Comparison", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The underlined statement (more relaxing than) expresses", 
+    "options": [ 
+      "Acceptance", 
+      "Refusal", 
+      "Comparison", 
+      "Approval" 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "The phrase 'more relaxing than' compares two activities.", 
+    "tip": "Look for comparative words like 'more', 'than', 'less'." 
+  }, 
+  { 
+    "id": "EN_P2_058", 
+    "year": "unknown", 
+    "paper": 2, 
+    "subjectId": "English", 
+    "categoryId": "Grammar & Structure", 
+    "topicId": "Grammar_Articles", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Mr. Gunashekaran was elected a MLA for a first time. This statement can 
+be written correctly as", 
+    "options": [ 
+      "Mr. Gunashekaran was elected as an MLA for the first time", 
+      "Mr. Gunashekaran was elected as a MLA for the first time", 
+      "Mr. Gunashekaran was elected as the MLA for a first time", 
+      "Mr. Gunashekaran was elected as MLA for a first time" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "'MLA' begins with a vowel sound (‘em-el-ay’), so 'an' is needed. The 
+correct phrase is 'for the first time'.", 
+    "tip": "Use 'an' before vowel sound acronyms." 
+  }, 
+  { 
+    "id": "EN_P2_059", 
+    "year": "unknown", 
+    "paper": 2, 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Ped_Skills_Speaking", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The speaking ability gives the learner enough confidence to acquire the 
+skill of reading and writing. This means that", 
+    "options": [ 
+      "The learner must learn to use the language orally first", 
+      "The learner must learn to read first", 
+      "The learner must learn to write first", 
+      "The learner must learn to refer materials first" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "Language acquisition follows a natural order: listening → speaking → 
+reading → writing.", 
+    "tip": "Oral skills form the base for literacy skills." 
+  }, 
+  { 
+    "id": "EN_P2_060", 
+    "year": "unknown", 
+    "paper": 2, 
+    "subjectId": "English", 
+    "categoryId": "Vocabulary", 
+    "topicId": "Vocab_SilentLetters", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Sneha has written the words balm, walk, talk as bam, wak, tak. Her 
+teacher must teach her about", 
+    "options": [ 
+      "Structure", 
+      "Parts of speech", 
+      "Silent letters", 
+      "Stress and intonation" 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "The error is omission of silent letters (l), indicating lack of awareness 
+of silent letter rules.", 
+    "tip": "Many English words have unpronounced consonants—learn patterns." 
+  } 
+] 
+[ 
+  { 
+    "id": "EN_P2_021", 
+    "subjectId": "English", 
+    "categoryId": "Reading Comprehension", 
+    "topicId": "RC_Detail", 
+    "source": "PYQ", 
+    "passage": "Ranga was never certain what he was going to do next. He set out of his 
+little home in Kabir Lane, and by the time he turned the corner at Market Road, he 
+always found some odd job coming his way. Today a very peculiar task oAered itself as 
+he sat near the Market Fountain. A servant from a bungalow in the extension was going 
+round with a searching look in his eyes. He explained, \"Our brass pot has fallen into the 
+well. Do you know anyone who can get into the well and bring it out?\" Ranga bargained, 
+saying he must see the well first and could not think of anything less than two rupees. To 
+his surprise the oAer was accepted, though he had never gone down a well before. The 
+servant almost dragged him along, desperate to save his own job. Ranga tried to excuse 
+himself, saying he knew nothing about wells, but the servant silenced him with a beedi 
+and insisted he come.", 
+    "question": "A peculiar task was oAered to Ranga when he was sitting near the market 
+fountain. That was", 
+    "options": [ 
+      "Ranga set out of his little home in Kabir Lane", 
+      "To get into the well and bring out the brass pot", 
+      "A servant was going with a searching look to oAer a task", 
+      "Ranga found some odd job coming his way" 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "The passage clearly says the servant’s request was to get into the well 
+and bring out the brass pot.", 
+    "tip": "For ‘what was the task’ questions, pick the option that states the concrete 
+action, not the background.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_022", 
+    "subjectId": "English", 
+    "categoryId": "Reading Comprehension", 
+    "topicId": "RC_Detail", 
+    "source": "PYQ", 
+    "passage": "Ranga bargained, saying he must see the well first and could not think of 
+anything less than two rupees.", 
+    "question": "The first condition of Ranga for the job oAer was", 
+    "options": [ 
+      "He expected money first", 
+      "He wanted to know the address first", 
+      "He demanded a drop first", 
+      "He wanted to see the well first" 
+    ], 
+    "correctIndex": 3, 
+    "explanation": "Ranga clearly says, \"I must see the well first,\" making that his first 
+condition.", 
+    "tip": "Notice the words 'first' or 'must' to identify conditions in a passage.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_023", 
+    "subjectId": "English", 
+    "categoryId": "Reading Comprehension", 
+    "topicId": "RC_Detail", 
+    "source": "PYQ", 
+    "passage": "He said, \"I must see the well first, and I can't think of anything less than 
+two rupees.\"", 
+    "question": "The money Ranga expected for his job was", 
+    "options": [ 
+      "Not less than two rupees", 
+      "More than one rupee", 
+      "Minimum of three rupees", 
+      "The highest amount of five rupees" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "He directly states he can’t think of anything less than two rupees, so 
+not less than two rupees is correct.", 
+    "tip": "When money amounts are mentioned, quote the exact number from the text in 
+your mind.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_024", 
+    "subjectId": "English", 
+    "categoryId": "Reading Comprehension", 
+    "topicId": "RC_Detail", 
+    "source": "PYQ", 
+    "passage": "But, but,\" Ranga faltered, but the other oAered him a beedi to smoke and 
+silenced him.", 
+    "question": "The thing which oAered to silence Ranga was", 
+    "options": [ 
+      "two rupees", 
+      "a beedi to smoke", 
+      "a brass pot", 
+      "a searching look" 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "The text explicitly says that the servant oAered him a beedi to smoke 
+and silenced him.", 
+    "tip": "For 'what silenced him' questions, match the exact object or action 
+mentioned.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_025", 
+    "subjectId": "English", 
+    "categoryId": "Reading Comprehension", 
+    "topicId": "RC_Detail", 
+    "source": "PYQ", 
+    "passage": "He had never gone down a well before. He tried to excuse himself now, 
+saying he knew nothing about wells.", 
+    "question": "Ranga tried to excuse himself to do this job because", 
+    "options": [ 
+      "He was not offered with a good pay", 
+      "He wanted to attend another job", 
+      "He had never gone down to a well before", 
+      "He was not knowing the address" 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "The passage clearly states that he had never gone down a well before 
+and that is why he tried to excuse himself.", 
+    "tip": "Link a character’s excuse to the sentence that begins with 'he had never…' or 'he 
+did not know…'.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_026", 
+    "subjectId": "English", 
+    "categoryId": "Vocabulary", 
+    "topicId": "Vocab_Antonyms", 
+    "source": "PYQ", 
+    "passage": "He never thought that his offer would be accepted.", 
+    "question": "He never thought that his offer would be accepted. The correct opposite 
+of the underlined word (accepted) is", 
+    "options": [ 
+      "delayed", 
+      "irritated", 
+      "removed", 
+      "rejected" 
+    ], 
+    "correctIndex": 3, 
+    "explanation": "The opposite of 'accepted' in this context is 'rejected'. The other 
+options are unrelated in meaning.", 
+    "tip": "To find antonyms, replace the word in the sentence and see which option 
+makes the meaning opposite but still logical.", 
+    "highlight": "accepted", 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_027", 
+    "subjectId": "English", 
+    "categoryId": "Vocabulary", 
+    "topicId": "Vocab_Homophones", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Ranga wanted ______ work for ______ rupees. Fill in the blanks with 
+suitable homophones.", 
+    "options": [ 
+      "too, two", 
+      "to, two", 
+      "two, two", 
+      "two, to" 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "'to' is the correct infinitive marker before 'work' and 'two' is the 
+numeral showing amount of rupees.", 
+    "tip": "Remember: 'to' before a verb, 'two' for the number 2.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_028", 
+    "subjectId": "English", 
+    "categoryId": "Grammar", 
+    "topicId": "Grammar_Conjunctions", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Ranga became faltered ______ he was oAered money and beedi. Choose 
+the suitable word.", 
+    "options": [ 
+      "when", 
+      "who", 
+      "whose", 
+      "why" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "'When' correctly joins the clause to show the time at which he 
+faltered; the other words are relative or interrogative forms.", 
+    "tip": "Use 'when' to link an action with the time it happened.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_029", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poem_Theme", 
+    "source": "PYQ", 
+    "passage": "My mother called me Blue Nile\nI am also named by mother White 
+Nile\nWhen we grew and grew we asked\nOh mother, Oh mother\nTell us, why did you 
+name us Nile\nOur mothers said lovingly\nOh our children\nYou travel and 
+travel\nCross mountains, forests and valleys\nThousands of miles, enriching nine 
+countries\nyou reach Khartoum\nyou Blue and White Niles confluence with a 
+mission\nGod has commanded you to give a message\nyou give a beautiful 
+message\nWhen we rivers confluence\nOh humanity why not your hearts 
+confluence\nAnd you blossom with happiness.", 
+    "question": "What was the question the speaker asked to mother when they grew old 
+in the initial lines?", 
+    "options": [ 
+      "When we rivers confluence on humanity?", 
+      "Why not your hearts confluence?", 
+      "You give a beautiful message.", 
+      "Why did you name us Nile?" 
+    ], 
+    "correctIndex": 3, 
+    "explanation": "In the poem the rivers ask their mother, 'Tell us, why did you name us 
+Nile?'", 
+    "tip": "For 'what did they ask' questions, quote the exact question line from the poem.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_030", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poem_Theme", 
+    "source": "PYQ", 
+    "passage": "My mother called me Blue Nile\nI am also named by mother White Nile", 
+    "question": "What was the name given to me by my mother?", 
+    "options": [ 
+      "Blue Nile", 
+      "White Nile", 
+      "Khartoum", 
+      "Nile" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "The speaker says 'My mother called me Blue Nile', so the name is Blue 
+Nile.", 
+    "tip": "Always focus on the 'I' in the poem to know who is being named or described.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_031", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poem_Theme", 
+    "source": "PYQ", 
+    "passage": "You travel and travel\nCross mountains, forests and valleys\nThousands 
+of miles, enriching nine countries\nyou reach Khartoum", 
+    "question": "How do rivers reach Khartoum as described in the poem?", 
+    "options": [ 
+      "Confluencing with a mission", 
+      "Giving beautiful message", 
+      "Crossing mountains, forests and valleys", 
+      "Blossoming with happiness" 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "The poem says the rivers travel and cross mountains, forests and 
+valleys before reaching Khartoum.", 
+    "tip": "For 'how' questions, look for verbs of movement and journey in the lines.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_032", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poem_Theme", 
+    "source": "PYQ", 
+    "passage": "When we rivers confluence\nOh humanity why not your hearts 
+confluence\nAnd you blossom with happiness.", 
+    "question": "When rivers confluence, it is giving a beautiful message to humanity. That 
+is", 
+    "options": [ 
+      "enriching nine countries", 
+      "confluence your hearts and blossom with happiness", 
+      "to grow old", 
+      "to reach Khartoum" 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "The message is clearly stated: when rivers meet, human hearts should 
+also confluence and blossom with happiness.", 
+    "tip": "Moral messages in poems are often given directly as advice to 'humanity' or 
+'you'.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_033", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poem_Theme", 
+    "source": "PYQ", 
+    "passage": "Thousands of miles, enriching nine countries\nyou reach Khartoum\nyou 
+Blue and White Niles confluence with a mission", 
+    "question": "The Blue and White Nile travel thousands of miles carrying a", 
+    "options": [ 
+      "heart", 
+      "tree", 
+      "mission", 
+      "message" 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "The poem says they confluence 'with a mission', so the correct word is 
+'mission'.", 
+    "tip": "Key abstract nouns like 'mission' or 'message' are often repeated in the poem 
+near the central idea.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_034", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poem_FigureOfSpeech", 
+    "source": "PYQ", 
+    "passage": "God has commanded you to give a message.", 
+    "question": "\"God has commanded you to give a message.\" The figure of speech of 
+the sentence is", 
+    "options": [ 
+      "Personification", 
+      "Simile", 
+      "Metaphor", 
+      "Irony" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "The line presents the rivers as receiving a command and giving a 
+message like a person, which is personification.", 
+    "tip": "Personification gives human abilities (like commanding or speaking) to non
+human things.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_035", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poem_RhymeScheme", 
+    "source": "PYQ", 
+    "passage": "Our mothers said lovingly\nOh our children\nYou travel and travel\nCross 
+mountains, forests and valleys", 
+    "question": "Read the poem and choose the correct Rhyme Scheme.\n\"Our mothers 
+said lovingly /\nOh our children /\nYou travel and travel /\nCross mountains, forests and 
+valleys\"", 
+    "options": [ 
+      "aabb", 
+      "abab", 
+      "abbc", 
+      "abcd" 
+    ], 
+    "correctIndex": 3, 
+    "explanation": "The line endings 'lovingly', 'children', 'travel' and 'valleys' do not rhyme 
+with each other, so the pattern is abcd.", 
+    "tip": "For rhyme scheme, only compare the last stressed sounds of each line.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_036", 
+    "subjectId": "English", 
+    "categoryId": "Grammar", 
+    "topicId": "Grammar_Tenses", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Choose the correct verb form of the sentence.\nThe window was open 
+and a bird ______ into the room.", 
+    "options": [ 
+      "fly", 
+      "flys", 
+      "flew", 
+      "flown" 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "The past simple form 'flew' correctly matches the past context 'was 
+open'.", 
+    "tip": "When the sentence is in past tense, use the past form of the verb, not the base 
+or participle.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_037", 
+    "subjectId": "English", 
+    "categoryId": "Grammar", 
+    "topicId": "Grammar_DegreeOfComparison", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Choose the appropriate superlative degree for the given sentence.\nVery 
+few Kings were as great as Ashoka.", 
+    "options": [ 
+      "Ashoka was the greatest King.", 
+      "Ashoka is the greatest King.", 
+      "Ashoka was one of the greatest Kings.", 
+      "Ashoka is one of the greatest King." 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "The structure 'Very few… as great as' changes to 'one of the greatest…' 
+in superlative form.", 
+    "tip": "‘Very few as… as X’ usually rewrites as ‘X was one of the most…’.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_038", 
+    "subjectId": "English", 
+    "categoryId": "Grammar", 
+    "topicId": "Grammar_ReportedSpeech", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Read the given sentence and identify the suitable reported 
+speech.\n\"Can I help you with your homework?\" said my mother.", 
+    "options": [ 
+      "My mother asked me whether she would help me with my homework.", 
+      "My mother asked me whether she will help me with my homework.", 
+      "My mother asked me whether she might help me with my homework.", 
+      "My mother asked me whether she could help me with my homework." 
+    ], 
+    "correctIndex": 3, 
+    "explanation": "The modal 'can' in direct speech usually changes to 'could' in reported 
+speech in past tense.", 
+    "tip": "For yes/no questions starting with 'can', use 'asked whether' and change 'can' → 
+'could'.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_039", 
+    "subjectId": "English", 
+    "categoryId": "Grammar", 
+    "topicId": "Grammar_Conjunctions", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Choose the correct combined sentence.\nThere was heavy traAic. I could 
+not reach the oAice in time.", 
+    "options": [ 
+      "Inspite of heavy traAic I could reach the oAice in time.", 
+      "Inspite of heavy traAic I did not reach the oAice in time.", 
+      "I reach the oAice in time despite the heavy traAic.", 
+      "Inspite of heavy traAic I can reach the oAice in time." 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "Option (2) combines the two ideas and keeps the past context. 
+Although 'in spite of' usually shows contrast, this is the structurally closest exam key.", 
+    "tip": "When combining, keep the grammatical tense and meaning of both original 
+sentences as close as possible.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  }, 
+  { 
+    "id": "EN_P2_040", 
+    "subjectId": "English", 
+    "categoryId": "Grammar", 
+    "topicId": "Grammar_Voice", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Identify the suitable voice of the given sentence.\nMona completed the 
+sum.", 
+    "options": [ 
+      "The sum is completed by Mona.", 
+      "The sum was completed by Mona.", 
+      "The sum can be completed by Mona.", 
+      "The sum was being completed by Mona." 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "The active past simple 'completed' changes to passive past simple 
+'was completed' by Mona.", 
+    "tip": "To change active to passive, make the object the subject and add the correct 
+form of 'be' + past participle.", 
+    "highlight": null, 
+    "isDiagramBased": false 
+  } 
+] 
+[ 
+  { 
+    "id": "EN_051", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Pedagogy_Theories", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "NCTE stands for", 
+    "options": [ 
+      "National Council for Teacher Education", 
+      "National Curriculum for Teacher Education", 
+      "National Committee for Teacher Education", 
+      "National Council for Technical Education" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "NCTE is the National Council for Teacher Education, the regulatory 
+body for teacher education in India.", 
+    "tip": "Remember: NCTE = regulatory authority for teaching standards." 
+  }, 
+  { 
+    "id": "EN_052", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Pedagogy_TeachingAids", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The second tongue of all the teachers in general and right hand of a 
+language teacher is", 
+    "options": [ 
+      "Chalk board", 
+      "A piece of chalk", 
+      "Red pen", 
+      "Time table" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "The chalkboard is considered the most essential tool for a teacher, 
+especially for language teaching.", 
+    "tip": "Chalkboard = main classroom communication tool." 
+  }, 
+  { 
+    "id": "EN_053", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Pedagogy_MethodsApproaches", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The approach which emphasizes the more use of target language and 
+hardly any scope to use mother tongue is", 
+    "options": [ 
+      "Communicative approach", 
+      "Bilingual method", 
+      "Structural approach", 
+      "Spiral approach" 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "The Structural Approach discourages the use of mother tongue and 
+focuses heavily on English language structure.", 
+    "tip": "Structural = direct English, no translation." 
+  }, 
+  { 
+    "id": "EN_054", 
+    "subjectId": "English", 
+    "categoryId": "Vocabulary", 
+    "topicId": "Vocab_Receptive", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Receptive vocabulary is", 
+    "options": [ 
+      "a word we use while speaking or listening", 
+      "recognizing words while listening or reading", 
+      "knowing the meaning of the words", 
+      "ambiguous words" 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "Receptive vocabulary consists of words that we recognize when 
+listening or reading, not necessarily used in speech.", 
+    "tip": "Receptive = recognize." 
+  }, 
+  { 
+    "id": "EN_055", 
+    "subjectId": "English", 
+    "categoryId": "Grammar", 
+    "topicId": "Grammar_Inflections", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The change in the form of the word or words as grammatical aspects to 
+obtain intended meaning is known as", 
+    "options": [ 
+      "Syntax", 
+      "Concord", 
+      "Semantics", 
+      "Inflections" 
+    ], 
+    "correctIndex": 3, 
+    "explanation": "Inflections are changes in word forms to express grammatical 
+functions, e.g., plurals, tense.", 
+    "tip": "Inflection = change in form." 
+  }, 
+  { 
+    "id": "EN_056", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Pedagogy_Assessment", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The statements that describe the knowledge, skills and attitudes 
+students should acquire by the end of a course are known as", 
+    "options": [ 
+      "Learning outcomes", 
+      "Item bank", 
+      "Learners' outcomes", 
+      "Learning objectives" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "Learning outcomes define expected performance at the end of a 
+learning process.", 
+    "tip": "Outcomes = measurable achievements." 
+  }, 
+  { 
+    "id": "EN_057", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Pedagogy_Constructivism", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "A teacher divides the classroom into small groups and asks them to 
+discuss and present their views freely. This approach is known as", 
+    "options": [ 
+      "Natural approach", 
+      "Structural approach", 
+      "Deductive approach", 
+      "Constructivist approach" 
+    ], 
+    "correctIndex": 3, 
+    "explanation": "Constructivism promotes learner-driven collaborative activities.", 
+    "tip": "Constructivist = student-centered discovery learning." 
+  }, 
+  { 
+    "id": "EN_058", 
+    "subjectId": "English", 
+    "categoryId": "Phonetics", 
+    "topicId": "Phonetics_SpeechSounds", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The study of articulation, transmission and reception of speech sound is 
+called", 
+    "options": [ 
+      "Phonetics", 
+      "Linguistics", 
+      "Syntax", 
+      "Morphology" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "Phonetics studies speech sound production and perception.", 
+    "tip": "Phonetics = sound science." 
+  }, 
+  { 
+    "id": "EN_059", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Pedagogy_TeachingMethods", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The teacher holds a book and says 'book', 'my book is red', 'your book is 
+blue'. This is an example of", 
+    "options": [ 
+      "The sentence method", 
+      "The word method", 
+      "The story method", 
+      "The phrase method" 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "The Word Method is used when teaching begins with individual 
+words.", 
+    "tip": "Word first, meaning next." 
+  }, 
+  { 
+    "id": "EN_060", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Pedagogy_Assessment", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Assessment made along with teaching throughout the academic year is 
+known as", 
+    "options": [ 
+      "Summative Assessment", 
+      "Formative Assessment", 
+      "Formal Assessment", 
+      "Diagnostic Assessment" 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "Formative assessment is continuous and supports learning during 
+instruction.", 
+    "tip": "Formative = continuous evaluation." 
+  } 
+] 
+[ 
+  { 
+    "id": "EN_P3_031", 
+    "subjectId": "English", 
+    "categoryId": "Vocabulary", 
+    "topicId": "Vocab_WordMeaning", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Choose the word which means 'Quarrel'.", 
+    "options": ["Dispute", "Reveal", "Confuse", "Refuse"], 
+    "correctIndex": 0, 
+    "explanation": "'Dispute' means a disagreement or quarrel.", 
+    "tip": "Match closest meaning based on context." 
+  }, 
+  { 
+    "id": "EN_P3_032", 
+    "subjectId": "English", 
+    "categoryId": "Grammar", 
+    "topicId": "Grammar_PartsOfSpeech", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "'The cartman stopped for his meal.' The part of speech of the underlined 
+word (Meal) in the sentence is", 
+    "options": ["Verb", "Adjective", "Adverb", "Noun"], 
+    "correctIndex": 3, 
+    "explanation": "'Meal' is a naming word, so it is a noun.", 
+    "tip": "Nouns name people, places, things and ideas." 
+  }, 
+  { 
+    "id": "EN_P3_033", 
+    "subjectId": "English", 
+    "categoryId": "Reading Comprehension", 
+    "topicId": "RC_Inference", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The cartman demanded rupees twenty on reaching the village as", 
+    "options": [ 
+      "the village took longer to reach than expected", 
+      "he felt that the traveller was rich", 
+      "he felt that the traveller had to pay for the ride and the shade the traveller had 
+received from the cart", 
+      "he felt that the traveller should pay for his meal which he took during the ride" 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "The cartman demanded additional money claiming payment for 
+shade.", 
+    "tip": "Look for implied reasoning in the narrative." 
+  }, 
+  { 
+    "id": "EN_P3_034", 
+    "subjectId": "English", 
+    "categoryId": "Reading Comprehension", 
+    "topicId": "RC_Detail", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The headman told the traveller to stand in the middle of the road holding 
+a ten rupee note in his hand and said", 
+    "options": [ 
+      "Go! Take the note", 
+      "Go! Take both the notes", 
+      "Go! Take the note in his hands", 
+      "Go! Take the note in the shadow" 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "The headman cleverly told the cartman to take the note and its 
+shadow.", 
+    "tip": "Detail questions require exact recall." 
+  }, 
+  { 
+    "id": "EN_P3_035", 
+    "subjectId": "English", 
+    "categoryId": "Reading Comprehension", 
+    "topicId": "RC_Detail", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The traveller wanted a lift because", 
+    "options": ["he wanted to go to his village in a cart", "he was tired", "he did not want to 
+talk", "he wanted to reach the city soon"], 
+    "correctIndex": 1, 
+    "explanation": "The traveller was tired and needed help reaching the village.", 
+    "tip": "Look for emotional cues." 
+  }, 
+  { 
+    "id": "EN_P3_036", 
+    "subjectId": "English", 
+    "categoryId": "Reading Comprehension", 
+    "topicId": "RC_Detail", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The cartman agreed to take the traveller because", 
+    "options": ["he pitied his plight", "he wanted to cheat the traveller", "the traveller 
+agreed to pay ten rupees", "he did not want to refuse the traveller"], 
+    "correctIndex": 2, 
+    "explanation": "The agreement was based on the payment.", 
+    "tip": "Identify direct stated cause." 
+  }, 
+  { 
+    "id": "EN_P3_037", 
+    "subjectId": "English", 
+    "categoryId": "Reading Comprehension", 
+    "topicId": "RC_Inference", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The traveller refused to pay rupees twenty as fare because", 
+    "options": [ 
+      "he had agreed to pay only ten rupees", 
+      "he did not have twenty rupees", 
+      "he did not have the change", 
+      "he wanted to cheat the cart driver" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "He refused because the agreed price was only ten rupees.", 
+    "tip": "Inference = justified reasoning." 
+  }, 
+  { 
+    "id": "EN_P3_038", 
+    "subjectId": "English", 
+    "categoryId": "Vocabulary", 
+    "topicId": "Vocab_Antonyms", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The opposite for the word 'refuse' is", 
+    "options": ["expect", "accept", "demand", "decline"], 
+    "correctIndex": 1, 
+    "explanation": "'Accept' is the antonym of refuse.", 
+    "tip": "Opposites are direct reversals of meaning." 
+  }, 
+  { 
+    "id": "EN_P3_039", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poetry_Theme", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The poet does not want to be", 
+    "options": ["Poor and humble", "Proud or vile", "Rich and famous", "None of the 
+above"], 
+    "correctIndex": 2, 
+    "explanation": "The poem expresses rejection of wealth and fame.", 
+    "tip": "Identify what the poet rejects emotionally." 
+  }, 
+  { 
+    "id": "EN_P3_040", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poetry_WordMeaning", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The lust of fame", 
+    "options": ["Multiplies", "Diminishes", "Vanishes", "Sharpens"], 
+    "correctIndex": 2, 
+    "explanation": "The poem says fame fades away like morning mist.", 
+    "tip": "Meaning based on interpretation." 
+  }, 
+  { 
+    "id": "EN_P3_041", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poetry_Theme", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "In this poem, the word 'liberty' refers to", 
+    "options": ["life", "death", "riches", "freedom"], 
+    "correctIndex": 3, 
+    "explanation": "The poet wants freedom from worldly desires.", 
+    "tip": "Theme = central message." 
+  }, 
+  { 
+    "id": "EN_P3_042", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poetry_Interpretation", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The poet says 'Love I laugh to scorn' because", 
+    "options": [ 
+      "She does not believe in love", 
+      "She feels the whole world is in love", 
+      "She believes only in the value of materialistic possessions", 
+      "She makes fun of everything" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "The poet rejects love as insignificant.", 
+    "tip": "Interpret tone behind the lines." 
+  }, 
+  { 
+    "id": "EN_P3_043", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poetry_WordMeaning", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The word in the poem which means 'happening quickly' is", 
+    "options": ["esteem", "liberty", "swift", "implore"], 
+    "correctIndex": 2, 
+    "explanation": "'Swift' means quick.", 
+    "tip": "Synonyms in poetry often show tone." 
+  }, 
+  { 
+    "id": "EN_P3_044", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poetry_RhymeScheme", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The rhyme scheme of the poem is", 
+    "options": ["aabb", "bbaa", "abab", "baba"], 
+    "correctIndex": 2, 
+    "explanation": "The alternate rhyme pattern follows abab.", 
+    "tip": "Mark rhyming words at line endings." 
+  }, 
+  { 
+    "id": "EN_P3_045", 
+    "subjectId": "English", 
+    "categoryId": "Poetry", 
+    "topicId": "Poetry_FigureOfSpeech", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The figure of speech employed in the line 'In life and death a chainless 
+soul' is", 
+    "options": ["Simile", "Personification", "Metaphor", "Irony"], 
+    "correctIndex": 2, 
+    "explanation": "'Chainless soul' metaphorically represents freedom.", 
+    "tip": "Metaphor = implied comparison." 
+  } 
+] 
+[ 
+  { 
+    "id": "EN_P3_046", 
+    "subjectId": "English", 
+    "categoryId": "Grammar & Structure", 
+    "topicId": "Grammar_Articles", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "My brother is ______ talented Sitar player and has ______ melodious 
+voice. The correct articles to be filled in the blanks are", 
+    "options": [ 
+      "a, an", 
+      "a, a", 
+      "the, the", 
+      "an, the" 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "We say 'a talented Sitar player' and 'a melodious voice' because both 
+begin with consonant sounds.", 
+    "tip": "Use 'a' before consonant sounds and 'an' before vowel sounds." 
+  }, 
+  { 
+    "id": "EN_P3_047", 
+    "subjectId": "English", 
+    "categoryId": "Grammar & Structure", 
+    "topicId": "Grammar_Conjunctions", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "'Hemanth opened the garage ______ took his things out.' The correct linker 
+to be used is", 
+    "options": [ 
+      "or", 
+      "but", 
+      "and", 
+      "because" 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "'And' is used to join two related actions done by the same person.", 
+    "tip": "When actions happen in sequence without contrast, 'and' is usually correct." 
+  }, 
+  { 
+    "id": "EN_P3_048", 
+    "subjectId": "English", 
+    "categoryId": "Vocabulary", 
+    "topicId": "Vocab_WordForms", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The cyclone caused ______ damage to the city. The correct form of the 
+word to be used in the blank is", 
+    "options": [ 
+      "extend", 
+      "extended", 
+      "extension", 
+      "extensive" 
+    ], 
+    "correctIndex": 3, 
+    "explanation": "'Extensive damage' is the correct adjective + noun collocation.", 
+    "tip": "After 'caused', we usually use an adjective + noun like 'serious damage', 
+'extensive damage'." 
+  }, 
+  { 
+    "id": "EN_P3_049", 
+    "subjectId": "English", 
+    "categoryId": "Grammar & Structure", 
+    "topicId": "Grammar_Tenses", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Mrs. Latha is a teacher. She ______ teaching in the class now. The correct 
+word to be filled in the blank is", 
+    "options": [ 
+      "was", 
+      "are", 
+      "is", 
+      "were" 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "The subject 'She' takes 'is' in the present continuous tense: 'She is 
+teaching'.", 
+    "tip": "For singular subjects in present continuous, use 'is + -ing'." 
+  }, 
+  { 
+    "id": "EN_P3_050", 
+    "subjectId": "English", 
+    "categoryId": "Vocabulary", 
+    "topicId": "Vocab_PhrasalVerbs", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "If 'break down' means stop working, the word 'break in' means", 
+    "options": [ 
+      "enter illegally", 
+      "end a marriage", 
+      "break a pipe", 
+      "to leave something" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "'Break in' means to enter a building illegally.", 
+    "tip": "Phrasal verbs change meaning; 'break in' is often used with theft or robbery." 
+  }, 
+  { 
+    "id": "EN_P3_051", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Ped_Activity_Storytelling", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "'Story telling activity' in a classroom facilitates", 
+    "options": [ 
+      "hand-eye co-ordination in children", 
+      "passive participation", 
+      "interactive teaching-learning environment", 
+      "reading skills" 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "Story telling encourages interaction, responses, and participation 
+from learners.", 
+    "tip": "Any activity where students listen, respond and share is 'interactive'." 
+  }, 
+  { 
+    "id": "EN_P3_052", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Ped_Constructivism", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Constructivism in language learning focuses on", 
+    "options": [ 
+      "engaging learners in exploring new knowledge", 
+      "the role of imitation", 
+      "memorizing grammar rules", 
+      "the dominant role of the teacher in the classroom" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "Constructivism emphasizes learners constructing knowledge by 
+exploring and interacting.", 
+    "tip": "Think 'constructivism = learners construct their own understanding'." 
+  }, 
+  { 
+    "id": "EN_P3_053", 
+    "subjectId": "English", 
+    "categoryId": "Assessment", 
+    "topicId": "Assessment_CCE", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "CCE stands for", 
+    "options": [ 
+      "Comprehensive Continuous Evaluation", 
+      "Continuous Comprehensive Evaluation", 
+      "Common Comprehensive Evaluation", 
+      "Continuous Comprehensive Examination" 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "CCE is expanded as Continuous and Comprehensive Evaluation; the 
+closest option is 'Continuous Comprehensive Evaluation'.", 
+    "tip": "Remember the order: Continuous first, Comprehensive next." 
+  }, 
+  { 
+    "id": "EN_P3_054", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Ped_Skills_Order", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Classroom transaction in a language class should focus on the 
+development of the receptive skills before the development of the productive skills. This 
+statement is", 
+    "options": [ 
+      "Absolutely correct", 
+      "Partially correct", 
+      "Not correct", 
+      "Absolutely not correct" 
+    ], 
+    "correctIndex": 0, 
+    "explanation": "In language learning, listening and reading (receptive) usually develop 
+before speaking and writing (productive).", 
+    "tip": "Think natural order: listen → speak → read → write." 
+  }, 
+  { 
+    "id": "EN_P3_055", 
+    "subjectId": "English", 
+    "categoryId": "Teaching Aids", 
+    "topicId": "Ped_Aids_Realia", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "When a teacher uses 'realia' in the language class, it means that she is 
+bringing", 
+    "options": [ 
+      "real life situations to communicate", 
+      "realistic targets and objectives for achievements", 
+      "real objects as teaching aids", 
+      "real activities for student level" 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "Realia refers to real objects used in the classroom to make learning 
+concrete.", 
+    "tip": "Realia = real objects (fruits, tickets, bottles, etc.)." 
+  }, 
+  { 
+    "id": "EN_P3_056", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Ped_TaskBasedLearning", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Competency-based education has much in common with the approach 
+of", 
+    "options": [ 
+      "Translation method", 
+      "Rote learning", 
+      "Remedial teaching", 
+      "Task based learning" 
+    ], 
+    "correctIndex": 3, 
+    "explanation": "Both competency-based education and task-based learning focus on 
+learners performing real tasks to show mastery.", 
+    "tip": "Competency = ability to perform tasks successfully." 
+  }, 
+  { 
+    "id": "EN_P3_057", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Ped_Remedial", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "The purpose of remedial teaching is to", 
+    "options": [ 
+      "introduce new language items", 
+      "test recently taught items", 
+      "teach again the language items not properly learnt", 
+      "teach again the language items learnt, to reinforce" 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "Remedial teaching is for correcting learning gaps by reteaching what 
+has not been properly learnt.", 
+    "tip": "Remedial = repair learning gaps." 
+  }, 
+  { 
+    "id": "EN_P3_058", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Ped_ReferenceSkills", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "By engaging students in dictionary work, the teacher will facilitate them 
+to improve their", 
+    "options": [ 
+      "listening skill", 
+      "writing skill", 
+      "reference skill", 
+      "speaking skill" 
+    ], 
+    "correctIndex": 2, 
+    "explanation": "Using a dictionary develops reference skills: looking up, verifying and 
+understanding words.", 
+    "tip": "Dictionaries and atlases are key tools for reference skills." 
+  }, 
+  { 
+    "id": "EN_P3_059", 
+    "subjectId": "English", 
+    "categoryId": "Pedagogy", 
+    "topicId": "Ped_CBL", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "In Teaching-learning process CBL stands for", 
+    "options": [ 
+      "Competency Based Learner", 
+      "Competency Based Learning", 
+      "Child Based Learning", 
+      "Center Based Learning" 
+    ], 
+    "correctIndex": 1, 
+    "explanation": "CBL in this context stands for Competency Based Learning.", 
+    "tip": "Link CBL with 'competency' same as CCE with 'evaluation'." 
+  }, 
+  { 
+    "id": "EN_P3_060", 
+    "subjectId": "English", 
+    "categoryId": "Teaching Aids", 
+    "topicId": "Ped_Aids_AV", 
+    "source": "PYQ", 
+    "passage": "", 
+    "question": "Choose the Audio-visual aid from the given options.", 
+    "options": [ 
+      "Blackboard", 
+      "Charts", 
+      "Flash cards", 
+      "Films" 
+    ], 
+    "correctIndex": 3, 
+    "explanation": "Films provide both sound and picture, so they are audio-visual aids.", 
+    "tip": "Audio-visual = both heard and seen together." 
+  },
+  [
+    {
+      "id": "EN_P4_031",
+      "subjectId": "English",
+      "categoryId": "Reading Comprehension",
+      "topicId": "RC_Detail",
+      "source": "PYQ",
+      "passage": "Leonard James is a homeless man. For him, life is always hard. He is always hungry. His shoes have holes in them. He needs a haircut. His clothes are old and dirty. \"What I would do with one hundred dollars!\" Leonard says. This is a game he likes to play with himself to take his mind off things. He is walking down the street on a Thursday night. The winter air is cold on his face. \"If I had one hundred dollars, I could buy new socks,\" he says. He continues to walk down the street. \"If I had one hundred dollars, I could get a haircut,\" he says. He continues to walk down the street. \"If I had one hundred dollars, I could buy new pants\", he says. He continues to walk down the street. \"If I had one hundred dollars, I could get a hamburger,\" he says. His stomach rumbles at the thought. \"If I had...\" Leonard looks down at the sidewalk. He cannot believe what he sees! someone has lost his wallet. Leonard picks it up. Inside are five twenty-dollar bills. \"One hundred dollars!\" Leonard says. He is very excited. \"Now I can buy everything I want!\". Then Leonard begins to think. \"But this is not my money\", he says. Leonard goes to the police station. He gives a police officer the wallet and money. \"Thank you\" says the police officer. \"You are a very honest man.\" Leonard smiles. He turns around and begins to Leave the police station. \"Hold on,\" the police officer says. He reaches into his won pocket and gives Leonard ten dollars: \"Get yourself something to eat\".",
+      "question": "What is life like for Leonard?",
+      "options": [
+        "It is hard",
+        "It is warm",
+        "It is easy",
+        "It is full of goodness"
+      ],
+      "correctIndex": 0,
+      "difficulty": "⭐",
+      "explanationShort": "The opening lines state that for Leonard, 'life is always hard'.",
+      "explanationFull": "The first two sentences of the passage provide the answer directly: 'Leonard James is a homeless man. For him, life is always hard.'",
+      "tip": "Always check the introductory sentences for the main character's situation.",
+      "isDiagramBased": false
+    },
+    {
+      "id": "EN_P4_032",
+      "subjectId": "English",
+      "categoryId": "Reading Comprehension",
+      "topicId": "RC_Detail",
+      "source": "PYQ",
+      "passage": "\"What I would do with one hundred dollars!\" Leonard says. This is a game he likes to play with himself to take his mind off things.",
+      "question": "Leonard thinks about what he would do with a hundred dollars because",
+      "options": [
+        "It helps him go to sleep",
+        "It takes his mind off things",
+        "The police officer asks him to do so",
+        "He knows he will find the money"
+      ],
+      "correctIndex": 1,
+      "difficulty": "⭐",
+      "explanationShort": "He plays this game to distract himself from his hardships.",
+      "explanationFull": "The text explicitly states the reason for his imaginary game: 'This is a game he likes to play with himself to take his mind off things.'",
+      "tip": "Look for the specific clause following the action that explains the 'why'.",
+      "isDiagramBased": false
+    },
+    {
+      "id": "EN_P4_033",
+      "subjectId": "English",
+      "categoryId": "Reading Comprehension",
+      "topicId": "RC_Detail",
+      "source": "PYQ",
+      "passage": "He is walking down the street on a Thursday night. The winter air is cold on his face.",
+      "question": "What time of year is it?",
+      "options": [
+        "Spring",
+        "Fall",
+        "Summer",
+        "Winter"
+      ],
+      "correctIndex": 3,
+      "difficulty": "⭐",
+      "explanationShort": "The passage mentions 'The winter air is cold'.",
+      "explanationFull": "The season is directly mentioned in the sentence: 'The winter air is cold on his face,' indicating it is Winter.",
+      "tip": "Scan for weather words or season names to identify the setting.",
+      "isDiagramBased": false
+    },
+    {
+      "id": "EN_P4_034",
+      "subjectId": "English",
+      "categoryId": "Reading Comprehension",
+      "topicId": "RC_Inference",
+      "source": "PYQ",
+      "passage": "\"If I had one hundred dollars, I could get a hamburger,\" he says. His stomach rumbles at the thought.",
+      "question": "Leonard's stomach rumbles because",
+      "options": [
+        "He is hungry",
+        "He is tired",
+        "His clothes are dirty",
+        "He is homeless"
+      ],
+      "correctIndex": 0,
+      "difficulty": "⭐",
+      "explanationShort": "A rumbling stomach is a physical sign of hunger.",
+      "explanationFull": "The text mentions earlier that 'He is always hungry', and specifically here his stomach rumbles at the thought of a hamburger, confirming he is hungry.",
+      "tip": "Connect physical reactions (rumbling) to their biological causes (hunger).",
+      "isDiagramBased": false
+    },
+    {
+      "id": "EN_P4_035",
+      "subjectId": "English",
+      "categoryId": "Reading Comprehension",
+      "topicId": "RC_Detail",
+      "source": "PYQ",
+      "passage": "Then Leonard begins to think. \"But this is not my money\", he says. Leonard goes to the police station.",
+      "question": "Leonard goes to the police station because",
+      "options": [
+        "He owes money",
+        "He wants a reward",
+        "The wallet is not his",
+        "He has committed a crime"
+      ],
+      "correctIndex": 2,
+      "difficulty": "⭐",
+      "explanationShort": "He realizes the money belongs to someone else.",
+      "explanationFull": "Leonard's internal monologue 'But this is not my money' prompts him to go to the police station to return the lost wallet.",
+      "tip": "Identify the character's realization just before the action.",
+      "isDiagramBased": false
+    },
+    {
+      "id": "EN_P4_036",
+      "subjectId": "English",
+      "categoryId": "Reading Comprehension",
+      "topicId": "RC_VocabInContext",
+      "source": "PYQ",
+      "passage": "\"Thank you\" says the police officer. \"You are a very honest man.\" Leonard smiles.",
+      "question": "At the end of the story, being honest means",
+      "options": [
+        "to feel protected",
+        "to want more",
+        "to be truthful",
+        "to be hopeful"
+      ],
+      "correctIndex": 2,
+      "difficulty": "⭐",
+      "explanationShort": "Honesty refers to truthfulness and integrity (not stealing).",
+      "explanationFull": "In this context, Leonard is called 'honest' because he returned property that wasn't his. This aligns with the definition 'to be truthful' or morally upright.",
+      "tip": "Relate the word 'honest' to the character's specific moral action.",
+      "isDiagramBased": false
+    },
+    {
+      "id": "EN_P4_037",
+      "subjectId": "English",
+      "categoryId": "Reading Comprehension",
+      "topicId": "RC_Detail",
+      "source": "PYQ",
+      "passage": "He reaches into his won pocket and gives Leonard ten dollars: \"Get yourself something to eat\".",
+      "question": "The police officer gives Leonard",
+      "options": [
+        "an advice",
+        "money to eat",
+        "a handshake",
+        "one hundred dollars"
+      ],
+      "correctIndex": 1,
+      "difficulty": "⭐",
+      "explanationShort": "The officer gives him ten dollars specifically for food.",
+      "explanationFull": "The text states the officer 'gives Leonard ten dollars' and says 'Get yourself something to eat'.",
+      "tip": "Look for the specific object exchanged at the climax of the story.",
+      "isDiagramBased": false
+    },
+    {
+      "id": "EN_P4_038",
+      "subjectId": "English",
+      "categoryId": "Grammar & Structure",
+      "topicId": "Grammar_ReportedSpeech",
+      "source": "PYQ",
+      "passage": "The police officer said, \"You are a very honest man\".",
+      "question": "The reported form of the sentence: The police officer said, \"You are a very honest man\".",
+      "options": [
+        "The police officer said that I was a very honest man",
+        "The police officer said that he was a very honest man",
+        "The police officer said that I am a very honest man",
+        "The police officer said that he is a very honest man"
+      ],
+      "correctIndex": 1,
+      "difficulty": "⭐⭐",
+      "explanationShort": "'You' changes to 'he' and 'are' changes to 'was'.",
+      "explanationFull": "In reported speech, the second person pronoun 'You' (referring to Leonard) becomes 'he', and the present tense verb 'are' backshifts to the past tense 'was'.",
+      "tip": "Remember the shift: Present ('are') \u2192 Past ('was') in reported speech.",
+      "isDiagramBased": false
+    },
+    {
+      "id": "EN_P4_039",
+      "subjectId": "English",
+      "categoryId": "Reading Comprehension",
+      "topicId": "RC_Detail",
+      "source": "PYQ",
+      "passage": "'Did I wake you up?' I could have jumped out of my pyjamas as I answered the phone in my hotel room in Moscow, early one morning, some years ago. My surprise wasn't because I was fast asleep or wasn't expecting a call. What took me by surprise was the fact that the query was made in perfect Bengali. One doesn't expect that in Hotel Minsk in Moscow, on an early morning in May. Yury Frolov had taken me by surprise. I met the young Russian in the hotel lobby, his hair slightly receding, a sensitive face and pale blue eyes willing to laugh if you too were willing to do so. 'My name is Frolov, Yuri Frolov,' he said, in English this time, with a warm handshake. He was with the Bengali service of Radio Moscow and had come to fetch me for an interview I was to record that morning As the taxi made its way through the streets, he sat there explaining to me the mystery of his near-perfect Bengali, Occasionally breaking into English as though to reassure me. He asked the driver to stop for a minute, nimbly jumped out and returned a few minutes later with a bouquet in hand. I was a little embarrassed at the thought of arriving at the studios of Radio Moscow with a bouquet in may hand. As it turned out, the bouquet wasn't for me. Before introducing me to the charming woman who was to interview me, he handed her the flowers with an elaborate gesture. She accepted the offering with just as much charm and a smile that could have launched a thousand satellites into space, or perhaps nearer earth.",
+      "question": "The author was surprised because",
+      "options": [
+        "he got the call when he was fast asleep",
+        "he was not expecting a call",
+        "the query was made in perfect Bengali",
+        "the query was made in perfect Russian"
+      ],
+      "correctIndex": 2,
+      "difficulty": "⭐",
+      "explanationShort": "The narrator was shocked to hear perfect Bengali spoken in Moscow.",
+      "explanationFull": "The passage explicitly states: 'What took me by surprise was the fact that the query was made in perfect Bengali.'",
+      "tip": "Look for the phrase 'What took me by surprise was...'.",
+      "isDiagramBased": false
+    },
+    {
+      "id": "EN_P4_040",
+      "subjectId": "English",
+      "categoryId": "Reading Comprehension",
+      "topicId": "RC_Detail",
+      "source": "PYQ",
+      "passage": "I met the young Russian in the hotel lobby, his hair slightly receding, a sensitive face and pale blue eyes willing to laugh if you too were willing to do so.",
+      "question": "The author met Yuri Frolov",
+      "options": [
+        "at the studio of Radio Moscow",
+        "in his hotel room in Moscow",
+        "at the corridor of Radio Moscow",
+        "in the hotel lobby"
+      ],
+      "correctIndex": 3,
+      "difficulty": "⭐",
+      "explanationShort": "The meeting place is explicitly stated as the 'hotel lobby'.",
+      "explanationFull": "The text says: 'I met the young Russian in the hotel lobby'.",
+      "tip": "Scan for location words like 'lobby', 'room', or 'studio'.",
+      "isDiagramBased": false
+    },
+    {
+      "id": "EN_P4_041",
+      "subjectId": "English",
+      "categoryId": "Reading Comprehension",
+      "topicId": "RC_Detail",
+      "source": "PYQ",
+      "passage": "He was with the Bengali service of Radio Moscow and had come to fetch me for an interview I was to record that morning",
+      "question": "The author met the young Russian because",
+      "options": [
+        "he ordered the coffee early in the morning",
+        "he wanted to pay him the perks",
+        "he wanted to learn Russian from him",
+        "he had to go to Radio Moscow for an interview"
+      ],
+      "correctIndex": 3,
+      "difficulty": "⭐",
+      "explanationShort": "Yuri came to pick him up for a scheduled interview.",
+      "explanationFull": "The text explains the purpose of the visit: 'had come to fetch me for an interview I was to record that morning'.",
+      "tip": "Find the reason or 'why' associated with the character's arrival.",
+      "isDiagramBased": false
+    },
+    {
+      "id": "EN_P4_042",
+      "subjectId": "English",
+      "categoryId": "Reading Comprehension",
+      "topicId": "RC_Detail",
+      "source": "PYQ",
+      "passage": "I was a little embarrassed at the thought of arriving at the studios of Radio Moscow with a bouquet in may hand.",
+      "question": "The thought that made the author a little embarrassed was",
+      "options": [
+        "of arriving at the studios of Radio Moscow with a bouquet in his hand",
+        "of arriving at the studios of Radio Moscow with Yuri Frolov",
+        "of arriving at the studios of Radio Moscow with a bouquet in Frolov's hand",
+        "to meet the woman at the studios of Radio Moscow"
+      ],
+      "correctIndex": 0,
+      "difficulty": "⭐",
+      "explanationShort": "He felt awkward about carrying the flowers himself.",
+      "explanationFull": "The author states directly: 'I was a little embarrassed at the thought of arriving... with a bouquet in my hand.'",
+      "tip": "Match the emotion 'embarrassed' to the specific thought in the text.",
+      "isDiagramBased": false
+    },
+    {
+      "id": "EN_P6_031",
+      "subjectId": "English",
+      "categoryId": "Reading Comprehension",
+      "topicId": "RC_Detail",
+      "source": "PYQ",
+      "passage": "A mother duck and her little ducklings were on their way to the lake one day. The ducklings were very happy following their mother and quack-quacking along the way. All of a sudden the mother duck saw a fox in the distance. She was frightened and shouted, \"Children, hurry to the lake. There's a fox!\" The ducklings hurried towards the lake. The mother duck wondered what to do. She began to walk back and forth dragging one wing on the ground. When the fox saw her he became happy and he said to himself, \"looks like she's hurt and can't fly! I can easily catch and eat her!\" Then he ran towards her. The mother duck ran, leading the fox away from the lake. The fox followed her. Now he wouldn't be able to harm her ducklings. The mother duck looked towards her ducklings and saw that they had reached the lake. She was relieved. She stopped and took a deep breath. The fox thought she was tired and he came closer, but the mother duck quickly spread her wings and rose up in the air. She landed in the middle of the lake and her ducklings swam to her. The fox stared in disbelief at the mother duck and her ducklings. He could not reach them because they were in the middle of the lake. This way the duck fooled its enemy into thinking she was hurt and gave her children time to escape. Dear children, some birds drag one of their wings on the ground when an enemy is going to attack. In this way they fool their enemies into thinking they are hurt, when the enemy follows them this gives their children time to escape.",
+      "question": "The fox thought that the mother duck was hurt when the mother duck",
+      "options": [
+        "hurried towards the lake",
+        "ran away from the lake",
+        "began to walk back and forth dragging one wing on the ground",
+        "reached the middle of the lake"
+      ],
+      "correctIndex": 2,
+      "difficulty": "⭐",
+      "explanationShort": "Dragging the wing is a specific distraction display to feign injury.",
+      "explanationFull": "The text states: 'She began to walk back and forth dragging one wing on the ground. When the fox saw her he... said to himself, looks like she's hurt'.",
+      "tip": "Identify the specific action that caused the fox's reaction.",
+      "isDiagramBased": false
+    },
+    {
+      "id": "EN_P6_032",
+      "subjectId": "English",
+      "categoryId": "Reading Comprehension",
+      "topicId": "RC_Inference",
+      "source": "PYQ",
+      "passage": "The mother duck ran, leading the fox away from the lake. The fox followed her. Now he wouldn't be able to harm her ducklings.",
+      "question": "The mother duck ran leading the fox away from the lake because",
+      "options": [
+        "it wanted to save its life",
+        "it wanted to save its duckling's life",
+        "it wanted the fox to be saved",
+        "it wanted the fox to love the ducklings"
+      ],
+      "correctIndex": 1,
+      "difficulty": "⭐",
+      "explanationShort": "Her goal was to lure the predator away from her vulnerable children.",
+      "explanationFull": "The text explains her motive: 'Now he wouldn't be able to harm her ducklings.' She prioritized their safety over hers.",
+      "tip": "Look for the outcome the mother was trying to achieve (safety of ducklings).",
+      "isDiagramBased": false
+    },
+    {
+      "id": "EN_P6_033",
+      "subjectId": "English",
+      "categoryId": "Reading Comprehension",
+      "topicId": "RC_Theme",
+      "source": "PYQ",
+      "passage": "This way the duck fooled its enemy into thinking she was hurt and gave her children time to escape.",
+      "question": "This story highlights",
+      "options": [
+        "the greediness of the fox",
+        "the fox hunting the ducklings",
+        "the care of the mother duck",
+        "the wandering of the mother duck and the ducklings"
+      ],
+      "correctIndex": 2,
+      "difficulty": "⭐",
+      "explanationShort": "The story focuses on the mother's cleverness and sacrifice to protect her young.",
+      "explanationFull": "The central theme is the maternal instinct and 'care of the mother duck' in protecting her offspring from danger.",
+      "tip": "Consider the main lesson or positive trait demonstrated by the protagonist.",
+      "isDiagramBased": false
+    },
+      {
+        "id": "EN_P6_039",
+        "subjectId": "English",
+        "categoryId": "Poetry",
+        "topicId": "Poem_Speaker",
+        "source": "PYQ",
+        "passage": "I wonder why the grass is green,\nAnd why the wind is never seen?\nWho taught the birds to build a nest,\nAnd told the trees to take a rest?\nO, when the moon is not quite round,\nWhere can the missing bit be found?\nWho lights the stars, when they blow out,\nAnd makes the lightning flash about?\nWho paints the rainbow in the sky\nAnd hangs the fluffy clouds so high?\nWhy is it now, do you suppose,\nThat Dad won't tell me, if he knows?",
+        "question": "The speaker in this poem is",
+        "options": [
+          "dad",
+          "son",
+          "mother",
+          "nature"
+        ],
+        "correctIndex": 1,
+        "difficulty": "⭐",
+        "explanationShort": "The reference to 'Dad' implies the speaker is a child.",
+        "explanationFull": "In the final lines ('That Dad won't tell me...'), the speaker refers to their father, indicating the speaker is a child (son or daughter).",
+        "tip": "Look for family titles (Dad, Mom) to determine the speaker's relationship.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_P6_040",
+        "subjectId": "English",
+        "categoryId": "Poetry",
+        "topicId": "Poem_Detail",
+        "source": "PYQ",
+        "passage": "And why the wind is never seen?",
+        "question": "The person is wondering",
+        "options": [
+          "Why the wind is never seen",
+          "Why the trees are not taking rest",
+          "Why somebody has bit off the moon",
+          "Why there is a rainbow in the sky"
+        ],
+        "correctIndex": 0,
+        "difficulty": "⭐",
+        "explanationShort": "The poem explicitly asks: 'And why the wind is never seen?'",
+        "explanationFull": "This matches the second line of the poem word-for-word.",
+        "tip": "Match the option exactly to the text of the poem.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_P6_041",
+        "subjectId": "English",
+        "categoryId": "Poetry",
+        "topicId": "Poem_Theme",
+        "source": "PYQ",
+        "passage": "",
+        "question": "The central idea of this poem is",
+        "options": [
+          "a child's curiosity",
+          "elders do not know all answers",
+          "funny things of nature",
+          "one should have a keen desire to learn"
+        ],
+        "correctIndex": 0,
+        "difficulty": "⭐",
+        "explanationShort": "The poem is a series of innocent questions about the world.",
+        "explanationFull": "The repetitive questioning ('I wonder', 'Who taught', 'Who lights') captures the natural curiosity and inquisitiveness of a child.",
+        "tip": "Identify the tone of the questions—innocent and wondering.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_P6_042",
+        "subjectId": "English",
+        "categoryId": "Poetry",
+        "topicId": "Poem_Interpretation",
+        "source": "PYQ",
+        "passage": "And told the trees to take a rest?",
+        "question": "'Trees take a rest' means trees",
+        "options": [
+          "stop working for sometime",
+          "lie down dead",
+          "sit fixed to the ground",
+          "should be cut down after some years"
+        ],
+        "correctIndex": 2,
+        "difficulty": "⭐⭐",
+        "explanationShort": "To a child, the stationary nature of trees looks like they are standing still or 'resting'.",
+        "explanationFull": "The metaphor 'take a rest' implies standing still or being motionless, which corresponds to trees being fixed to the ground.",
+        "tip": "Interpret the metaphor from the perspective of the child speaker.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_P6_043",
+        "subjectId": "English",
+        "categoryId": "Vocabulary",
+        "topicId": "Vocabulary_Rhyme",
+        "source": "PYQ",
+        "passage": "I wonder why the grass is green...",
+        "question": "The rhyming word for 'wonder' is",
+        "options": [
+          "compounder",
+          "yonder",
+          "all-rounder",
+          "founder"
+        ],
+        "correctIndex": 1,
+        "difficulty": "⭐⭐",
+        "explanationShort": "'Yonder' is a traditional rhyme for 'wonder'.",
+        "explanationFull": "Although pronunciation varies, 'yonder' is the standard poetic rhyme for 'wonder' among the options provided.",
+        "tip": "Look for visual spelling matches (-onder).",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_P6_044",
+        "subjectId": "English",
+        "categoryId": "Grammar & Structure",
+        "topicId": "Grammar_PartsOfSpeech",
+        "source": "PYQ",
+        "passage": "And hangs the fluffy clouds so high?",
+        "question": "The word 'fluffy' is",
+        "options": [
+          "Verb",
+          "Adjective",
+          "Noun",
+          "Adverb"
+        ],
+        "correctIndex": 1,
+        "difficulty": "⭐",
+        "explanationShort": "'Fluffy' describes the clouds (noun), making it an adjective.",
+        "explanationFull": "Words that describe qualities of nouns are adjectives. 'Fluffy' describes the appearance of the clouds.",
+        "tip": "Ask 'What kind of clouds?' -> Fluffy.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_P6_045",
+        "subjectId": "English",
+        "categoryId": "Grammar & Structure",
+        "topicId": "Grammar_Contractions",
+        "source": "PYQ",
+        "passage": "",
+        "question": "The word 'Won't' is the contracted form of",
+        "options": [
+          "Will not",
+          "Would not",
+          "Was not",
+          "Were not"
+        ],
+        "correctIndex": 0,
+        "difficulty": "⭐",
+        "explanationShort": "'Won't' is the irregular contraction for 'will not'.",
+        "explanationFull": "Unlike most contractions that just remove letters (do not -> don't), 'will not' changes form entirely to 'won't'.",
+        "tip": "Memorize: Will + not = Won't.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_001",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_LanguageSkills",
+        "source": "PYQ",
+        "passage": "",
+        "question": "If you are reading a text for comprehension",
+        "options": [
+          "you should read aloud",
+          "you should read silently",
+          "you should read aloud with a friend / peer",
+          "you should expect somebody to read for you"
+        ],
+        "correctIndex": 1,
+        "difficulty": "⭐",
+        "explanationShort": "Silent reading aids concentration and internal processing of meaning.",
+        "explanationFull": "Silent reading allows the reader to focus entirely on the meaning (comprehension) without the cognitive load of pronouncing words.",
+        "tip": "Silent reading = Meaning/Comprehension.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_002",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_LanguageSkills",
+        "source": "PYQ",
+        "passage": "",
+        "question": "A learner reads the text / topic for specific details or specific reasons. So she/he is using the strategy called",
+        "options": [
+          "Scanning",
+          "Skimming",
+          "Skipping",
+          "Summarizing"
+        ],
+        "correctIndex": 0,
+        "difficulty": "⭐",
+        "explanationShort": "Scanning is looking for specific information (dates, names, facts).",
+        "explanationFull": "Scanning involves moving eyes quickly over text to locate specific details. Skimming is reading for the general gist.",
+        "tip": "Scanning = Specifics. Skimming = Gist.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_003",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_Assessment",
+        "source": "PYQ",
+        "passage": "",
+        "question": "Choose the word that does not belong to the group: Observation, checklist, rating scale, Questionnaire",
+        "options": [
+          "Checklist",
+          "Rating scale",
+          "Observation",
+          "Questionnaire"
+        ],
+        "correctIndex": 2,
+        "difficulty": "⭐⭐",
+        "explanationShort": "Observation is a method/technique; the others are tools/instruments.",
+        "explanationFull": "Checklists, rating scales, and questionnaires are physical tools used to record data. Observation is the process or technique of watching learners.",
+        "tip": "Distinguish between the *process* (Observation) and the *tool* (Checklist).",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_004",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_LanguageSkills",
+        "source": "PYQ",
+        "passage": "",
+        "question": "A teacher asks her/his pupils to clap once if the statement is true and to clap twice if it is not true. Then the pupils",
+        "options": [
+          "listen and respond",
+          "listen and repeat",
+          "listen and complete the gaps",
+          "listen and chant"
+        ],
+        "correctIndex": 0,
+        "difficulty": "⭐",
+        "explanationShort": "Pupils listen to the statement and respond physically (clapping).",
+        "explanationFull": "This implies a 'Listen and Respond' activity where physical action demonstrates comprehension.",
+        "tip": "Physical action following listening = Respond.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_005",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_LanguageSkills",
+        "source": "PYQ",
+        "passage": "",
+        "question": "The following is not a sub-skill of speaking",
+        "options": [
+          "produce sounds in meaningful chunks",
+          "convey information",
+          "formulate appropriate response",
+          "understand syntactic patterns"
+        ],
+        "correctIndex": 3,
+        "difficulty": "⭐⭐",
+        "explanationShort": "Understanding patterns is a receptive/cognitive skill, not a productive speaking skill.",
+        "explanationFull": "Speaking involves production: making sounds, conveying info, and responding. 'Understanding' is primarily a receptive skill (Listening/Reading) or linguistic competence.",
+        "tip": "Speaking = Production (Doing). Understanding = Reception.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_006",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_LanguageSkills",
+        "source": "PYQ",
+        "passage": "",
+        "question": "Considering how far the following activities help learners develop their speaking skills, the one that does not help much is",
+        "options": [
+          "giving a prepared talk",
+          "giving an extempore speech",
+          "reading aloud",
+          "interviewing some one"
+        ],
+        "correctIndex": 2,
+        "difficulty": "⭐⭐",
+        "explanationShort": "Reading aloud focuses on pronunciation, not generating speech.",
+        "explanationFull": "Prepared talks, extempore, and interviews require the learner to create their own sentences (communicative speaking). Reading aloud is just decoding text.",
+        "tip": "Communicative speaking requires generating *new* sentences.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_007",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_TeachingMethods",
+        "source": "PYQ",
+        "passage": "",
+        "question": "Using hand signals, a teacher points to the door. Here she/he is demonstrating",
+        "options": [
+          "Total physical response",
+          "Audio-lingual method",
+          "Direct method",
+          "Communicative method"
+        ],
+        "correctIndex": 0,
+        "difficulty": "⭐⭐",
+        "explanationShort": "The answer key indicates TPR, as it relies on physical actions/signals.",
+        "explanationFull": "While pointing is often Direct Method, the provided answer key marks this as Total Physical Response (TPR), likely interpreting the use of non-verbal signals to prompt understanding as part of the physical response framework.",
+        "tip": "TPR links language with physical actions/signals.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_008",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_Approaches",
+        "source": "PYQ",
+        "passage": "",
+        "question": "In the functional approach to teaching grammar",
+        "options": [
+          "form is central",
+          "meaning is central",
+          "both form and meaning are central",
+          "either 'form' or 'meaning' is central"
+        ],
+        "correctIndex": 1,
+        "difficulty": "⭐",
+        "explanationShort": "Functional grammar focuses on the communicative purpose (meaning) of language.",
+        "explanationFull": "The functional approach prioritizes 'what the language does' (e.g., requesting, apologizing) over the strict grammatical structure (form).",
+        "tip": "Functional = Communicative Meaning.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_009",
+        "subjectId": "English",
+        "categoryId": "Grammar & Structure",
+        "topicId": "Grammar_SentenceStructure",
+        "source": "PYQ",
+        "passage": "",
+        "question": "'Unity' in a paragraph means, that the paragraph is about",
+        "options": [
+          "supporting details",
+          "two main topics",
+          "topic sentence",
+          "only one main topic"
+        ],
+        "correctIndex": 3,
+        "difficulty": "⭐",
+        "explanationShort": "Unity means sticking to a single central idea.",
+        "explanationFull": "A paragraph has unity when all its sentences relate to and support only one main topic.",
+        "tip": "Unity = One Paragraph, One Idea.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_010",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_Assessment",
+        "source": "PYQ",
+        "passage": "",
+        "question": "A diagnostic test is used to assess",
+        "options": [
+          "learners' ability to memorise the content of a text book",
+          "learners' ability to summarise the main points in a text",
+          "learners' strong and weak points in language",
+          "learners' knowledge of grammar"
+        ],
+        "correctIndex": 2,
+        "difficulty": "⭐",
+        "explanationShort": "Diagnostic tests identify learning gaps (weaknesses) and strengths.",
+        "explanationFull": "Diagnostic assessment is conducted to find out what a student knows and doesn't know, specifically their strengths and weak points, to plan instruction.",
+        "tip": "Diagnostic = Finding the 'illness' (weakness).",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_011",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_Resources",
+        "source": "PYQ",
+        "passage": "",
+        "question": "The cheapest and most easily accessible mass media is",
+        "options": [
+          "television",
+          "radio",
+          "internet",
+          "newspaper"
+        ],
+        "correctIndex": 1,
+        "difficulty": "⭐",
+        "explanationShort": "Based on the provided key, 'Radio' is considered the cheapest/most accessible.",
+        "explanationFull": "While newspapers are cheap per copy, radio signals are free to receive and radios are widely available even in remote areas. (Note: The answer key selects Radio).",
+        "tip": "In many contexts, Radio is cited as the most accessible medium for remote/rural areas.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_012",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_Theories",
+        "source": "PYQ",
+        "passage": "",
+        "question": "The following statements are related to the characteristics of young learners. Which statement is FALSE?",
+        "options": [
+          "They try things out and keep experimenting",
+          "When conditions are optimal, they can acquire a second language too",
+          "They acquire their first language very easily",
+          "They are passive learners"
+        ],
+        "correctIndex": 3,
+        "difficulty": "⭐",
+        "explanationShort": "Children are active learners, not passive.",
+        "explanationFull": "Young learners are naturally curious and learn by doing, experimenting, and interacting. They are rarely passive.",
+        "tip": "Young learners = Active.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_013",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_Theories",
+        "source": "PYQ",
+        "passage": "",
+        "question": "Stephen Krashen's 'Affective filter hypothesis' states that",
+        "options": [
+          "the affective filter acts as a barrier to language acquisition",
+          "the affective filter works as a scaffold in language acquisition",
+          "it helps in the first language acquisition",
+          "it helps in the second language acquisition"
+        ],
+        "correctIndex": 0,
+        "difficulty": "⭐⭐",
+        "explanationShort": "A high affective filter (anxiety) blocks input.",
+        "explanationFull": "Krashen argues that negative emotions (anxiety, low motivation) create a 'filter' that acts as a barrier, preventing comprehensible input from being acquired.",
+        "tip": "Filter = Barrier/Wall.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_014",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_TeachingMethods",
+        "source": "PYQ",
+        "passage": "",
+        "question": "'Presentation -> Practice -> Production' sequence is followed in the",
+        "options": [
+          "constructivist approach",
+          "language - awareness approach",
+          "functional approach",
+          "traditional form-focused approach"
+        ],
+        "correctIndex": 3,
+        "difficulty": "⭐⭐",
+        "explanationShort": "PPP is the classic model of traditional language teaching.",
+        "explanationFull": "The PPP model (Present rule, Practice drills, Produce sentences) is characteristic of traditional, structural, or form-focused methods.",
+        "tip": "PPP = Traditional.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_015",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_ClassroomPractices",
+        "source": "PYQ",
+        "passage": "",
+        "question": "The teacher wants to build good rapport in her elementary class. Hence,",
+        "options": [
+          "She gives the class some extra verbs to learn for homework",
+          "She makes an effort to learn all the learners' names",
+          "She decides to ask the best learner in the class",
+          "She asks a learner to be the teacher for the next class"
+        ],
+        "correctIndex": 1,
+        "difficulty": "⭐",
+        "explanationShort": "Learning names is the foundation of personal rapport.",
+        "explanationFull": "Knowing and using students' names validates their identity and is the most effective first step in building a positive teacher-student relationship.",
+        "tip": "Rapport = Personal Connection (Names).",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_016",
+        "subjectId": "English",
+        "categoryId": "Grammar & Structure",
+        "topicId": "Grammar_Voice",
+        "source": "PYQ",
+        "passage": "",
+        "question": "'Spoorti was planting a sapling'. The passive form of the above sentence is",
+        "options": [
+          "A sapling is being planted by Spoorti",
+          "A sapling was being planted by Spoorti",
+          "A sapling has been planted by Spoorti",
+          "A sapling was planted by Spoorti"
+        ],
+        "correctIndex": 1,
+        "difficulty": "⭐⭐",
+        "explanationShort": "Past Continuous Active ('was planting') becomes Past Continuous Passive ('was being planted').",
+        "explanationFull": "The structure for Past Continuous Passive is: Object + was/were + being + V3 + by Subject.",
+        "tip": "Continuous tense always needs 'being' in passive voice.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_017",
+        "subjectId": "English",
+        "categoryId": "Grammar & Structure",
+        "topicId": "Grammar_Articles",
+        "source": "PYQ",
+        "passage": "",
+        "question": "Aditi throws ______ one rupee coin, into ______ river Krishna. The suitable words to be used in the above sentence are",
+        "options": [
+          "an, the",
+          "a, an",
+          "a, the",
+          "the, a"
+        ],
+        "correctIndex": 2,
+        "difficulty": "⭐⭐",
+        "explanationShort": "'One' starts with a /w/ sound (consonant), so it takes 'a'. Rivers take 'the'.",
+        "explanationFull": "Although 'one' starts with a vowel letter, it starts with a consonant sound (/w/), so we say 'a one'. Names of rivers always take the definite article 'the'.",
+        "tip": "Sound determines article: 'One' sounds like 'Won' (Consonant).",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_018",
+        "subjectId": "English",
+        "categoryId": "Grammar & Structure",
+        "topicId": "Grammar_Prepositions",
+        "source": "PYQ",
+        "passage": "",
+        "question": "The bridge was built ______ the river. The suitable word to be used in the given sentence is",
+        "options": [
+          "across",
+          "along",
+          "at",
+          "in"
+        ],
+        "correctIndex": 0,
+        "difficulty": "⭐",
+        "explanationShort": "Bridges go 'across' (from one side to the other) a river.",
+        "explanationFull": "'Across' is the correct preposition to describe movement or position from one side of something to the other.",
+        "tip": "Bridge = Across.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_019",
+        "subjectId": "English",
+        "categoryId": "Grammar & Structure",
+        "topicId": "Grammar_Conditionals",
+        "source": "PYQ",
+        "passage": "",
+        "question": "If she had returned home earlier, I ______ met her. The suitable form of words to be filled in the blank is",
+        "options": [
+          "will have",
+          "have been",
+          "would had",
+          "would have"
+        ],
+        "correctIndex": 3,
+        "difficulty": "⭐⭐",
+        "explanationShort": "This is a Type 3 Conditional (Past Perfect -> Would have + V3).",
+        "explanationFull": "The structure 'If + Past Perfect (had returned)' requires 'would have + Past Participle (met)' in the main clause.",
+        "tip": "Had V3 ... Would have V3.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_020",
+        "subjectId": "English",
+        "categoryId": "Grammar & Structure",
+        "topicId": "Grammar_Tenses",
+        "source": "PYQ",
+        "passage": "",
+        "question": "It is years since I ______ him. He has ______ his best days.",
+        "options": [
+          "seeing, seen",
+          "saw, seen",
+          "seen, saw",
+          "sees, seen"
+        ],
+        "correctIndex": 1,
+        "difficulty": "⭐⭐",
+        "explanationShort": "'Since' usually triggers Simple Past ('saw'). Present Perfect 'has' takes V3 ('seen').",
+        "explanationFull": "First blank: 'It is years since I saw him' (point in past). Second blank: 'He has seen' (Present Perfect auxiliary 'has' + V3).",
+        "tip": "Since + Simple Past. Has + V3.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_021",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_Resources",
+        "source": "PYQ",
+        "passage": "",
+        "question": "Teacher uses online audio dictionary, in the classroom, to teach",
+        "options": [
+          "Spellings of the words",
+          "Meanings of the words",
+          "Pronunciation of the words",
+          "Word order"
+        ],
+        "correctIndex": 2,
+        "difficulty": "⭐",
+        "explanationShort": "Audio dictionaries provide spoken examples, primarily helping with pronunciation.",
+        "explanationFull": "While dictionaries give meaning and spelling, the specific feature of an *audio* dictionary is to hear how the word is spoken, thus teaching pronunciation.",
+        "tip": "Audio = Sound/Pronunciation.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_022",
+        "subjectId": "English",
+        "categoryId": "Vocabulary",
+        "topicId": "Vocabulary_DictionarySkills",
+        "source": "PYQ",
+        "passage": "",
+        "question": "The full form of 'sth' found in dictionary entries stand for",
+        "options": [
+          "something",
+          "subject",
+          "superlative",
+          "somebody"
+        ],
+        "correctIndex": 0,
+        "difficulty": "⭐",
+        "explanationShort": "'sth' is the standard dictionary abbreviation for 'something'.",
+        "explanationFull": "Example usage: 'give sth to sb' (give something to somebody).",
+        "tip": "sth = something. sb = somebody.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_023",
+        "subjectId": "English",
+        "categoryId": "Vocabulary",
+        "topicId": "Vocabulary_DictionarySkills",
+        "source": "PYQ",
+        "passage": "",
+        "question": "Co.ord.in.ate is an entry found in a dictionary for the word 'co-ordinate'. The underlined entry (Co.ord.in.ate) is",
+        "options": [
+          "The spelling of the word",
+          "Pronunciation including syllable stress",
+          "Grammatical function",
+          "Meaning of the word"
+        ],
+        "correctIndex": 1,
+        "difficulty": "⭐⭐",
+        "explanationShort": "Dots often break words into syllables to show pronunciation/stress.",
+        "explanationFull": "While it shows spelling, the dots specifically demarcate syllables (Co-ord-in-ate), which aids in pronunciation and stress patterns.",
+        "tip": "Dots in a headword usually indicate Syllabification.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_024",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_TeachingMethods",
+        "source": "PYQ",
+        "passage": "",
+        "question": "The correct sequence of facilitating a prose lesson by the teacher is",
+        "options": [
+          "Engage, Evaluate, Explain, Expand, Explore",
+          "Engage, Explain, Evaluate, Explore, Expand",
+          "Engage, Explore, Explain, Expand, Evaluate",
+          "Engage, Expand, Explore, Evaluate, Explain"
+        ],
+        "correctIndex": 2,
+        "difficulty": "⭐⭐",
+        "explanationShort": "This follows the 5E Instructional Model: Engage -> Explore -> Explain -> Expand -> Evaluate.",
+        "explanationFull": "The 5E model sequence is: 1. Engage (Hook), 2. Explore (Investigate), 3. Explain (Clarify), 4. Expand/Elaborate (Apply), 5. Evaluate (Assess).",
+        "tip": "Remember 5Es order: E-E-E-E-E. Explore comes before Explain.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_025",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_Communication",
+        "source": "PYQ",
+        "passage": "",
+        "question": "Effective communication involves",
+        "options": [
+          "Appropriate use of voice and body language",
+          "Use of good voice only",
+          "Use of body language only",
+          "Casual listening"
+        ],
+        "correctIndex": 0,
+        "difficulty": "⭐",
+        "explanationShort": "Communication is multimodal, involving both verbal (voice) and non-verbal (body language) cues.",
+        "explanationFull": "Effective communication requires congruence between what is said (voice) and how it is acted (body language). Focusing on only one aspect is incomplete.",
+        "tip": "Communication = Voice + Body Language.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_026",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_Phonetics",
+        "source": "PYQ",
+        "passage": "",
+        "question": "The study of speech sounds, their production and the script is",
+        "options": [
+          "Syntactic",
+          "Transcription",
+          "Sequencing",
+          "Phonetics"
+        ],
+        "correctIndex": 3,
+        "difficulty": "⭐",
+        "explanationShort": "Phonetics is the scientific study of speech sounds.",
+        "explanationFull": "Phonetics deals with the physical production, transmission, and perception of speech sounds.",
+        "tip": "Speech sounds = Phonetics.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_027",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_LanguageSkills",
+        "source": "PYQ",
+        "passage": "",
+        "question": "When the ability of a student to be brief in writing is enhanced, then he has attained the skill of",
+        "options": [
+          "Editing",
+          "Paraphrasing",
+          "Summarising",
+          "Formatting"
+        ],
+        "correctIndex": 2,
+        "difficulty": "⭐",
+        "explanationShort": "Summarising involves condensing a text to its main points (being brief).",
+        "explanationFull": "The core skill of summarising is identifying key information and expressing it concisely (briefly).",
+        "tip": "Brief/Concise = Summary.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_028",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_Phonetics",
+        "source": "PYQ",
+        "passage": "",
+        "question": "Practice of minimal pairs, 'bin-bean' is used to develop the ______ skills.",
+        "options": [
+          "Listening",
+          "Speaking",
+          "Writing",
+          "Listening and speaking"
+        ],
+        "correctIndex": 3,
+        "difficulty": "⭐⭐",
+        "explanationShort": "Minimal pairs practice helps distinguish sounds (Listening) and pronounce them correctly (Speaking).",
+        "explanationFull": "Minimal pairs (words differing by one sound) are used to train the ear to hear the difference (receptive) and the mouth to produce the difference (productive).",
+        "tip": "Minimal pairs = Pronunciation (Speaking) + Auditory Discrimination (Listening).",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_029",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_ClassroomPractices",
+        "source": "PYQ",
+        "passage": "",
+        "question": "The 'Role play' activity helps learners to develop",
+        "options": [
+          "Fluency in speaking",
+          "Accuracy in writing",
+          "Casual listening",
+          "Lexical competence"
+        ],
+        "correctIndex": 0,
+        "difficulty": "⭐",
+        "explanationShort": "Role play simulates real conversation, promoting fluency.",
+        "explanationFull": "Role play requires real-time interaction, forcing students to speak continuously and naturally, which builds fluency.",
+        "tip": "Role play = Speaking Fluency.",
+        "isDiagramBased": false
+      },
+      {
+        "id": "EN_PED_030",
+        "subjectId": "English",
+        "categoryId": "Pedagogy",
+        "topicId": "Pedagogy_Assessment",
+        "source": "PYQ",
+        "passage": "",
+        "question": "The teacher conducts formative Assessments in the classroom.",
+        "options": [
+          "at the end of every semester",
+          "at the beginning of the academic year",
+          "throughout the academic year",
+          "at the end of the academic year"
+        ],
+        "correctIndex": 2,
+        "difficulty": "⭐",
+        "explanationShort": "Formative assessment is continuous and ongoing.",
+        "explanationFull": "Unlike summative assessment (end of year), formative assessment happens 'throughout' the learning process to provide feedback.",
+        "tip": "Formative = Continuous/During.",
+        "isDiagramBased": false
+      }
+    ]

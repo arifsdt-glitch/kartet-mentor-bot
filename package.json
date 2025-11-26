@@ -4,14 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js", // Add a start script for convenience
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "node-telegram-bot-api": "^0.66.0"
+  },
+  "devDependencies": {
     "@types/node": "^22.13.11",
-    "node-telegram-bot-api": "^0.66.0",
-    "openai": "^6.9.1"
+    "openai": "^6.9.1" // Move unused/dev packages here or remove entirely
   }
 }

@@ -1242,7 +1242,7 @@ function sendResult(chatId) {
       streakNote =
         "🏆 14-day streak — this is top 10% behaviour. You’re building exam stamina now.";
     }
-
+  }
 
   const baseResult = {
     answers: session.answers,
@@ -2026,4 +2026,4 @@ bot.on("message", (msg) => {
     showMoreOptions(chatId, userId);
   }
 });
-
+  

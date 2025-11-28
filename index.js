@@ -1242,7 +1242,9 @@ function sendResult(chatId) {
       streakNote =
         "🏆 14-day streak — this is top 10% behaviour. You’re building exam stamina now.";
     }
-  }
+
+// FIX: ADDED MISSING CLOSING BRACE FOR if (!session.isWrongRetake) BLOCK
+  } // <--- MISSING CLOSING BRACE ADDED HERE
 
   const baseResult = {
     answers: session.answers,
@@ -1270,7 +1272,7 @@ function sendResult(chatId) {
       persistent.wrongBank[userId] = Array.from(wrongBank[userId]);
       savePersistentDb();
     }
-
+  }
     const topicStats = calculateTopicStats(baseResult);
     const weakTopics = getWeakTopics(topicStats, 60, 2);
 
@@ -2026,4 +2028,3 @@ bot.on("message", (msg) => {
     showMoreOptions(chatId, userId);
   }
 });
-  

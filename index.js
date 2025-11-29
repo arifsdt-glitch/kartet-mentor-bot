@@ -140,7 +140,6 @@ const wrongReactions = [
   "🧐 Check again",
   "📚 Needs revision",
 ];
-const sessions = {}; // per-chat active test
 const lastResults = {}; // per-chat last finished test
 const mainResults = {}; // only non-retake (main) tests go here
 

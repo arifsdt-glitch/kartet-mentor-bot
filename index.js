@@ -8,7 +8,7 @@ const fs = require("fs");
 const DB_FILE = "./botdb.json";
 
 let persistent = {
-  streaks: {},   // { [userId]: { currentStreak, lastTestDate } }
+  streaks: {}, // { [userId]: { currentStreak, lastTestDate } }
   wrongBank: {}, // { [userId]: [questionId, ...] }
 };
 
@@ -57,21 +57,20 @@ Object.keys(persistent.wrongBank).forEach((uid) => {
   wrongBank[uid] = new Set(ids);
 });
 
-
 // ✅ Build final practice pool = 3 New + 2 Old Wrong
 function buildPracticePool(userId, allQuestions, size = MINI_TEST_SIZE) {
   const history = [...(wrongBank[userId] || [])];
 
   // ✅ Pick up to 2 old wrong
   const oldWrongs = shuffleArray(history)
-    .map(id => allQuestions.find(q => q.id === id))
+    .map((id) => allQuestions.find((q) => q.id === id))
     .filter(Boolean)
     .slice(0, 2);
 
-  const usedIds = new Set(oldWrongs.map(q => q.id));
+  const usedIds = new Set(oldWrongs.map((q) => q.id));
 
   // ✅ Pick remaining NEW questions
-  const freshPool = allQuestions.filter(q => !usedIds.has(q.id));
+  const freshPool = allQuestions.filter((q) => !usedIds.has(q.id));
   const newOnes = shuffleArray(freshPool).slice(0, size - oldWrongs.length);
 
   // ✅ Final = old wrong + new
@@ -79,7 +78,6 @@ function buildPracticePool(userId, allQuestions, size = MINI_TEST_SIZE) {
 
   return applyDifficultyRamp(finalPool);
 }
-
 
 // ================== CONFIG ==================
 
@@ -108,7 +106,7 @@ const MINI_TEST_SIZE = 5; // 5 questions per free test
 // 2. Read the file_id from update
 // 3. Paste here
 const CORRECT_SOUND_FILE_ID = ""; // e.g. "CQACAgUAAxkBA....."
-const WRONG_SOUND_FILE_ID = "";   // e.g. "CQACAgUAAxkBA....."
+const WRONG_SOUND_FILE_ID = ""; // e.g. "CQACAgUAAxkBA....."
 
 // Telegram bot
 const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
@@ -116,15 +114,13 @@ bot.on("polling_error", (err) => {
   console.error("❌ Telegram polling error:", err.message || err);
 });
 
-
 // ================== IN-MEMORY STORES ==================
 
-
-const sessions = {};   // per-chat active test
+const sessions = {}; // per-chat active test
 const lastResults = {}; // per-chat last finished test
 const mainResults = {}; // only non-retake (main) tests go here
 
-const userStats = {};   // per-user aggregated stats
+const userStats = {}; // per-user aggregated stats
 
 // userPrefs[userId] = {
 //   uiLang: 'en' | 'kn' | 'ur',
@@ -134,12 +130,24 @@ const userStats = {};   // per-user aggregated stats
 //   eng2Mode: 'rc' | 'grammar' | 'poetry' | 'pedagogy' | 'vocab' | 'mixed'
 // }
 
-
 const letters = ["a", "b", "c", "d"];
 
 // Simple reactions
 const correctReactions = ["✅", "🎯 Great!", "🔥 Superb!", "🌟 Excellent!"];
-const wrongReactions = ["❌", "⚠️ Revise this", "🧐 Check again", "📚 Needs revision"];
+const wrongReactions = [
+  "❌",
+  "⚠️ Revise this",
+  "🧐 Check again",
+  "📚 Needs revision",
+];
+const sessions = {}; // per-chat active test
+const lastResults = {}; // per-chat last finished test
+const mainResults = {}; // only non-retake (main) tests go here
+
+const userStats = {}; // per-user aggregated stats
+
+// 👇 Add this line
+const lastSummaryMsgId = {}; // { [chatId]: messageId of last summary }
 
 // ================== MULTILINGUAL UI TEXT ==================
 
@@ -165,10 +173,8 @@ const uiText = {
     myWeakAreasButton: "📌 My Weak Areas",
     moreOptionsButton: "📂 More Options",
 
-
     // Main menu labels
-    mainMenuIntro:
-      "What would you like to do now?",
+    mainMenuIntro: "What would you like to do now?",
     dailyPracticeButton: "🧪 Daily Practice Test",
     fullMockButton: "📄 Full Mock Test (coming later)",
     leaderboardButton: "🏆 Leaderboard",
@@ -200,7 +206,6 @@ const uiText = {
     changeLanguageTitle: "🌐 Change Language",
     changeLanguageSub: "Choose your preferred language for menus and messages.",
 
-
     // Result / summary headings
     testFinished: "✅ *Test finished!*",
     summaryHeading: "📊 *Summary*",
@@ -214,12 +219,10 @@ const uiText = {
     rightAnswersTitle: "✅ *Right Answers (with explanations)*",
     wrongAnswersTitle: "❌ *Wrong Answers (with explanations & tips)*",
     wrongPreviewTitle: "❌ *Wrong Answers (preview)*",
-    noTopicsYet:
-      "Not enough data to show topic-wise stats yet.",
+    noTopicsYet: "Not enough data to show topic-wise stats yet.",
     noWeakTopics:
       "Right now, no clear weak topics based on threshold. Keep maintaining this level!",
-    noWrongAnswers:
-      "✅ No wrong answers in this test.\nExcellent work!",
+    noWrongAnswers: "✅ No wrong answers in this test.\nExcellent work!",
     noRightAnswers:
       "You had no fully correct answers in this test.\nNext time it will be better.",
     wrongRetakeStart:
@@ -235,8 +238,7 @@ const uiText = {
   },
   kn: {
     langName: "ಕನ್ನಡ",
-    startGreeting:
-      "👋 *Namma KARTET English Mentor* ಗೆ ಸ್ವಾಗತ!",
+    startGreeting: "👋 *Namma KARTET English Mentor* ಗೆ ಸ್ವಾಗತ!",
     startSub:
       "ಮೊದಲು ನಿಮಗೆ menus & messages ಯಾವ ಭಾಷೆಯಲ್ಲಿ ಬೇಕೋ ಆಯ್ಕೆಮಾಡಿ.\nಪ್ರಶ್ನೆಗಳು ಮಾತ್ರ exam ಹಾಗೆ English ನಲ್ಲೇ ಇರುತ್ತವೆ.",
     chooseLanguage: "ನಿಮ್ಮ ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ:",
@@ -252,7 +254,6 @@ const uiText = {
     myProgressButton: "📊 ನನ್ನ ಪ್ರಗತಿ",
     myWeakAreasButton: "📌 ನನ್ನ ದುರ್ಬಲ ಭಾಗಗಳು",
     moreOptionsButton: "📂 ಇನ್ನಷ್ಟು ಆಯ್ಕೆಗಳು",
-
 
     mainMenuIntro: "ಈಗ ಏನು ಮಾಡ್ಬೇಕು?",
     dailyPracticeButton: "🧪 Daily Practice Test",
@@ -284,7 +285,6 @@ const uiText = {
     changeLanguageTitle: "🌐 Change Language",
     changeLanguageSub: "Choose your preferred language for menus and messages.",
 
-
     testFinished: "✅ *Test ಮುಗಿತು!*",
     summaryHeading: "📊 *Summary*",
     scoreLabel: "Score",
@@ -298,10 +298,8 @@ const uiText = {
     wrongAnswersTitle: "❌ *Wrong Answers*",
     wrongPreviewTitle: "❌ *Wrong Answers (preview)*",
     noTopicsYet: "Topic-wise stats ತೋರಿಸೋಕೆ data ಸಾಲಿಲ್ಲ.",
-    noWeakTopics:
-      "ಈಗಾಗಲೇ clear weak topics ಇಲ್ಲ. ಇದೇ level continue ಮಾಡಿ!",
-    noWrongAnswers:
-      "✅ ಈ testನಲ್ಲಿ ಯಾವ ತಪ್ಪುಗಳಿಲ್ಲ.\nಚೊಕ್ಕ ಕೆಲಸ!",
+    noWeakTopics: "ಈಗಾಗಲೇ clear weak topics ಇಲ್ಲ. ಇದೇ level continue ಮಾಡಿ!",
+    noWrongAnswers: "✅ ಈ testನಲ್ಲಿ ಯಾವ ತಪ್ಪುಗಳಿಲ್ಲ.\nಚೊಕ್ಕ ಕೆಲಸ!",
     noRightAnswers:
       "ಈ ಬಾರಿ ಸರಿಯಾದ ಉತ್ತರಗಳೇ ಬಂದಿಲ್ಲ. ಮುಂದಿನ ಬಾರಿ better ಆಗುತ್ತದೆ.",
     wrongRetakeStart:
@@ -316,8 +314,7 @@ const uiText = {
   },
   ur: {
     langName: "اردو",
-    startGreeting:
-      "👋 *Namma KARTET English Mentor* میں خوش آمديد!",
+    startGreeting: "👋 *Namma KARTET English Mentor* میں خوش آمديد!",
     startSub:
       "پہلے menus اور messages کے ليے زبان منتخب کريں۔\nسوالات امتحان کی طرح English ميں ہی رہيں گے۔",
     chooseLanguage: "اپنی زبان منتخب کريں:",
@@ -332,7 +329,6 @@ const uiText = {
     myProgressButton: "📊 میری پیش رفت",
     myWeakAreasButton: "📌 میری کمزوریاں",
     moreOptionsButton: "📂 مزید اختيارات",
-
 
     mainMenuIntro: "اب آپ کيا کرنا چاہيں گے؟",
     dailyPracticeButton: "🧪 Daily Practice Test",
@@ -364,7 +360,6 @@ const uiText = {
     changeLanguageTitle: "🌐 Change Language",
     changeLanguageSub: "Choose your preferred language for menus and messages.",
 
-
     testFinished: "✅ *Test مکمل ہوا!*",
     summaryHeading: "📊 *Summary*",
     scoreLabel: "Score",
@@ -378,14 +373,10 @@ const uiText = {
     wrongAnswersTitle: "❌ *Wrong Answers*",
     wrongPreviewTitle: "❌ *Wrong Answers (preview)*",
     noTopicsYet: "Topic-wise stats کے ليے data کم ہے۔",
-    noWeakTopics:
-      "ابھی کوئی واضح weak topics نہيں۔ اسی سطح کو برقرار رکھيں!",
-    noWrongAnswers:
-      "✅ اس test ميں کوئی غلط جواب نہيں۔ شاباش!",
-    noRightAnswers:
-      "اس بار مکمل صحيح جواب نہيں آئے۔ اگلی بار بہتر ہوگا۔",
-    wrongRetakeStart:
-      "آپ کے پچھلے غلط سوالات سے نيا test شروع ہو رہا ہے۔",
+    noWeakTopics: "ابھی کوئی واضح weak topics نہيں۔ اسی سطح کو برقرار رکھيں!",
+    noWrongAnswers: "✅ اس test ميں کوئی غلط جواب نہيں۔ شاباش!",
+    noRightAnswers: "اس بار مکمل صحيح جواب نہيں آئے۔ اگلی بار بہتر ہوگا۔",
+    wrongRetakeStart: "آپ کے پچھلے غلط سوالات سے نيا test شروع ہو رہا ہے۔",
     wrongRetakePerfect:
       "Super! پچھلے test ميں سب صحيح تھے، wrong-only retest کی ضرورت نہيں۔",
     freeLimitReached:
@@ -470,10 +461,9 @@ function getUiLang(userId) {
 
 function setUiLang(userId, lang) {
   if (!userPrefs[userId]) userPrefs[userId] = {};
-  userPrefs[userId].lang = lang;   // ✅ canonical
+  userPrefs[userId].lang = lang; // ✅ canonical
   userPrefs[userId].uiLang = lang; // ✅ backward-compatible
 }
-
 
 function t(userId, key) {
   const lang = getUiLang(userId);
@@ -494,6 +484,22 @@ function getMotivationLine(userId, score, total) {
 }
 
 // ================== HELPERS ==================
+
+function clearLastSummaryKeyboard(chatId) {
+  const msgId = lastSummaryMsgId[chatId];
+  if (!msgId) return;
+
+  bot
+    .editMessageReplyMarkup(
+      { inline_keyboard: [] },
+      { chat_id: chatId, message_id: msgId },
+    )
+    .catch(() => {
+      // ignore errors (message deleted / out of date etc.)
+    });
+
+  delete lastSummaryMsgId[chatId];
+}
 
 function makeProgressBar(correct, total, length = 10) {
   if (total === 0) return "[----------]";
@@ -553,7 +559,9 @@ function filterQuestionsByMode(allQuestions, mode) {
     const topic = (q.topicId || "").toLowerCase();
     if (lcMode === "rc") {
       const hasPassage =
-        q.passage && typeof q.passage === "string" && q.passage.trim().length > 0;
+        q.passage &&
+        typeof q.passage === "string" &&
+        q.passage.trim().length > 0;
       return (
         hasPassage ||
         cat.includes("reading") ||
@@ -565,13 +573,19 @@ function filterQuestionsByMode(allQuestions, mode) {
       return cat.includes("grammar") || topic.includes("grammar");
     }
     if (lcMode === "poetry") {
-      return cat.includes("poetry") || cat.includes("poem") || topic.includes("poem");
+      return (
+        cat.includes("poetry") || cat.includes("poem") || topic.includes("poem")
+      );
     }
     if (lcMode === "pedagogy") {
       return cat.includes("pedagogy") || topic.includes("pedagogy");
     }
     if (lcMode === "vocab") {
-      return cat.includes("vocab") || cat.includes("vocabulary") || topic.includes("vocab");
+      return (
+        cat.includes("vocab") ||
+        cat.includes("vocabulary") ||
+        topic.includes("vocab")
+      );
     }
     return true;
   });
@@ -641,20 +655,20 @@ function showMoreOptions(chatId, userId) {
     reply_markup: {
       inline_keyboard: [
         [
-          { text: t(userId, "dailyPracticeButton"), callback_data: "opt_daily_practice" },
+          {
+            text: t(userId, "dailyPracticeButton"),
+            callback_data: "opt_daily_practice",
+          },
         ],
+        [{ text: t(userId, "fullMockButton"), callback_data: "opt_full_mock" }],
         [
-          { text: t(userId, "fullMockButton"), callback_data: "opt_full_mock" },
+          {
+            text: t(userId, "leaderboardButton"),
+            callback_data: "opt_leaderboard",
+          },
         ],
-        [
-          { text: t(userId, "leaderboardButton"), callback_data: "opt_leaderboard" },
-        ],
-        [
-          { text: t(userId, "helpButton"), callback_data: "opt_help" },
-        ],
-        [
-          { text: t(userId, "settingsButton"), callback_data: "opt_settings" },
-        ],
+        [{ text: t(userId, "helpButton"), callback_data: "opt_help" }],
+        [{ text: t(userId, "settingsButton"), callback_data: "opt_settings" }],
       ],
     },
     parse_mode: "Markdown",
@@ -670,8 +684,6 @@ function buildLanguageInlineKeyboard() {
     ],
   };
 }
-
-
 
 // ================== TEST FLOW ==================
 
@@ -700,7 +712,7 @@ function startWrongRetake(chatId, user) {
     bot.sendMessage(
       chatId,
       "No recent test data found.\nPlease take a test first. 🙂",
-      buildMainMenu(user.id)
+      buildMainMenu(user.id),
     );
     return;
   }
@@ -712,7 +724,11 @@ function startWrongRetake(chatId, user) {
     .filter((q) => Boolean(q));
 
   if (!wrongPool.length) {
-    bot.sendMessage(chatId, t(user.id, "wrongRetakePerfect"), buildMainMenu(user.id));
+    bot.sendMessage(
+      chatId,
+      t(user.id, "wrongRetakePerfect"),
+      buildMainMenu(user.id),
+    );
     return;
   }
 
@@ -837,12 +853,11 @@ function startDailyPracticeTest(chatId, user) {
   bot.sendMessage(
     chatId,
     `🧪 Starting today’s *free* ${MINI_TEST_SIZE}-question practice test\nin *${pretty}*...`,
-    { parse_mode: "Markdown" }
+    { parse_mode: "Markdown" },
   );
 
   startTest(chatId, user, dailyPool, true);
 }
-
 
 function sendQuestion(chatId) {
   const session = sessions[chatId];
@@ -857,7 +872,11 @@ function sendQuestion(chatId) {
   const total = pool.length;
 
   let text = `Q${qIndex + 1}/${total}\n\n`;
-  if (q.passage && typeof q.passage === "string" && q.passage.trim().length > 0) {
+  if (
+    q.passage &&
+    typeof q.passage === "string" &&
+    q.passage.trim().length > 0
+  ) {
     text += `📜 *Passage / Poem:*\n${q.passage}\n\n`;
   }
   text += `❓ ${q.question}\n\n`;
@@ -972,7 +991,8 @@ function formatSummaryMessage(result, userId, isPrem) {
   } else if (accuracy >= 80) {
     msg += "\n✨ Very good! Just polish the few areas you slipped on.";
   } else if (accuracy >= 40) {
-    msg += "\n📚 Good attempt! Focus on the wrong answers and revise those topics.";
+    msg +=
+      "\n📚 Good attempt! Focus on the wrong answers and revise those topics.";
   } else if (accuracy > 0 && accuracy < 40) {
     msg += "\n🔁 Revision needed. Slow down a bit, revise basics, then retry.";
   } else if (accuracy === 0 && attempted > 0) {
@@ -1012,7 +1032,8 @@ function formatRightAnswersMessage(result, userId) {
     }
     text += "\n";
   });
-  text += "You can now check wrong answers, topic-wise performance, or retake wrong-only questions.";
+  text +=
+    "You can now check wrong answers, topic-wise performance, or retake wrong-only questions.";
   return text;
 }
 
@@ -1070,7 +1091,8 @@ function formatWrongAnswersPreviewMessage(result, userId) {
       const preview = getExplanationPreview(q.explanation);
       text += "ℹ️ *Explanation (preview):*\n";
       text += `• ${preview}\n`;
-      text += "Full explanation + teaching tips will be part of Mentor+ later.\n";
+      text +=
+        "Full explanation + teaching tips will be part of Mentor+ later.\n";
     } else {
       text += "ℹ️ *Explanation:* (not added yet)\n";
     }
@@ -1194,7 +1216,7 @@ function sendResult(chatId) {
 
     // ✅ Accuracy totals for My Progress
     const attemptedQ = session.answers.length; // how many Q in this test
-    const correctQ = score;                    // session.score = correct answers
+    const correctQ = score; // session.score = correct answers
 
     stats.totalQuestionsAttempted =
       (stats.totalQuestionsAttempted || 0) + attemptedQ;
@@ -1311,14 +1333,20 @@ function sendResult(chatId) {
       parse_mode: "Markdown",
       reply_markup: reviewKeyboard,
     })
-    .then(() => {
+    .then((sentMsg) => {
+      // 👇 remember this summary message
+      lastSummaryMsgId[chatId] = sentMsg.message_id;
+
       // ✅ Pick MAIN test if available, else fall back to lastResult
       const resultForDirection =
         mainResults[chatId] && mainResults[chatId].weakTopics
           ? mainResults[chatId]
           : lastResults[chatId];
 
-      const directionText = buildTomorrowDirectionText(resultForDirection, userId);
+      const directionText = buildTomorrowDirectionText(
+        resultForDirection,
+        userId,
+      );
       if (directionText) {
         bot.sendMessage(chatId, directionText, {
           parse_mode: "Markdown",
@@ -1342,14 +1370,13 @@ function sendResult(chatId) {
   delete sessions[chatId];
 }
 
-
 function sendLeaderboard(chatId, userId) {
   const list = Object.values(userStats);
   if (!list.length) {
     bot.sendMessage(
       chatId,
       "🏆 Leaderboard\n\nNo tests attempted yet.\nYou start first, nimage advantage. 😄\nTap *Daily Practice Test* to begin.",
-      { parse_mode: "Markdown", ...buildMainMenu(userId) }
+      { parse_mode: "Markdown", ...buildMainMenu(userId) },
     );
     return;
   }
@@ -1365,7 +1392,10 @@ function sendLeaderboard(chatId, userId) {
       questions.length
     }, Attempts: ${u.attempts}\n`;
   });
-  bot.sendMessage(chatId, text, { parse_mode: "Markdown", ...buildMainMenu(userId) });
+  bot.sendMessage(chatId, text, {
+    parse_mode: "Markdown",
+    ...buildMainMenu(userId),
+  });
 }
 function sendMyProgress(chatId, userId) {
   const stats = userStats[userId];
@@ -1446,12 +1476,8 @@ function sendMyProgress(chatId, userId) {
       `➤ ಒಂದೇ ಪರೀಕ್ಷೆಯಲ್ಲಿ ಹೆಚ್ಚು ಸರಿಯಾದ ಉತ್ತರಗಳು (Best score): *${best}*\n` +
       `➤ ನಿರಂತರ ದಿನಗಳ ಅಭ್ಯಾಸ (Streak): *${streak}* ದಿನ(ಗಳು)\n\n` +
       "🧠 *ವಿಷಯಾಧಾರಿತ ಚಿತ್ರ (ಇತ್ತೀಚಿನ ಮುಖ್ಯ ಪರೀಕ್ಷೆಯ ಆಧಾರ)*\n" +
-      `• ಬಲವಾದ ವಿಷಯ: ${
-        strongestLabel || noTopicDataKN
-      }\n` +
-      `• ದುರ್ಬಲ ವಿಷಯ: ${
-        weakestLabel || noTopicDataKN
-      }\n\n` +
+      `• ಬಲವಾದ ವಿಷಯ: ${strongestLabel || noTopicDataKN}\n` +
+      `• ದುರ್ಬಲ ವಿಷಯ: ${weakestLabel || noTopicDataKN}\n\n` +
       "ಸಣ್ಣ, ನಿರಂತರ ಪ್ರಯತ್ನಗಳು ದೊಡ್ಡ ಫಲಿತಾಂಶಗಳನ್ನು ತರುತ್ತವೆ.\n" +
       "ಇಂದೇ *🎯 ಇಂದಿನ ಅಭ್ಯಾಸ* ಮಾಡಿ ಮತ್ತು ಈ ಸಂಖ್ಯೆಗಳನ್ನ ಮೃದುವಾಗಿ ಮೇಲಕ್ಕೆ ಎಳೆಯಿರಿ.";
   } else if (lang === "ur") {
@@ -1462,12 +1488,8 @@ function sendMyProgress(chatId, userId) {
       `➤ ایک ٹیسٹ میں سب سے زیادہ درست جوابات (Best score): *${best}*\n` +
       `➤ مسلسل دنوں کی مشق (Streak): *${streak}* دن\n\n` +
       "🧠 *موضوع کی بنیاد پر تصویر (حالیہ مین ٹیسٹ کے مطابق)*\n" +
-      `• مضبوط ترین موضوع: ${
-        strongestLabel || noTopicDataUR
-      }\n` +
-      `• سب سے کمزور موضوع: ${
-        weakestLabel || noTopicDataUR
-      }\n\n` +
+      `• مضبوط ترین موضوع: ${strongestLabel || noTopicDataUR}\n` +
+      `• سب سے کمزور موضوع: ${weakestLabel || noTopicDataUR}\n\n` +
       "چھوٹی مگر مسلسل کوششیں ہی بڑے نتیجے بناتی ہیں۔\n" +
       "آج *🎯 آج کی مشق* سے ان اعداد و شمار کو آہستہ آہستہ اوپر لے جائیں۔";
   } else {
@@ -1478,12 +1500,8 @@ function sendMyProgress(chatId, userId) {
       `➤ Best score in a single test: *${best}* correct\n` +
       `➤ Current practice streak: *${streak}* day(s)\n\n` +
       "🧠 *Topic picture (based on your latest main test)*\n" +
-      `• Strongest topic: ${
-        strongestLabel || noTopicDataEN
-      }\n` +
-      `• Weakest topic: ${
-        weakestLabel || noTopicDataEN
-      }\n\n` +
+      `• Strongest topic: ${strongestLabel || noTopicDataEN}\n` +
+      `• Weakest topic: ${weakestLabel || noTopicDataEN}\n\n` +
       "Small, consistent sessions beat random heavy study.\n" +
       "Use *🎯 Today’s Practice* to keep this graph moving upward.";
   }
@@ -1584,9 +1602,6 @@ function sendMyWeakAreas(chatId, userId) {
   });
 }
 
-
-// ================== /start – LANGUAGE SELECTION ==================
-
 // ================== /start – ONBOARDING + HOME ==================
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
@@ -1614,13 +1629,13 @@ bot.onText(/\/start/, (msg) => {
   // 🟡 B. RETURNING USER → DIRECTLY SHOW HOME (THIS IS YOUR “6th” LINE)
   const text = `${t(userId, "welcomeMain")}\n\n${t(userId, "mainMenuIntro")}`;
 
+  clearLastSummaryKeyboard(chatId);
+
   bot.sendMessage(chatId, text, {
     parse_mode: "Markdown",
     ...buildMainMenu(userId), // 🎯 Today’s Practice / 📊 My Progress / 📌 My Weak Areas / 📂 More Options
   });
 });
-
-
 
 // ================== OTHER COMMANDS ==================
 
@@ -1683,7 +1698,6 @@ bot.onText(/\/leaderboard/, (msg) => {
   sendLeaderboard(chatId, userId);
 });
 
-
 // ================== CALLBACKS ==================
 
 bot.on("callback_query", async (callbackQuery) => {
@@ -1694,27 +1708,32 @@ bot.on("callback_query", async (callbackQuery) => {
     const userId = callbackQuery.from.id;
     const isPrem = isPremiumUser(userId);
     // ===== More Options callbacks =====
+    // ===== More Options callbacks =====
     if (data === "opt_daily_practice") {
       // Same as pressing 🎯 Today’s Practice
+      await bot.answerCallbackQuery(callbackQuery.id); // 👈 add this
       askEnglishMode(chatId, callbackQuery.from);
       return;
     }
 
     if (data === "opt_full_mock") {
+      await bot.answerCallbackQuery(callbackQuery.id); // 👈 add this
       await bot.sendMessage(
         chatId,
         "Full mock tests coming soon. Use Today’s Practice for now. 🙂",
-        { parse_mode: "Markdown", ...buildMainMenu(userId) }
+        { parse_mode: "Markdown", ...buildMainMenu(userId) },
       );
       return;
     }
 
     if (data === "opt_leaderboard") {
+      await bot.answerCallbackQuery(callbackQuery.id); // 👈 add this
       sendLeaderboard(chatId, userId);
       return;
     }
 
     if (data === "opt_help") {
+      await bot.answerCallbackQuery(callbackQuery.id); // 👈 add this
       const help =
         `${t(userId, "helpTitle")}\n\n` +
         "Commands:\n" +
@@ -1729,7 +1748,6 @@ bot.on("callback_query", async (callbackQuery) => {
       return;
     }
 
-
     // ===== LANGUAGE HANDLING =====
     if (data && data.startsWith("set_lang_")) {
       const lang = data.split("_")[2]; // en / kn / ur
@@ -1740,7 +1758,12 @@ bot.on("callback_query", async (callbackQuery) => {
           reply_markup: {
             inline_keyboard: [
               [{ text: pack.upgradeButton, callback_data: "go_premium" }],
-              [{ text: pack.continueEnglishButton, callback_data: "set_lang_en" }],
+              [
+                {
+                  text: pack.continueEnglishButton,
+                  callback_data: "set_lang_en",
+                },
+              ],
             ],
           },
           parse_mode: "Markdown",
@@ -1761,7 +1784,7 @@ bot.on("callback_query", async (callbackQuery) => {
     if (data === "go_premium") {
       await bot.sendMessage(
         chatId,
-        "In the future, this will redirect to the premium upgrade page / payment link."
+        "In the future, this will redirect to the premium upgrade page / payment link.",
       );
       return;
     }
@@ -1780,7 +1803,7 @@ bot.on("callback_query", async (callbackQuery) => {
       await bot.sendMessage(
         chatId,
         `Nice! We’ll practise *${pretty}* questions now.`,
-        { parse_mode: "Markdown" }
+        { parse_mode: "Markdown" },
       );
       startDailyPracticeTest(chatId, callbackQuery.from);
       return;
@@ -1884,7 +1907,6 @@ bot.on("callback_query", async (callbackQuery) => {
       return;
     }
 
-
     // ===== Answer selection =====
     if (/^\d+:\d+$/.test(data)) {
       const session = sessions[chatId];
@@ -1924,7 +1946,9 @@ bot.on("callback_query", async (callbackQuery) => {
 
       // react
       await bot.answerCallbackQuery(callbackQuery.id, {
-        text: correct ? pickRandom(correctReactions) : pickRandom(wrongReactions),
+        text: correct
+          ? pickRandom(correctReactions)
+          : pickRandom(wrongReactions),
         show_alert: false,
       });
 
@@ -1944,6 +1968,7 @@ bot.on("callback_query", async (callbackQuery) => {
       if (!result) return;
       const msgText = formatRightAnswersMessage(result, userId);
       await bot.sendMessage(chatId, msgText, { parse_mode: "Markdown" });
+      await bot.answerCallbackQuery(callbackQuery.id);
       return;
     }
 
@@ -1954,6 +1979,7 @@ bot.on("callback_query", async (callbackQuery) => {
         ? formatWrongAnswersMessage(result, userId)
         : formatWrongAnswersPreviewMessage(result, userId);
       await bot.sendMessage(chatId, msgText, { parse_mode: "Markdown" });
+      await bot.answerCallbackQuery(callbackQuery.id);
       return;
     }
 
@@ -1962,6 +1988,7 @@ bot.on("callback_query", async (callbackQuery) => {
       if (!result) return;
       const msgText = formatTopicStatsMessage(result, userId);
       await bot.sendMessage(chatId, msgText, { parse_mode: "Markdown" });
+      await bot.answerCallbackQuery(callbackQuery.id);
       return;
     }
 
@@ -1970,6 +1997,7 @@ bot.on("callback_query", async (callbackQuery) => {
       if (!result) return;
       const msgText = formatWeakTopicsMessage(result, userId);
       await bot.sendMessage(chatId, msgText, { parse_mode: "Markdown" });
+      await bot.answerCallbackQuery(callbackQuery.id);
       return;
     }
 
@@ -1981,17 +2009,17 @@ bot.on("callback_query", async (callbackQuery) => {
     if (data === "upgrade_mentor") {
       await bot.sendMessage(
         chatId,
-        "Later, Mentor+ will unlock full explanations, topic-wise breakdown and wrong-only retakes.\nRight now, focus on steady practice. 🙂"
+        "Later, Mentor+ will unlock full explanations, topic-wise breakdown and wrong-only retakes.\nRight now, focus on steady practice. 🙂",
       );
       return;
     }
 
     if (data === "done_results") {
-      await bot.sendMessage(
-        chatId,
-        t(userId, "mainMenuIntro"),
-        { parse_mode: "Markdown", ...buildMainMenu(userId) }
-      );
+      clearLastSummaryKeyboard(chatId);
+      await bot.sendMessage(chatId, t(userId, "mainMenuIntro"), {
+        parse_mode: "Markdown",
+        ...buildMainMenu(userId),
+      });
       return;
     }
   } catch (err) {
@@ -2010,16 +2038,17 @@ bot.on("message", (msg) => {
   if (text.startsWith("/")) return;
 
   if (text === t(userId, "todaysPracticeButton")) {
+    clearLastSummaryKeyboard(chatId);
     askEnglishMode(chatId, msg.from);
-
   } else if (text === t(userId, "myProgressButton")) {
+    clearLastSummaryKeyboard(chatId);
     sendMyProgress(chatId, userId);
-
   } else if (text === t(userId, "myWeakAreasButton")) {
+    clearLastSummaryKeyboard(chatId);
     sendMyWeakAreas(chatId, userId);
-
   } else if (text === t(userId, "moreOptionsButton")) {
+    clearLastSummaryKeyboard(chatId);
+
     showMoreOptions(chatId, userId);
   }
 });
-  

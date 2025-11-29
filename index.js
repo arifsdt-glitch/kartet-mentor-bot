@@ -896,9 +896,9 @@ function calculateTopicStats(result) {
 
     if (!topicStats[key]) {
       topicStats[key] = {
-        subjectId,
-        categoryId,
-        topicId,
+        subjectId: a.subjectId,
+        categoryId: a.categoryId,
+        topicId: a.topicId,
         attempted: 0,
         correct: 0,
       };
@@ -908,6 +908,7 @@ function calculateTopicStats(result) {
   });
   return topicStats;
 }
+
 function findStrongestTopic(topicStats, minAttempt = 2) {
   let best = null;
   Object.values(topicStats || {}).forEach((stat) => {
@@ -1153,6 +1154,7 @@ function buildReviewKeyboard(isPremium, hasWrong) {
 function sendResult(chatId) {
   const session = sessions[chatId];
   if (!session) return;
+
   const pool = session.questionsPool || questions;
   const total = pool.length;
   const score = session.score;
@@ -1162,7 +1164,7 @@ function sendResult(chatId) {
   const isPrem = isPremiumUser(userId);
   let streakNote = "";
 
-
+  // 🔁 Update userStats + streaks only for MAIN tests (not wrong-only retakes)
   if (!session.isWrongRetake) {
     if (!userStats[userId]) {
       userStats[userId] = {
@@ -1221,7 +1223,7 @@ function sendResult(chatId) {
     // ✅ update in-memory lastTestDate
     stats.lastTestDate = today;
 
-    // ✅ NOW persist UPDATED streak info to botdb.json
+    // ✅ persist UPDATED streak info to botdb.json
     if (!persistent.streaks) persistent.streaks = {};
     if (!persistent.streaks[userId]) {
       persistent.streaks[userId] = {};
@@ -1242,40 +1244,38 @@ function sendResult(chatId) {
       streakNote =
         "🏆 14-day streak — this is top 10% behaviour. You’re building exam stamina now.";
     }
+  }
 
-// FIX: ADDED MISSING CLOSING BRACE FOR if (!session.isWrongRetake) BLOCK
-  } // <--- MISSING CLOSING BRACE ADDED HERE
-
+  // 📊 Base result object (answers + questions used)
   const baseResult = {
     answers: session.answers,
     questionsPool: pool,
   };
-  // ✅ Save wrong questions for future revision (LAYER 2)
-  if (!session.isWrongRetake) {
-    const user = session.user;
-    const userId = user.id;
 
+  // 📚 Topic analytics (for both main & retake)
+  const topicStats = calculateTopicStats(baseResult);
+  const weakTopics = getWeakTopics(topicStats, 60, 2);
+
+  // ✅ Save wrong questions for future revision (only for MAIN tests)
+  if (!session.isWrongRetake) {
     const wrongIds = session.answers
       .filter((a) => !a.correct)
       .map((a) => {
         const q = pool[a.qIndex];
-        return q?.id;               // ✅ optional chaining
+        return q?.id; // optional chaining
       })
-      .filter((id) => id != null);   // ✅ remove null/undefined
+      .filter((id) => id != null); // remove null/undefined
 
     if (!wrongBank[userId]) wrongBank[userId] = new Set();
 
-    if (wrongIds.length > 0) {       // ✅ only save if there are wrong questions
+    if (wrongIds.length > 0) {
       wrongIds.forEach((id) => wrongBank[userId].add(id));
 
-      // ✅ Persist wrongBank for this user to botdb.json
+      // Persist wrongBank for this user to botdb.json
       persistent.wrongBank[userId] = Array.from(wrongBank[userId]);
       savePersistentDb();
     }
   }
-    const topicStats = calculateTopicStats(baseResult);
-    const weakTopics = getWeakTopics(topicStats, 60, 2);
-
 
   // ✅ Always store the *latest* test (main or retake) for summary etc.
   lastResults[chatId] = {
@@ -1293,12 +1293,11 @@ function sendResult(chatId) {
     };
   }
 
+  // 📝 Build summary text
   let summaryText = formatSummaryMessage(lastResults[chatId], userId, isPrem);
-
   if (streakNote) {
     summaryText += `\n\n${streakNote}`;
   }
-
 
   const hasWrong =
     lastResults[chatId] && Array.isArray(lastResults[chatId].answers)
@@ -1325,17 +1324,12 @@ function sendResult(chatId) {
           parse_mode: "Markdown",
           ...buildMainMenu(userId),
         });
-        } else {
-          bot.sendMessage(
-            chatId,
-            "Ready for tomorrow's practice! 💪",
-            {
-              parse_mode: "Markdown",
-              ...buildMainMenu(userId),
-            }
-          );
-        }
-
+      } else {
+        bot.sendMessage(chatId, "Ready for tomorrow's practice! 💪", {
+          parse_mode: "Markdown",
+          ...buildMainMenu(userId),
+        });
+      }
     })
     .catch((err) => {
       console.error("Error sending result summary:", err);
@@ -2028,3 +2022,4 @@ bot.on("message", (msg) => {
     showMoreOptions(chatId, userId);
   }
 });
+  

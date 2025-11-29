@@ -140,12 +140,7 @@ const wrongReactions = [
   "🧐 Check again",
   "📚 Needs revision",
 ];
-const lastResults = {}; // per-chat last finished test
-const mainResults = {}; // only non-retake (main) tests go here
 
-const userStats = {}; // per-user aggregated stats
-
-// 👇 Add this line
 const lastSummaryMsgId = {}; // { [chatId]: messageId of last summary }
 
 // ================== MULTILINGUAL UI TEXT ==================

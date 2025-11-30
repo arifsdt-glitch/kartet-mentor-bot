@@ -1,679 +1,228 @@
-// ═══════════════════════════════════════════════════════════════════════
-// NAMMA KARTET ENGLISH MENTOR - Your Personal Teaching Companion
-// "Not just a bot, but your patient teacher who never gives up on you"
-// ═══════════════════════════════════════════════════════════════════════
+// index.js
 
 const TelegramBot = require("node-telegram-bot-api");
-const fs = require("fs").promises;
-const fsSync = require("fs");
-const path = require("path");
 
-// ═══════════════════════════════════════════════════════════════════════
-// DATABASE & PERSISTENCE LAYER
-// ═══════════════════════════════════════════════════════════════════════
+// ================== CONFIG ==================
 
-const DB_DIR = "./data";
-const DB_FILE = path.join(DB_DIR, "botdb.json");
-const BACKUP_DIR = path.join(DB_DIR, "backups");
-
-let db = {
-  version: "2.0",
-  users: {},
-  wrongBank: {},
-  lastBackup: null,
-  dailyStats: {}, // Track daily engagement
+// --- SUBJECT CONFIGURATION ---
+const AVAILABLE_SUBJECTS = {
+  'eng2': { name: 'English Language II', icon: '🔤', free: true }, 
+  'cdp': { name: 'Child Development & Pedagogy (CDP)', icon: '👶', free: false }, 
+  'maths': { name: 'Mathematics', icon: '🔢', free: false }, 
+  'evs': { name: 'Environmental Studies (EVS)', icon: '🌳', free: false } 
 };
 
-let isDirty = false;
-let saveQueue = Promise.resolve();
-
-// Initialize database
-async function initDatabase() {
-  try {
-    await fs.mkdir(DB_DIR, { recursive: true });
-    await fs.mkdir(BACKUP_DIR, { recursive: true });
-
-    try {
-      const raw = await fs.readFile(DB_FILE, "utf8");
-      const parsed = JSON.parse(raw);
-
-      if (!parsed.version || parsed.version === "1.0") {
-        db = migrateFromV1(parsed);
-        await saveDatabase();
-        console.log("✅ Migrated database to v2.0");
-      } else {
-        db = parsed;
-      }
-    } catch (err) {
-      if (err.code === "ENOENT") {
-        console.log("ℹ️ Starting fresh database");
-        await saveDatabase();
-      } else {
-        throw err;
-      }
-    }
-
-    scheduleDailyBackup();
-    console.log("✅ Database ready");
-  } catch (err) {
-    console.error("❌ Database init failed:", err);
-    throw err;
-  }
-}
-
-function migrateFromV1(oldData) {
-  const newDb = {
-    version: "2.0",
-    users: {},
-    wrongBank: oldData.wrongBank || {},
-    lastBackup: null,
-    dailyStats: {},
-  };
-
-  Object.entries(oldData.streaks || {}).forEach(([userId, streak]) => {
-    if (!newDb.users[userId]) {
-      newDb.users[userId] = { streaks: streak };
-    }
-  });
-
-  return newDb;
-}
-
-async function saveDatabase() {
-  if (!isDirty) return;
-
-  saveQueue = saveQueue.then(async () => {
-    try {
-      const tempFile = DB_FILE + ".tmp";
-      await fs.writeFile(tempFile, JSON.stringify(db, null, 2));
-      await fs.rename(tempFile, DB_FILE);
-      isDirty = false;
-      console.log("💾 Saved");
-    } catch (err) {
-      console.error("❌ Save error:", err);
-    }
-  });
-
-  return saveQueue;
-}
-
-// Auto-save every 30 seconds
-setInterval(() => {
-  if (isDirty) saveDatabase().catch(console.error);
-}, 30000);
-
-async function createBackup() {
-  try {
-    const timestamp = new Date().toISOString().replace(/:/g, "-").split('.')[0];
-    const backupFile = path.join(BACKUP_DIR, `backup_${timestamp}.json`);
-
-    await fs.copyFile(DB_FILE, backupFile);
-
-    // Keep only last 7 backups
-    const files = await fs.readdir(BACKUP_DIR);
-    const backups = files.filter(f => f.startsWith("backup_"));
-
-    if (backups.length > 7) {
-      backups.sort();
-      for (const old of backups.slice(0, backups.length - 7)) {
-        await fs.unlink(path.join(BACKUP_DIR, old));
-      }
-    }
-
-    db.lastBackup = new Date().toISOString();
-    console.log(`✅ Backup: ${backupFile}`);
-  } catch (err) {
-    console.error("❌ Backup error:", err);
-  }
-}
-
-function scheduleDailyBackup() {
-  const now = new Date();
-  const tomorrow = new Date(now);
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  tomorrow.setHours(3, 0, 0, 0);
-
-  setTimeout(() => {
-    createBackup();
-    scheduleDailyBackup();
-  }, tomorrow - now);
-}
-
-function getUserData(userId) {
-  if (!db.users[userId]) {
-    db.users[userId] = {
-      streaks: {
-        currentStreak: 0,
-        lastTestDate: null,
-        bestStreak: 0,
-      },
-      prefs: {
-        lang: "en",
-        eng2Mode: "mixed",
-        reminderTime: null, // User's preferred practice time
-        showEncouragement: true,
-      },
-      stats: {
-        attempts: 0,
-        bestScore: 0,
-        lastScore: 0,
-        totalQuestionsAttempted: 0,
-        totalCorrect: 0,
-        lastFreeDate: null,
-        freeTestsToday: 0,
-      },
-      personality: {
-        // Adaptive personality traits learned over time
-        respondsToEncouragement: true,
-        needsDetailedExplanations: false,
-        prefersShortSessions: false,
-      },
-      badges: [],
-      createdAt: new Date().toISOString(),
-      lastActive: new Date().toISOString(),
-    };
-    isDirty = true;
-  }
-  return db.users[userId];
-}
-
-function updateUserData(userId, updates) {
-  const user = getUserData(userId);
-  Object.entries(updates).forEach(([key, value]) => {
-    if (typeof value === "object" && !Array.isArray(value) && user[key]) {
-      user[key] = { ...user[key], ...value };
-    } else {
-      user[key] = value;
-    }
-  });
-  user.lastActive = new Date().toISOString();
-  isDirty = true;
-}
-
-function getWrongBank(userId) {
-  if (!db.wrongBank[userId]) {
-    db.wrongBank[userId] = [];
-  }
-  return new Set(db.wrongBank[userId]);
-}
-
-function updateWrongBank(userId, questionIds) {
-  db.wrongBank[userId] = Array.from(new Set([
-    ...(db.wrongBank[userId] || []),
-    ...questionIds,
-  ]));
-  isDirty = true;
-}
-
-// ═══════════════════════════════════════════════════════════════════════
-// CONFIG & CONSTANTS
-// ═══════════════════════════════════════════════════════════════════════
-
+// Load English Language II questions (using mock data structure for demo)
+// In a real application, you'd load based on subjectId.
 const questions = require("./eng_questions.json");
 
+// Premium users (hard-coded for now - this will be replaced by DB subject map)
 const premiumUsers = new Set([
-  437248254,
-  // Add more premium user IDs
+  437248254, // EXAMPLE: YOUR TELEGRAM ID. Used for Admin Error Reporting!
+  // add more ids...
 ]);
 
-function isPremiumUser(userId) {
-  return premiumUsers.has(userId);
+// --- ADMIN ID FOR ERROR REPORTING ---
+// The first user ID in the set will be treated as the admin for receiving error reports.
+const ADMIN_ID = [...premiumUsers][0]; 
+
+
+// NOTE: Since we are still using in-memory storage, we will simulate the purchased modules
+// In a real app, userPrefs[userId].purchasedModules would be loaded from Firestore.
+function hasAccessToSubject(userId, subjectId, isFullTest = false) {
+  // 1. Check if the subject is marked as free (Mini Tests are free for all subjects)
+  if (AVAILABLE_SUBJECTS[subjectId].free && !isFullTest) {
+    return true;
+  }
+  
+  // 2. Check for the pilot group (the 10 teachers)
+  if (premiumUsers.has(userId)) {
+    return true; // Full access for pilot users
+  }
+  
+  // 3. Check for specific subject purchase (simulated in memory)
+  const purchasedModules = userPrefs[userId]?.purchasedModules || {};
+  return purchasedModules[subjectId] === true;
 }
 
-const FREE_DAILY_MINI_TESTS = 1;
-const MINI_TEST_SIZE = 5;
+// Free-plan limits
+const FREE_DAILY_MINI_TESTS = 1; // 1 test per day
+const MINI_TEST_SIZE = 5;        // 5 questions per free test
 
+// Sound config (Telegram file_id placeholders)
 const CORRECT_SOUND_FILE_ID = "";
-const WRONG_SOUND_FILE_ID = "";
+const WRONG_SOUND_FILE_ID   = "";
 
+// Telegram bot
 const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
 
-bot.on("polling_error", (err) => {
-  console.error("❌ Polling error:", err.message || err);
-});
-
-// ═══════════════════════════════════════════════════════════════════════
-// STATE MANAGEMENT
-// ═══════════════════════════════════════════════════════════════════════
-
-const UserState = {
-  IDLE: 'idle',
-  CHOOSING_LANGUAGE: 'choosing_language',
-  CHOOSING_MODE: 'choosing_mode',
-  IN_TEST: 'in_test',
-  VIEWING_RESULTS: 'viewing_results',
-};
-
-const sessions = {};
+// In-memory stores
+const sessions   = {};
 const lastResults = {};
-const mainResults = {};
-const userContext = {};
-const activeInlineMessages = {};
+const userStats  = {}; // New structure needed for Progress/Weak Areas/Profile - keeping empty for now
+const userPrefs  = {}; // will now store { uiLang: 'en', purchasedModules: { 'cdp': true } }
 
-function getUserState(userId) {
-  return userContext[userId]?.state || UserState.IDLE;
-}
+const letters = ['A', 'B', 'C', 'D'];
+const correctReactions = ['🎉', '🥳', '✅', '🌟', '👍'];
+const wrongReactions   = ['😔', '❌', '😟', '🤔', '🫣'];
 
-function setUserState(userId, state, data = {}) {
-  userContext[userId] = {
-    state,
-    timestamp: Date.now(),
-    ...data
-  };
-}
-
-function clearUserState(userId) {
-  delete userContext[userId];
-}
-
-async function clearAllInlineKeyboards(chatId) {
-  const msgIds = activeInlineMessages[chatId] || [];
-
-  await Promise.all(msgIds.map(msgId => 
-    bot.editMessageReplyMarkup(
-      { inline_keyboard: [] },
-      { chat_id: chatId, message_id: msgId }
-    ).catch(() => {})
-  ));
-
-  activeInlineMessages[chatId] = [];
-}
-
-function trackInlineMessage(chatId, msgId) {
-  if (!activeInlineMessages[chatId]) {
-    activeInlineMessages[chatId] = [];
-  }
-  activeInlineMessages[chatId].push(msgId);
-
-  if (activeInlineMessages[chatId].length > 10) {
-    activeInlineMessages[chatId].shift();
-  }
-}
-
-async function sendWithInlineKeyboard(chatId, text, options = {}) {
-  const sentMsg = await bot.sendMessage(chatId, text, options);
-  if (options.reply_markup?.inline_keyboard) {
-    trackInlineMessage(chatId, sentMsg.message_id);
-  }
-  return sentMsg;
-}
-
-function isCallbackValid(callbackQuery, expectedState = null) {
-  const userId = callbackQuery.from.id;
-  const messageDate = callbackQuery.message.date * 1000;
-  const now = Date.now();
-
-  if (now - messageDate > 5 * 60 * 1000) return false;
-
-  if (expectedState && getUserState(userId) !== expectedState) {
-    return false;
-  }
-
-  return true;
-}
-
-// ═══════════════════════════════════════════════════════════════════════
-// MULTILINGUAL UI - THE HEART OF PERSONAL CONNECTION
-// ═══════════════════════════════════════════════════════════════════════
+// ================== UI TEXT / LANGUAGE BANK (REDESIGN) ==================
 
 const uiText = {
   en: {
-    langName: "English",
+    startGreeting: "👋 Welcome to *Namma KARTET English Mentor*!",
+    startSub: "Let's set your app language first (only menus & messages). Questions will still be in English, just like the exam.",
+    chooseLanguage: "Choose your language:",
 
-    // Warm, personal greetings
-    startGreeting: "🙏 Welcome, my dear student!\n\nI'm not just a bot—I'm your *personal English mentor* for KARTET.",
-    startSub: "First, let's talk in a language you're most comfortable with.\n\n_Questions will be in English (just like the real exam), but I'll guide you in your language._",
-    chooseLanguage: "Which language feels like home to you?",
+    langEnglishButton: "🇬🇧 English (Free)",
+    langKannadaButton: "ಕನ್ನಡ Kannada (🔒 Mentor+)",
+    langUrduButton: "اردو Urdu (🔒 Mentor+)",
 
-    langEnglishButton: "🇬🇧 English",
-    langKannadaButton: "🇮🇳 ಕನ್ನಡ (Mentor+)",
-    langUrduButton: "🇮🇳 اردو (Mentor+)",
+    mainMenuIntro: "✅ Using *English* for menus and guidance.\nChoose an option to begin your KARTET practice!",
 
-    welcomeMain: "I'm here for you, every single day. 💙\n\nTogether, we'll master *English Language II* through small, consistent steps.\n\nNo rush. No pressure. Just steady progress.",
+    // --- HOME MENU BUTTONS ---
+    practiceButton: "🎯 Today’s Practice", // Renamed
+    progressButton: "📊 My Progress",     // New
+    weakAreasButton: "📌 Practice Weak Areas", // New
+    moreOptionsButton: "📂 More Options", // New
 
-    // Compassionate main menu
-    todaysPracticeButton: "🎯 Today's Practice",
-    myProgressButton: "📊 My Journey",
-    myWeakAreasButton: "🔍 Areas to Focus",
-    moreOptionsButton: "📂 More",
+    // --- MORE OPTIONS MENU BUTTONS ---
+    mockButton: "📚 Full Mock Test", // Moved
+    leaderboardButton: "🏆 Leaderboard", // Moved
+    profileButton: "👤 My Profile / Plan", // New
+    settingsButton: "⚙️ Settings (Language)", // Renamed
+    helpButton: "❓ Help & Support", // New
 
-    mainMenuIntro: "What would you like to do today?",
+    // --- SUBJECT MENU TEXT ---
+    subjectMenuIntro: "🎯 *Select the Subject* you wish to practice. Mini Tests (5 Qs) are free for all subjects.",
+    subjectModulePaid: "🔒 Module Access Required",
 
-    // Premium language pitch (warm, not pushy)
-    premiumLangPitch:
-      "🌟 *Learning in Your Mother Tongue*\n\n" +
-      "I see you prefer Kannada/Urdu. I respect that deeply.\n\n" +
-      "Mentor+ lets me explain everything in your language—like a real teacher sitting beside you.\n\n" +
-      "*What Mentor+ gives you:*\n" +
-      "• Unlimited practice (no daily limits)\n" +
-      "• Full explanations in Kannada/Urdu\n" +
-      "• Detailed topic analysis\n" +
-      "• One-on-one doubt clearing\n\n" +
-      "But here's the truth: Even in English, I'll help you succeed. Many teachers have cleared KARTET with me using the free plan.\n\n" +
-      "The choice is yours. I'm here either way. 💙",
+    // Quiz Menu
+    quizMenuIntro: "*{subjectName} Practice Modes:*",
+    modeGrammar: "🧩 Grammar & Vocabulary",
+    modeRC: "📖 Reading Comprehension (RC)",
+    modePedagogy: "🍎 Pedagogy",
+    modeMixed: "🔄 Mixed Bag",
+    modeMiniTest: "⚡ Mini Test (5 Qs) - FREE",
+    modeFullTest: "🔥 Full Test (15 Qs) - PAID",
 
-    upgradeButton: "⭐ Explore Mentor+",
-    continueEnglishButton: "➡️ Continue in English",
+    // Premium pitch text
+    premiumPitch: "🔒 *Access Required for {subjectName}*\n\nTo unlock the full {subjectName} module, including unlimited Full Tests, detailed modes (Grammar/RC), and advanced progress tracking, you need to purchase access.\n\n*Purchase Full Access for {subjectName} (₹50 once-off)*.",
+    upgradeButton: "🔓 Purchase Full Access for {subjectName}",
+    continueFreeButton: "🔙 Continue with Free Mini Test",
+    
+    // --- ERROR REPORTING TEXT ---
+    reportErrorButton: "🐞 Report Question Error",
+    errorReported: "Thank you! We received your report and will review the question immediately. 🙏",
+    
+    // Progress text
+    progressNoData: "You haven't completed any tests yet. Try a practice run first!",
+    progressTitle: "📊 *Your Performance Summary*",
+    progressLast: "Last Test Score: {score}/{total} ({percent}%)",
+    progressAvg: "Average Score: {avgScore}/{avgTotal} ({avgPercent}%)",
+    progressTotal: "Total Questions Attempted: {totalAttempted}",
+    progressImprovement: "Keep practicing! Consistency is key.",
 
-    // Results messages
-    testFinished: "✅ *You completed the test!*",
-    summaryHeading: "📊 *Let's see how you did*",
-    scoreLabel: "Score",
-    attemptedLabel: "Attempted",
-    skippedLabel: "Skipped",
-    wrongLabel: "Wrong",
-    accuracyLabel: "Accuracy",
-
-    topicPerfTitle: "📚 *Topic-wise Performance*",
-    weakTopicsTitle: "🎯 *Topics That Need Your Love*",
-    rightAnswersTitle: "✅ *Questions You Got Right*",
-    wrongAnswersTitle: "💡 *Learning from Mistakes*",
-    wrongPreviewTitle: "👀 *Quick Look at Mistakes*",
-
-    noTopicsYet: "Not enough data yet. Take a few more tests, and I'll map your strengths.",
-    noWeakTopics: "Honestly? You're doing great across all topics. Keep this level! 🌟",
-    noWrongAnswers: "✅ Perfect score!\n\nYou're exam-ready in this area. Beautiful work! 🎉",
-    noRightAnswers: "This was a tough one, I know.\n\nBut here's what I've learned about you: You show up. And that's what matters most.\n\nLet's review the concepts together.",
-
-    wrongRetakeStart: "Starting a focused session with your previous mistakes.\n\nThis is how champions are built—by facing what's hard. 💪",
-    wrongRetakePerfect: "You got everything right last time!\n\nNo wrong-only retake needed. You're on fire! 🔥",
-
-    freeLimitReached:
-      "⏰ *Today's free practice is complete*\n\n" +
-      `You've used your ${MINI_TEST_SIZE}-question practice for today.\n\n` +
-      "Here's what I want you to know:\n" +
-      "• Even 5 questions daily = 150 questions/month\n" +
-      "• Consistency beats intensity, always\n" +
-      "• Many teachers clear KARTET with just the free plan\n\n" +
-      "Come back tomorrow. I'll be here, same time, same dedication. 💙",
-
-    // Encouragement messages
-    comebackMessage: "You're back! I was hoping to see you today. 😊",
-    streakBreakMessage: "I noticed you missed yesterday.\n\nThat's completely okay. Life happens.\n\nWhat matters is that you're here now. Let's begin fresh. 🌅",
-    firstTestEver: "This is your very first test with me.\n\nRemember: Everyone starts somewhere.\n\nThere's no wrong score today—only a starting point. 💙",
+    // Placeholder text for new features
+    weakAreasPlaceholder: "This feature is currently under development. Soon, we will automatically detect and test you on your weakest topics!",
+    leaderboardPlaceholder: "The Leaderboard feature requires you to complete at least 3 tests before being activated. Keep practicing!",
+    profilePlaceholder: "👤 *Your Profile Status*\n\n*Plan:* Free User\n*Tests Completed:* 0\n*Joined:* {joinDate}\n\nUpgrade to Premium for advanced features!",
+    helpPlaceholder: "❓ *Help & Support*\n\nIf you need immediate assistance, please email us at support@kartetmentor.com or check our FAQ on our website.",
   },
 
   kn: {
-    langName: "ಕನ್ನಡ",
+    premiumLangPitch:"🔒 *Mentor+ (Premium) ವಿಶೇಷ ಸೌಲಭ್ಯ*\n\n" +"ನಿಮ್ಮಿಗೆ ಕನ್ನಡದಲ್ಲೇ:\n" +"✅ ಸ್ನೇಹಪೂರ್ವಕ ಮಾರ್ಗದರ್ಶನ\n" +"✅ ಸುಲಭವಾದ ಮೆನುಗಳು\n" +"✅ ಕಡಿಮೆ ಗೊಂದಲ, ಹೆಚ್ಚು ಆತ್ಮವಿಶ್ವಾಸ 💪\n\n" +"ಇವುಗಳನ್ನೆಲ್ಲ ಪಡೆಯಲು *Mentor+ ಗೆ ಅಪ್ಗ್ರೇಡ್ ಮಾಡಿ*.\n\n" +"💎 ತಿಂಗಳಿಗೆ ಕೇವಿಯ₹199!",
+    subjectMenuIntro: "🎯 ನೀವು practice ಮಾಡಲು ಬಯಸುವ ವಿಷಯವನ್ನು *ಆಯ್ಕೆಮಾಡಿ*.",
+    quizMenuIntro: "*{subjectName} Practice ವಿಧಾನಗಳು:*",
+    upgradeButton: "🔓 ಪೂರ್ಣ ಪ್ರವೇಶವನ್ನು ಖರೀದಿಸಿ",
+    continueEnglishButton: "🔙 English ನಲ್ಲಿ ಮುಂದುವರಿಯಿರಿ",
+    errorReported: "ಧನ್ಯವಾದಗಳು! ನಿಮ್ಮ ವರದಿಯನ್ನು ನಾವು ಸ್ವೀಕರಿಸಿದ್ದೇವೆ ಮತ್ತು ಪ್ರಶ್ನೆಯನ್ನು ತಕ್ಷಣ ಪರಿಶೀಲಿಸುತ್ತೇವೆ. 🙏",
+    
+    // HOME MENU BUTTONS (Kannada)
+    practiceButton: "🎯 ಇಂದಿನ ಅಭ್ಯಾಸ", 
+    progressButton: "📊 ನನ್ನ ಪ್ರಗತಿ", 
+    weakAreasButton: "📌 ದುರ್ಬಲ ವಿಭಾಗಗಳ ಅಭ್ಯಾಸ", 
+    moreOptionsButton: "📂 ಹೆಚ್ಚಿನ ಆಯ್ಕೆಗಳು", 
 
-    startGreeting: "🙏 ನಮಸ್ಕಾರ, ನನ್ನ ಪ್ರೀತಿಯ ವಿದ್ಯಾರ್ಥಿ!\n\nನಾನು ಕೇವಲ ಬಾಟ್ ಅಲ್ಲ—ನಾನು ನಿಮ್ಮ *ವೈಯಕ್ತಿಕ English mentor* KARTET ಗಾಗಿ.",
-    startSub: "ಮೊದಲು, ನಿಮಗೆ ಹೆಚ್ಚು ಆರಾಮದಾಯಕವಾದ ಭಾಷೆಯಲ್ಲಿ ಮಾತನಾಡೋಣ.\n\n_ಪ್ರಶ್ನೆಗಳು English ನಲ್ಲಿಯೇ ಇರುತ್ತವೆ (ನಿಜವಾದ ಪರೀಕ್ಷೆಯಂತೆ), ಆದರೆ ನಾನು ನಿಮ್ಮ ಭಾಷೆಯಲ್ಲಿ ಮಾರ್ಗದರ್ಶನ ನೀಡುತ್ತೇನೆ._",
-    chooseLanguage: "ನಿಮಗೆ ಮನೆಯಂತೆ ಅನಿಸುವ ಭಾಷೆ ಯಾವುದು?",
-
-    langEnglishButton: "🇬🇧 English",
-    langKannadaButton: "🇮🇳 ಕನ್ನಡ (Mentor+)",
-    langUrduButton: "🇮🇳 اردو (Mentor+)",
-
-    welcomeMain: "ನಾನು ಪ್ರತಿದಿನ ನಿಮ್ಮೊಂದಿಗಿದ್ದೇನೆ. 💙\n\nಸಣ್ಣ, ಸ್ಥಿರವಾದ ಹೆಜ್ಜೆಗಳ ಮೂಲಕ ನಾವು *English Language II* ನಲ್ಲಿ ಪರಿಣತರಾಗುತ್ತೇವೆ.\n\nಯಾವುದೇ ಆತುರವಿಲ್ಲ. ಯಾವುದೇ ಒತ್ತಡವಿಲ್ಲ. ಕೇವಲ ಸ್ಥಿರ ಪ್ರಗತಿ.",
-
-    todaysPracticeButton: "🎯 ಇಂದಿನ ಅಭ್ಯಾಸ",
-    myProgressButton: "📊 ನನ್ನ ಪ್ರಯಾಣ",
-    myWeakAreasButton: "🔍 ಗಮನ ಕೇಂದ್ರೀಕರಿಸಬೇಕಾದ ವಿಷಯಗಳು",
-    moreOptionsButton: "📂 ಇನ್ನಷ್ಟು",
-
-    mainMenuIntro: "ಇಂದು ನೀವು ಏನು ಮಾಡಲು ಬಯಸುತ್ತೀರಿ?",
-
-    premiumLangPitch:
-      "🌟 *ನಿಮ್ಮ ಮಾತೃಭಾಷೆಯಲ್ಲಿ ಕಲಿಕೆ*\n\n" +
-      "ನೀವು ಕನ್ನಡವನ್ನು ಆದ್ಯತೆ ನೀಡುತ್ತೀರಿ ಎಂದು ನಾನು ನೋಡುತ್ತೇನೆ. ನಾನು ಅದನ್ನು ಆಳವಾಗಿ ಗೌರವಿಸುತ್ತೇನೆ.\n\n" +
-      "Mentor+ ನನಗೆ ನಿಮ್ಮ ಭಾಷೆಯಲ್ಲಿ ಎಲ್ಲವನ್ನೂ ವಿವರಿಸಲು ಅನುವು ಮಾಡಿಕೊಡುತ್ತದೆ—ನಿಮ್ಮ ಪಕ್ಕದಲ್ಲಿ ಕುಳಿತಿರುವ ನಿಜವಾದ ಶಿಕ್ಷಕರಂತೆ.\n\n" +
-      "*Mentor+ ನಿಮಗೆ ನೀಡುವುದು:*\n" +
-      "• ಅನಿಯಮಿತ ಅಭ್ಯಾಸ (ದೈನಂದಿನ ಮಿತಿಗಳಿಲ್ಲ)\n" +
-      "• ಕನ್ನಡದಲ್ಲಿ ಸಂಪೂರ್ಣ ವಿವರಣೆಗಳು\n" +
-      "• ವಿವರವಾದ ವಿಷಯ ವಿಶ್ಲೇಷಣೆ\n" +
-      "• ಒಬ್ಬರಿಗೊಬ್ಬರು ಸಂದೇಹ ನಿವಾರಣೆ\n\n" +
-      "ಆದರೆ ಇಲ್ಲಿ ಸತ್ಯ: English ನಲ್ಲಿಯೂ ಸಹ, ನಾನು ನಿಮಗೆ ಯಶಸ್ವಿಯಾಗಲು ಸಹಾಯ ಮಾಡುತ್ತೇನೆ. ಅನೇಕ ಶಿಕ್ಷಕರು free plan ಬಳಸಿ ನನ್ನೊಂದಿಗೆ KARTET ಪಾಸ್ ಮಾಡಿದ್ದಾರೆ.\n\n" +
-      "ಆಯ್ಕೆ ನಿಮ್ಮದು. ಯಾವುದೇ ರೀತಿಯಲ್ಲಿ ನಾನು ಇಲ್ಲಿದ್ದೇನೆ. 💙",
-
-    upgradeButton: "⭐ Mentor+ ಅನ್ವೇಷಿಸಿ",
-    continueEnglishButton: "➡️ English ನಲ್ಲಿ ಮುಂದುವರಿಸಿ",
-
-    testFinished: "✅ *ನೀವು ಪರೀಕ್ಷೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಿದ್ದೀರಿ!*",
-    summaryHeading: "📊 *ನೀವು ಹೇಗೆ ಮಾಡಿದ್ದೀರಿ ಎಂದು ನೋಡೋಣ*",
-    scoreLabel: "ಅಂಕ",
-    attemptedLabel: "ಪ್ರಯತ್ನಿಸಿದ",
-    skippedLabel: "ಬಿಟ್ಟುಹೋದ",
-    wrongLabel: "ತಪ್ಪು",
-    accuracyLabel: "ನಿಖರತೆ",
-
-    topicPerfTitle: "📚 *ವಿಷಯಾನುಸಾರ ಕಾರ್ಯಕ್ಷಮತೆ*",
-    weakTopicsTitle: "🎯 *ನಿಮ್ಮ ಪ್ರೀತಿಯ ಅಗತ್ಯವಿರುವ ವಿಷಯಗಳು*",
-    rightAnswersTitle: "✅ *ನೀವು ಸರಿಯಾಗಿ ಪಡೆದ ಪ್ರಶ್ನೆಗಳು*",
-    wrongAnswersTitle: "💡 *ತಪ್ಪುಗಳಿಂದ ಕಲಿಕೆ*",
-    wrongPreviewTitle: "👀 *ತಪ್ಪುಗಳ ತ್ವರಿತ ನೋಟ*",
-
-    noTopicsYet: "ಇನ್ನೂ ಸಾಕಷ್ಟು ಡೇಟಾ ಇಲ್ಲ. ಇನ್ನೂ ಕೆಲವು ಪರೀಕ್ಷೆಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳಿ, ಮತ್ತು ನಾನು ನಿಮ್ಮ ಸಾಮರ್ಥ್ಯಗಳನ್ನು ನಕ್ಷೆ ಮಾಡುತ್ತೇನೆ.",
-    noWeakTopics: "ಪ್ರಾಮಾಣಿಕವಾಗಿ? ನೀವು ಎಲ್ಲಾ ವಿಷಯಗಳಲ್ಲೂ ಉತ್ತಮವಾಗಿ ಮಾಡುತ್ತಿದ್ದೀರಿ. ಈ ಮಟ್ಟವನ್ನು ಉಳಿಸಿಕೊಳ್ಳಿ! 🌟",
-    noWrongAnswers: "✅ ಪರಿಪೂರ್ಣ ಸ್ಕೋರ್!\n\nಈ ಪ್ರದೇಶದಲ್ಲಿ ನೀವು ಪರೀಕ್ಷೆಗೆ ಸಿದ್ಧರಾಗಿದ್ದೀರಿ. ಸುಂದರ ಕೆಲಸ! 🎉",
-    noRightAnswers: "ಇದು ಕಠಿಣವಾಗಿತ್ತು, ನನಗೆ ಗೊತ್ತು.\n\nಆದರೆ ನಾನು ನಿಮ್ಮ ಬಗ್ಗೆ ಕಲಿತದ್ದು: ನೀವು ಹಾಜರಾಗುತ್ತೀರಿ. ಮತ್ತು ಅದು ಅತ್ಯಂತ ಮುಖ್ಯವಾದುದು.\n\nಪರಿಕಲ್ಪನೆಗಳನ್ನು ಒಟ್ಟಿಗೆ ಪರಿಶೀಲಿಸೋಣ.",
-
-    wrongRetakeStart: "ನಿಮ್ಮ ಹಿಂದಿನ ತಪ್ಪುಗಳೊಂದಿಗೆ ಕೇಂದ್ರೀಕೃತ ಅಧಿವೇಶನವನ್ನು ಪ್ರಾರಂಭಿಸುತ್ತಿದೆ.\n\nಇದು ಚಾಂಪಿಯನ್‌ಗಳು ಹೇಗೆ ನಿರ್ಮಾಣವಾಗುತ್ತಾರೆ—ಕಷ್ಟಕರವಾದುದನ್ನು ಎದುರಿಸುವ ಮೂಲಕ. 💪",
-    wrongRetakePerfect: "ಕೊನೆಯ ಬಾರಿ ನೀವು ಎಲ್ಲವನ್ನೂ ಸರಿಯಾಗಿ ಪಡೆದಿದ್ದೀರಿ!\n\nತಪ್ಪು-ಮಾತ್ರ retake ಅಗತ್ಯವಿಲ್ಲ. ನೀವು ಬೆಂಕಿಯಲ್ಲಿದ್ದೀರಿ! 🔥",
-
-
-freeLimitReached:
-      "⏰ *ಇಂದಿನ ಉಚಿತ ಅಭ್ಯಾಸ ಪೂರ್ಣಗೊಂಡಿದೆ*\n\n" +
-      `ನೀವು ಇಂದಿನ ${MINI_TEST_SIZE}-ಪ್ರಶ್ನೆ ಅಭ್ಯಾಸವನ್ನು ಬಳಸಿದ್ದೀರಿ.\n\n` +
-      "ನಾನು ನಿಮಗೆ ತಿಳಿಸಲು ಬಯಸುವುದು:\n" +
-      "• ಪ್ರತಿದಿನ 5 ಪ್ರಶ್ನೆಗಳು = ತಿಂಗಳಿಗೆ 150 ಪ್ರಶ್ನೆಗಳು\n" +
-      "• ಸ್ಥಿರತೆ ತೀವ್ರತೆಯನ್ನು ಸೋಲಿಸುತ್ತದೆ, ಯಾವಾಗಲೂ\n" +
-      "• ಅನೇಕ ಶಿಕ್ಷಕರು ಕೇವಲ free plan ನೊಂದಿಗೆ KARTET ಪಾಸ್ ಮಾಡುತ್ತಾರೆ\n\n" +
-      "ನಾಳೆ ಹಿಂತಿರುಗಿ. ನಾನು ಇಲ್ಲಿರುತ್ತೇನೆ, ಅದೇ ಸಮಯ, ಅದೇ ಸಮರ್ಪಣೆ. 💙",
-
-    comebackMessage: "ನೀವು ಹಿಂತಿರುಗಿದ್ದೀರಿ! ನಾನು ಇಂದು ನಿಮ್ಮನ್ನು ನೋಡಲು ಆಶಿಸುತ್ತಿದ್ದೆ. 😊",
-    streakBreakMessage: "ನೀವು ನಿನ್ನೆ ತಪ್ಪಿಸಿಕೊಂಡಿದ್ದೀರಿ ಎಂದು ನಾನು ಗಮನಿಸಿದೆ.\n\nಅದು ಸಂಪೂರ್ಣವಾಗಿ ಸರಿ. ಜೀವನ ನಡೆಯುತ್ತದೆ.\n\nಮುಖ್ಯವಾದದ್ದು ನೀವು ಈಗ ಇಲ್ಲಿದ್ದೀರಿ. ತಾಜಾವಾಗಿ ಪ್ರಾರಂಭಿಸೋಣ. 🌅",
-    firstTestEver: "ಇದು ನನ್ನೊಂದಿಗೆ ನಿಮ್ಮ ಮೊದಲ ಪರೀಕ್ಷೆ.\n\nನೆನಪಿಡಿ: ಪ್ರತಿಯೊಬ್ಬರೂ ಎಲ್ಲೋ ಪ್ರಾರಂಭಿಸುತ್ತಾರೆ.\n\nಇಂದು ಯಾವುದೇ ತಪ್ಪು ಸ್ಕೋರ್ ಇಲ್ಲ—ಕೇವಲ ಆರಂಭಿಕ ಬಿಂದು. 💙",
+    // MORE OPTIONS MENU BUTTONS (Kannada)
+    mockButton: "📚 ಸಂಪೂರ್ಣ ಅಣಕು ಪರೀಕ್ಷೆ", 
+    leaderboardButton: "🏆 ಲೀಡರ್‌ಬೋರ್ಡ್", 
+    profileButton: "👤 ನನ್ನ ಪ್ರೊಫೈಲ್ / ಯೋಜನೆ", 
+    settingsButton: "⚙️ ಸೆಟ್ಟಿಂಗ್‌ಗಳು (ಭಾಷೆ)", 
+    helpButton: "❓ ಸಹಾಯ ಮತ್ತು ಬೆಂಬಲ", 
+    
+    // Placeholder text for new features
+    weakAreasPlaceholder: "ಈ ವೈಶಿಷ್ಟ್ಯವು ಪ್ರಸ್ತುತ ಅಭಿವೃದ್ಧಿಯಲ್ಲಿದೆ. ಶೀಘ್ರದಲ್ಲೇ, ನಿಮ್ಮ ದುರ್ಬಲ ವಿಷಯಗಳ ಮೇಲೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಪರೀಕ್ಷೆ ನೀಡಲಾಗುತ್ತದೆ!",
+    leaderboardPlaceholder: "ಲೀಡರ್‌ಬೋರ್ಡ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ನೀವು ಕನಿಷ್ಠ 3 ಪರೀಕ್ಷೆಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಬೇಕು. ಅಭ್ಯಾಸ ಮಾಡುತ್ತಿರಿ!",
+    profilePlaceholder: "👤 *ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಸ್ಥಿತಿ*\n\n*ಯೋಜನೆ:* ಉಚಿತ ಬಳಕೆದಾರ\n*ಪೂರ್ಣಗೊಂಡ ಪರೀಕ್ಷೆಗಳು:* 0\n*ಸೇರಿದ ದಿನಾಂಕ:* {joinDate}\n\nಸುಧಾರಿತ ವೈಶಿಷ್ಟ್ಯಗಳಿಗಾಗಿ ಪ್ರೀಮಿಯಂಗೆ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ!",
+    helpPlaceholder: "❓ *ಸಹಾಯ ಮತ್ತು ಬೆಂಬಲ*\n\nನಿಮಗೆ ತಕ್ಷಣದ ಸಹಾಯ ಬೇಕಿದ್ದರೆ, ದಯವಿಟ್ಟು support@kartetmentor.com ಗೆ ಇಮೇಲ್ ಮಾಡಿ ಅಥವಾ ನಮ್ಮ ವೆಬ್‌ಸೈಟ್‌ನಲ್ಲಿರುವ FAQ ಅನ್ನು ಪರಿಶೀಲಿಸಿ.",
   },
 
   ur: {
-    langName: "اردو",
+    premiumLangPitch:"🔒 *مینٹر+ (Premium) کی خصوصی سہولت*\n\n" +"اردو زبان میں:\n" +"✅ دوستانہ رہنمائی\n" +"✅ آسان مینو\n" +"✅ کم الجھن، زیادہ اعتماد 💪\n\n" +"ان سب کے لیے *Mentor+ میں اپگریڈ کریں*۔\n\n" +"💎 صرف ₹199 ماہانہ!",
+    subjectMenuIntro: "🎯 براہ کرم اس مضمون کا *انتخاب کریں* جس کی آپ مشق کرنا چاہتے ہیں۔",
+    quizMenuIntro: "*{subjectName} مشق کے طریقے:*",
+    upgradeButton: "🔓 مکمل رسائی خریدیں",
+    continueEnglishButton: "🔙 English میں جاری رکھیں",
+    errorReported: "شکریہ! ہمیں آپ کی رپورٹ موصول ہو گئی ہے اور ہم سوال کا فوری جائزہ لیں گے۔ 🙏",
+    
+    // HOME MENU BUTTONS (Urdu)
+    practiceButton: "🎯 آج کی مشق", 
+    progressButton: "📊 میری پیش رفت", 
+    weakAreasButton: "📌 کمزور حصوں کی مشق", 
+    moreOptionsButton: "📂 مزید اختیارات", 
 
-    startGreeting: "🙏 خوش آمدید، میرے پیارے طالب علم!\n\nمیں صرف ایک بوٹ نہیں—میں آپ کا *ذاتی English mentor* ہوں KARTET کے لیے.",
-    startSub: "پہلے، آئیں اس زبان میں بات کریں جو آپ کو سب سے زیادہ آرام دہ لگے.\n\n_سوالات English میں ہوں گے (اصل امتحان کی طرح), لیکن میں آپ کی زبان میں رہنمائی کروں گا._",
-    chooseLanguage: "کون سی زبان آپ کو گھر جیسی محسوس ہوتی ہے؟",
-
-    langEnglishButton: "🇬🇧 English",
-    langKannadaButton: "🇮🇳 ಕನ್ನಡ (Mentor+)",
-    langUrduButton: "🇮🇳 اردو (Mentor+)",
-
-    welcomeMain: "میں ہر روز آپ کے ساتھ ہوں. 💙\n\nچھوٹے، مستقل قدموں کے ذریعے ہم *English Language II* میں ماہر بن جائیں گے.\n\nکوئی جلدی نہیں. کوئی دباؤ نہیں. بس مستقل ترقی.",
-
-    todaysPracticeButton: "🎯 آج کی مشق",
-    myProgressButton: "📊 میرا سفر",
-    myWeakAreasButton: "🔍 توجہ کے شعبے",
-    moreOptionsButton: "📂 مزید",
-
-    mainMenuIntro: "آج آپ کیا کرنا چاہیں گے؟",
-
-    premiumLangPitch:
-      "🌟 *اپنی مادری زبان میں سیکھنا*\n\n" +
-      "میں دیکھتا ہوں کہ آپ اردو کو ترجیح دیتے ہیں. میں اس کی گہرائی سے عزت کرتا ہوں.\n\n" +
-      "Mentor+ مجھے آپ کی زبان میں سب کچھ سمجھانے دیتا ہے—آپ کے پاس بیٹھے ایک حقیقی استاد کی طرح.\n\n" +
-      "*Mentor+ آپ کو کیا دیتا ہے:*\n" +
-      "• لامحدود مشق (کوئی روزانہ کی حد نہیں)\n" +
-      "• اردو میں مکمل وضاحتیں\n" +
-      "• تفصیلی موضوع کا تجزیہ\n" +
-      "• ایک سے ایک شک و شبہ کا ازالہ\n\n" +
-      "لیکن یہاں سچ ہے: English میں بھی، میں آپ کو کامیاب ہونے میں مدد کروں گا. بہت سے اساتذہ نے free plan استعمال کرتے ہوئے میرے ساتھ KARTET پاس کیا ہے.\n\n" +
-      "انتخاب آپ کا ہے. میں کسی بھی طرح یہاں ہوں. 💙",
-
-    upgradeButton: "⭐ Mentor+ دریافت کریں",
-    continueEnglishButton: "➡️ English میں جاری رکھیں",
-
-    testFinished: "✅ *آپ نے ٹیسٹ مکمل کر لیا!*",
-    summaryHeading: "📊 *دیکھیں آپ نے کیسے کیا*",
-    scoreLabel: "سکور",
-    attemptedLabel: "کوشش کی",
-    skippedLabel: "چھوڑ دیا",
-    wrongLabel: "غلط",
-    accuracyLabel: "درستگی",
-
-    topicPerfTitle: "📚 *موضوع کے لحاظ سے کارکردگی*",
-    weakTopicsTitle: "🎯 *وہ موضوعات جنہیں آپ کی محبت کی ضرورت ہے*",
-    rightAnswersTitle: "✅ *سوالات جو آپ نے صحیح کیے*",
-    wrongAnswersTitle: "💡 *غلطیوں سے سیکھنا*",
-    wrongPreviewTitle: "👀 *غلطیوں کی فوری جھلک*",
-
-    noTopicsYet: "ابھی تک کافی ڈیٹا نہیں. کچھ مزید ٹیسٹ لیں، اور میں آپ کی طاقتوں کا نقشہ بناؤں گا.",
-    noWeakTopics: "ایمانداری سے؟ آپ تمام موضوعات میں بہترین کر رہے ہیں. یہ سطح برقرار رکھیں! 🌟",
-    noWrongAnswers: "✅ کامل سکور!\n\nآپ اس علاقے میں امتحان کے لیے تیار ہیں. خوبصورت کام! 🎉",
-    noRightAnswers: "یہ مشکل تھا، مجھے معلوم ہے.\n\nلیکن یہاں میں نے آپ کے بارے میں کیا سیکھا: آپ حاضر ہوتے ہیں. اور یہی سب سے اہم ہے.\n\nآئیں تصورات کا ایک ساتھ جائزہ لیں.",
-
-    wrongRetakeStart: "آپ کی پچھلی غلطیوں کے ساتھ ایک مرکوز سیشن شروع کر رہا ہوں.\n\nیہ ہے کہ چیمپئنز کیسے بنتے ہیں—مشکل کا سامنا کرکے. 💪",
-    wrongRetakePerfect: "آپ نے آخری بار سب کچھ صحیح کیا!\n\nغلط صرف دوبارہ کوشش کی ضرورت نہیں. آپ آگ میں ہیں! 🔥",
-
-    freeLimitReached:
-      "⏰ *آج کی مفت مشق مکمل ہو گئی*\n\n" +
-      `آپ نے آج کی ${MINI_TEST_SIZE}-سوالات مشق استعمال کر لی ہے.\n\n` +
-      "یہاں وہ ہے جو میں آپ کو جاننا چاہتا ہوں:\n" +
-      "• روزانہ 5 سوالات = مہینے میں 150 سوالات\n" +
-      "• مستقل مزاجی شدت کو ہرا دیتی ہے، ہمیشہ\n" +
-      "• بہت سے اساتذہ صرف free plan کے ساتھ KARTET پاس کرتے ہیں\n\n" +
-      "کل واپس آئیں. میں یہاں ہوں گا، وہی وقت، وہی لگن. 💙",
-
-    comebackMessage: "آپ واپس آ گئے! میں آج آپ کو دیکھنے کی امید کر رہا تھا. 😊",
-    streakBreakMessage: "میں نے محسوس کیا کہ آپ کل نہیں آئے.\n\nیہ بالکل ٹھیک ہے. زندگی چلتی ہے.\n\nاہم بات یہ ہے کہ آپ اب یہاں ہیں. آئیں تازہ شروع کریں. 🌅",
-    firstTestEver: "یہ میرے ساتھ آپ کا پہلا ٹیسٹ ہے.\n\nیاد رکھیں: ہر کوئی کہیں سے شروع کرتا ہے.\n\nآج کوئی غلط سکور نہیں—صرف ایک نقطہ آغاز. 💙",
-  },
+    // MORE OPTIONS MENU BUTTONS (Urdu)
+    mockButton: "📚 مکمل فرضی ٹیسٹ", 
+    leaderboardButton: "🏆 لیڈر بورڈ", 
+    profileButton: "👤 میرا پروفائل / منصوبہ", 
+    settingsButton: "⚙️ ترتیبات (زبان)", 
+    helpButton: "❓ مدد اور معاونت", 
+    
+    // Placeholder text for new features
+    weakAreasPlaceholder: "یہ فیچر فی الحال زیرِ ترقی ہے۔ جلد ہی، آپ کے کمزور ترین موضوعات پر خودکار طریقے سے جانچ کی جائے گی!",
+    leaderboardPlaceholder: "لیڈر بورڈ کی خصوصیت کو فعال کرنے کے لیے آپ کو کم از کم 3 ٹیسٹ مکمل کرنے ہوں گے۔ مشق جاری رکھیں!",
+    profilePlaceholder: "👤 *آپ کے پروفائل کی حیثیت*\n\n*منصوبہ:* مفت صارف\n*مکمل کیے گئے ٹیسٹ:* 0\n*شمولیت کی تاریخ:* {joinDate}\n\nاعلیٰ خصوصیات کے لیے پریمیئم میں اپ گریڈ کریں!",
+    helpPlaceholder: "❓ *مدد اور معاونت*\n\nاگر آپ کو فوری مدد کی ضرورت ہے، تو براہ کرم ہمیں support@kartetmentor.com پر ای میل کریں یا ہماری ویب سائٹ پر موجود FAQ چیک کریں۔",
+  }
 };
 
-// ═══════════════════════════════════════════════════════════════════════
-// ADAPTIVE MOTIVATION - THE PSYCHOLOGY ENGINE
-// ═══════════════════════════════════════════════════════════════════════
 
-const motivation = {
-  en: {
-    perfect: [
-      "You're absolutely exam-ready. This level of mastery? It's rare. 🎯",
-      "Outstanding! The hard work is showing. You should feel proud right now.",
-      "Perfect score! You know what this means? You're not just preparing—you're excelling.",
-    ],
-    good: [
-      "Solid work today. You're building exactly what you need: confidence + competence.",
-      "Good progress! A few more focused sessions and you'll be unstoppable.",
-      "You're on the right path. Every question you get right is teaching your brain the pattern.",
-    ],
-    medium: [
-      "This is where real learning happens—in the middle, where you're figuring things out.",
-      "50-60% is not failure. It's honest feedback. And honest feedback is gold for improvement.",
-      "You showed up. You tried. That's the foundation of every success story.",
-    ],
-    low: [
-      "Tough day, I know. But here's what matters: You finished. Many would have quit.",
-      "Low scores today don't define your potential. They show you exactly what to focus on tomorrow.",
-      "Every expert was once at this stage. The difference? They kept going. Just like you're doing now.",
-    ],
-    veryLow: [
-      "I see you're struggling, and I want you to know: that's okay. Learning is messy.",
-      "This is hard right now. But 'hard' doesn't mean 'impossible'. It means 'not yet'.",
-      "You took the test when it would've been easier to avoid it. That takes courage. Real courage.",
-    ],
-  },
-  kn: {
-    perfect: [
-      "ನೀವು ಸಂಪೂರ್ಣವಾಗಿ ಪರೀಕ್ಷೆಗೆ ಸಿದ್ಧರಾಗಿದ್ದೀರಿ. ಈ ಮಟ್ಟದ ಪಾಂಡಿತ್ಯ? ಇದು ಅಪರೂಪ. 🎯",
-      "ಅದ್ಭುತ! ಕಠಿಣ ಪರಿಶ್ರಮ ತೋರಿಸುತ್ತಿದೆ. ನೀವು ಈಗ ಹೆಮ್ಮೆಪಡಬೇಕು.",
-      "ಪರಿಪೂರ್ಣ ಸ್ಕೋರ್! ಇದರ ಅರ್ಥವೇನೆಂದರೆ? ನೀವು ಕೇವಲ ತಯಾರಿ ಮಾಡುತ್ತಿಲ್ಲ—ನೀವು ಉತ್ಕೃಷ್ಟರಾಗಿದ್ದೀರಿ.",
-    ],
-    good: [
-      "ಇಂದು ದೃಢವಾದ ಕೆಲಸ. ನಿಮಗೆ ಅಗತ್ಯವಿರುವುದನ್ನು ನೀವು ನಿರ್ಮಿಸುತ್ತಿದ್ದೀರಿ: ವಿಶ್ವಾಸ + ಸಾಮರ್ಥ್ಯ.",
-      "ಉತ್ತಮ ಪ್ರಗತಿ! ಇನ್ನೂ ಕೆಲವು ಕೇಂದ್ರೀಕೃತ ಅಧಿವೇಶನಗಳು ಮತ್ತು ನೀವು ತಡೆಯಲಾಗದವರಾಗಿರುತ್ತೀರಿ.",
-      "ನೀವು ಸರಿಯಾದ ಮಾರ್ಗದಲ್ಲಿದ್ದೀರಿ. ನೀವು ಸರಿಯಾಗಿ ಪಡೆಯುವ ಪ್ರತಿಯೊಂದು ಪ್ರಶ್ನೆ ನಿಮ್ಮ ಮೆದುಳಿಗೆ ಮಾದರಿಯನ್ನು ಕಲಿಸುತ್ತಿದೆ.",
-    ],
-    medium: [
-      "ಇಲ್ಲಿಯೇ ನಿಜವಾದ ಕಲಿಕೆ ನಡೆಯುತ್ತದೆ—ಮಧ್ಯದಲ್ಲಿ, ನೀವು ವಿಷಯಗಳನ್ನು ಲೆಕ್ಕಾಚಾರ ಮಾಡುತ್ತಿರುವಾಗ.",
-      "50-60% ವಿಫಲತೆ ಅಲ್ಲ. ಇದು ಪ್ರಾಮಾಣಿಕ ಪ್ರತಿಕ್ರಿಯೆ. ಮತ್ತು ಪ್ರಾಮಾಣಿಕ ಪ್ರತಿಕ್ರಿಯೆ ಸುಧಾರಣೆಗೆ ಚಿನ್ನ.",
-      "ನೀವು ಹಾಜರಾಗಿದ್ದೀರಿ. ನೀವು ಪ್ರಯತ್ನಿಸಿದ್ದೀರಿ. ಅದು ಪ್ರತಿ ಯಶಸ್ಸಿನ ಕಥೆಯ ಅಡಿಪಾಯ.",
-    ],
-    low: [
-      "ಕಠಿಣ ದಿನ, ನನಗೆ ಗೊತ್ತು. ಆದರೆ ಇಲ್ಲಿ ಮುಖ್ಯವಾದದ್ದು: ನೀವು ಮುಗಿಸಿದ್ದೀರಿ. ಅನೇಕರು ಬಿಟ್ಟುಕೊಡುತ್ತಿದ್ದರು.",
-      "ಇಂದು ಕಡಿಮೆ ಅಂಕಗಳು ನಿಮ್ಮ ಸಾಮರ್ಥ್ಯವನ್ನು ವ್ಯಾಖ್ಯಾನಿಸುವುದಿಲ್ಲ. ನಾಳೆ ಯಾವುದರ ಮೇಲೆ ಕೇಂದ್ರೀಕರಿಸಬೇಕೆಂದು ಅವು ನಿಮಗೆ ನಿಖರವಾಗಿ ತೋರಿಸುತ್ತವೆ.",
-      "ಪ್ರತಿ ತಜ್ಞರು ಒಮ್ಮೆ ಈ ಹಂತದಲ್ಲಿದ್ದರು. ವ್ಯತ್ಯಾಸ? ಅವರು ಮುಂದುವರೆದರು. ನೀವು ಈಗ ಮಾಡುತ್ತಿರುವಂತೆಯೇ.",
-    ],
-    veryLow: [
-      "ನೀವು ಹೆಣಗಾಡುತ್ತಿರುವುದನ್ನು ನಾನು ನೋಡುತ್ತೇನೆ, ಮತ್ತು ನಾನು ನಿಮಗೆ ತಿಳಿಸಲು ಬಯಸುತ್ತೇನೆ: ಅದು ಸರಿ. ಕಲಿಕೆ ಗೊಂದಲಮಯವಾಗಿದೆ.",
-      "ಇದು ಇದೀಗ ಕಷ್ಟ. ಆದರೆ 'ಕಷ್ಟ' ಎಂದರೆ 'ಅಸಾಧ್ಯ' ಅಲ್ಲ. ಇದರ ಅರ್ಥ 'ಇನ್ನೂ ಇಲ್ಲ'.",
-      "ಅದನ್ನು ತಪ್ಪಿಸುವುದು ಸುಲಭವಾಗಿದ್ದಾಗ ನೀವು ಪರೀಕ್ಷೆ ತೆಗೆದುಕೊಂಡಿದ್ದೀರಿ. ಅದಕ್ಕೆ ಧೈರ್ಯ ಬೇಕು. ನಿಜವಾದ ಧೈರ್ಯ.",
-    ],
-  },
-  ur: {
-    perfect: [
-      "آپ مکمل طور پر امتحان کے لیے تیار ہیں. مہارت کی یہ سطح؟ یہ نایاب ہے. 🎯",
-      "شاندار! محنت دکھائی دے رہی ہے. آپ کو ابھی فخر محسوس کرنا چاہیے.",
-      "کامل سکور! آپ جانتے ہیں اس کا کیا مطلب ہے؟ آپ صرف تیاری نہیں کر رہے—آپ بہترین ہیں.",
-    ],
-    good: [
-      "آج ٹھوس کام. آپ بالکل وہی بنا رہے ہیں جس کی آپ کو ضرورت ہے: اعتماد + قابلیت.",
-      "اچھی ترقی! کچھ مزید مرکوز سیشنز اور آپ ناقابل تسخیر ہو جائیں گے.",
-      "آپ صحیح راستے پر ہیں. ہر سوال جو آپ صحیح کرتے ہیں وہ آپ کے دماغ کو پیٹرن سکھا رہا ہے.",
-    ],
-    medium: [
-      "یہ وہ جگہ ہے جہاں اصل سیکھنا ہوتا ہے—درمیان میں، جہاں آپ چیزوں کو سمجھ رہے ہیں.",
-      "50-60% ناکامی نہیں ہے. یہ ایمانداری کی رائے ہے. اور ایمانداری کی رائے بہتری کے لیے سونا ہے.",
-      "آپ حاضر ہوئے. آپ نے کوشش کی. یہ ہر کامیابی کی کہانی کی بنیاد ہے.",
-    ],
-    low: [
-      "مشکل دن، مجھے معلوم ہے. لیکن یہاں جو اہم ہے: آپ نے ختم کیا. بہت سے چھوڑ دیتے.",
-      "آج کم سکور آپ کی صلاحیت کی تعریف نہیں کرتے. وہ آپ کو بالکل دکھاتے ہیں کہ کل کس پر توجہ مرکوز کرنی ہے.",
-      "ہر ماہر ایک بار اس مرحلے پر تھا. فرق؟ انہوں نے جاری رکھا. جیسے آپ ابھی کر رہے ہیں.",
-    ],
-    veryLow: [
-      "میں دیکھتا ہوں کہ آپ جدوجہد کر رہے ہیں، اور میں آپ کو جاننا چاہتا ہوں: یہ ٹھیک ہے. سیکھنا گندا ہے.",
-      "یہ ابھی مشکل ہے. لیکن 'مشکل' کا مطلب 'ناممکن' نہیں ہے. اس کا مطلب 'ابھی نہیں' ہے.",
-      "آپ نے ٹیسٹ لیا جب اسے نظرانداز کرنا آسان ہوتا. اس میں ہمت چاہیے. اصل ہمت.",
-    ],
-  },
-};
-
-const DEFAULT_LANG = "en";
+// ================== HELPER FUNCTIONS (PREFS) ==================
 
 function getUiLang(userId) {
-  const userData = getUserData(userId);
-  return userData.prefs?.lang || DEFAULT_LANG;
+  if (!userPrefs[userId]) userPrefs[userId] = { uiLang: 'en' };
+  return userPrefs[userId].uiLang || 'en';
 }
 
 function setUiLang(userId, lang) {
-  updateUserData(userId, { prefs: { lang } });
+  if (!userPrefs[userId]) userPrefs[userId] = {};
+  userPrefs[userId].uiLang = lang;
 }
 
-function t(userId, key) {
-  const lang = getUiLang(userId);
-  const pack = uiText[lang] || uiText.en;
-  return pack[key] || uiText.en[key] || `[${key}]`;
-}
-
-function pickRandom(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
-function getPersonalizedMotivation(userId, score, total) {
-  const lang = getUiLang(userId);
-  const pack = motivation[lang] || motivation.en;
-  const ratio = total > 0 ? score / total : 0;
-
-  let category;
-  if (ratio === 1) category = 'perfect';
-  else if (ratio >= 0.75) category = 'good';
-  else if (ratio >= 0.5) category = 'medium';
-  else if (ratio >= 0.25) category = 'low';
-  else category = 'veryLow';
-
-  return pickRandom(pack[category]);
+/**
+ * Gets the localized text for a key, falling back to English.
+ * @param {number} userId
+ * @param {string} key
+ * @returns {string} Localized text
+ */
+function getLocalizedText(userId, key) {
+    const lang = getUiLang(userId);
+    if (uiText[lang] && uiText[lang][key]) {
+        return uiText[lang][key];
+    }
+    return uiText.en[key] || `[Missing text for ${key}]`;
 }
 
 
-// ═══════════════════════════════════════════════════════════════════════
-// HELPER FUNCTIONS & LEARNING ENGINE
-// ═══════════════════════════════════════════════════════════════════════
+// ================== HELPER FUNCTIONS (QUIZ) ==================
 
-const letters = ["a", "b", "c", "d"];
-
-const correctReactions = ["✅", "🎯 Great!", "🔥 Superb!", "🌟 Excellent!"];
-const wrongReactions = ["❌", "⚠️ Let's review", "🧐 Check again", "📚 Study this"];
-
-// Difficulty ramp helper
-function shuffleArray(arr) {
-  const a = [...arr];
+/**
+ * Shuffles an array in place (Fisher-Yates)
+ * @param {Array} a items
+ * @returns {Array} Shuffled array
+ */
+function shuffle(a) {
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [a[i], a[j]] = [a[j], a[i]];
@@ -681,688 +230,751 @@ function shuffleArray(arr) {
   return a;
 }
 
-function applyDifficultyRamp(pool) {
-  return pool.sort((a, b) => (a.level || 1) - (b.level || 1));
-}
+/**
+ * Creates a unique pool of questions for the session.
+ */
+function createQuestionPool(size, subjectId, mode = 'mixed') {
+  // SIMULATION: Since we only have 'eng_questions', we will use it for all
+  let filteredQuestions = questions;
 
-// Build practice pool: 3 new + 2 old wrong
-function buildPracticePool(userId, allQuestions, size = MINI_TEST_SIZE) {
-  const wrongSet = getWrongBank(userId);
-  const history = Array.from(wrongSet);
-
-  const oldWrongs = shuffleArray(history)
-    .map((id) => allQuestions.find((q) => q.id === id))
-    .filter(Boolean)
-    .slice(0, 2);
-
-  const usedIds = new Set(oldWrongs.map((q) => q.id));
-  const freshPool = allQuestions.filter((q) => !usedIds.has(q.id));
-  const newOnes = shuffleArray(freshPool).slice(0, size - oldWrongs.length);
-
-  const finalPool = [...oldWrongs, ...newOnes];
-  return applyDifficultyRamp(finalPool);
-}
-
-// Mode filtering
-function getPrettyModeName(mode) {
-  switch ((mode || "mixed").toLowerCase()) {
-    case "rc": return "Reading Comprehension";
-    case "grammar": return "Grammar & Structure";
-    case "poetry": return "Poetry";
-    case "pedagogy": return "Pedagogy";
-    case "vocab": return "Vocabulary";
-    default: return "Mixed (All Types)";
-  }
-}
-
-function filterQuestionsByMode(allQuestions, mode) {
-  if (!mode || mode === "mixed") return allQuestions;
-  const lcMode = mode.toLowerCase();
-
-  return allQuestions.filter((q) => {
-    const cat = (q.categoryId || "").toLowerCase();
-    const topic = (q.topicId || "").toLowerCase();
-
-    if (lcMode === "rc") {
-      const hasPassage = q.passage && typeof q.passage === "string" && q.passage.trim().length > 0;
-      return hasPassage || cat.includes("reading") || cat.includes("comprehension") || topic.includes("rc");
-    }
-    if (lcMode === "grammar") return cat.includes("grammar") || topic.includes("grammar");
-    if (lcMode === "poetry") return cat.includes("poetry") || cat.includes("poem") || topic.includes("poem");
-    if (lcMode === "pedagogy") return cat.includes("pedagogy") || topic.includes("pedagogy");
-    if (lcMode === "vocab") return cat.includes("vocab") || cat.includes("vocabulary") || topic.includes("vocab");
-
-    return true;
-  });
-}
-
-// Display helpers
-function getDisplayName(user) {
-  if (!user) return "User";
-  if (user.username) return "@" + user.username;
-  const parts = [user.first_name, user.last_name].filter(Boolean);
-  if (parts.length) return parts.join(" ");
-  return `User_${user.id}`;
-}
-
-function makeProgressBar(correct, total, length = 10) {
-  if (total === 0) return "[----------]";
-  const ratio = correct / Math.max(total, 1);
-  const filled = Math.round(ratio * length);
-  let bar = "[";
-  for (let i = 0; i < length; i++) {
-    bar += i < filled ? "█" : "░";
-  }
-  bar += "]";
-  return bar;
-}
-
-// ═══════════════════════════════════════════════════════════════════════
-// KEYBOARD BUILDERS
-// ═══════════════════════════════════════════════════════════════════════
-
-function buildLanguageInlineKeyboard() {
-  return {
-    inline_keyboard: [
-      [{ text: uiText.en.langEnglishButton, callback_data: "set_lang_en" }],
-      [{ text: uiText.en.langKannadaButton, callback_data: "set_lang_kn" }],
-      [{ text: uiText.en.langUrduButton, callback_data: "set_lang_ur" }],
-    ],
-  };
-}
-
-function buildMainMenuInline(userId) {
-  return {
-    inline_keyboard: [
-      [
-        { text: t(userId, "todaysPracticeButton"), callback_data: "menu_practice" },
-        { text: t(userId, "myProgressButton"), callback_data: "menu_progress" }
-      ],
-      [
-        { text: t(userId, "myWeakAreasButton"), callback_data: "menu_weak" },
-        { text: t(userId, "moreOptionsButton"), callback_data: "menu_more" }
-      ],
-    ],
-  };
-}
-
-async function showMainMenu(chatId, userId) {
-  await clearAllInlineKeyboards(chatId);
-  const text = `${t(userId, "welcomeMain")}\n\n${t(userId, "mainMenuIntro")}`;
-
-  await sendWithInlineKeyboard(chatId, text, {
-    parse_mode: "Markdown",
-    reply_markup: buildMainMenuInline(userId),
-  });
-}
-
-// ═══════════════════════════════════════════════════════════════════════
-// TEST FLOW
-// ═══════════════════════════════════════════════════════════════════════
-
-function startTest(chatId, user, questionsPoolOverride, isFreeMini = false) {
-  const userId = user.id;
-  const pool = questionsPoolOverride || questions;
-
-  sessions[userId] = {
-    currentIndex: 0,
-    score: 0,
-    answers: [],
-    user: {
-      id: user.id,
-      username: user.username,
-      first_name: user.first_name,
-      last_name: user.last_name,
-    },
-    isWrongRetake: false,
-    isFreeMini,
-    questionsPool: pool,
-  };
-
-  setUserState(userId, UserState.IN_TEST);
-  sendQuestion(chatId, userId);
-}
-
-function sendQuestion(chatId, userId) {
-  const session = sessions[userId];
-  if (!session) return;
-
-  const pool = session.questionsPool || questions;
-  const qIndex = session.currentIndex;
-
-  if (qIndex >= pool.length) {
-    setUserState(userId, UserState.VIEWING_RESULTS);
-    sendResult(chatId, userId);
-    return;
+  if (mode !== 'mixed' && mode !== 'full' && mode !== 'mini') {
+    // Filter by specific sub-mode if available in the subject data
+    filteredQuestions = questions.filter(q => q.eng2Mode === mode);
   }
 
-  const q = pool[qIndex];
-  const total = pool.length;
+  // Ensure we don't try to pull more questions than available
+  const poolSize = Math.min(size, filteredQuestions.length);
 
-  let text = `Q${qIndex + 1}/${total}\n\n`;
-  if (q.passage && typeof q.passage === "string" && q.passage.trim().length > 0) {
-    text += `📜 *Passage / Poem:*\n${q.passage}\n\n`;
-  }
-  text += `❓ ${q.question}\n\n`;
-  (q.options || []).forEach((opt, i) => {
-    text += `${letters[i]}) ${opt}\n`;
-  });
-  text += `\nChoose one option:`;
+  const indices = Array.from({ length: filteredQuestions.length }, (_, i) => i);
+  shuffle(indices);
+  const selectedIndices = indices.slice(0, poolSize);
 
-  const inlineKeyboard = [
-    [
-      { text: "a", callback_data: `${qIndex}:0` },
-      { text: "b", callback_data: `${qIndex}:1` },
-      { text: "c", callback_data: `${qIndex}:2` },
-      { text: "d", callback_data: `${qIndex}:3` },
-    ],
-    [
-      { text: "⏭️ Skip", callback_data: `skip:${qIndex}` },
-      { text: "🏁 Finish test", callback_data: `finish_now:${qIndex}` },
-    ],
-  ];
-
-  sendWithInlineKeyboard(chatId, text, {
-    parse_mode: "Markdown",
-    reply_markup: { inline_keyboard: inlineKeyboard },
-  });
-}
-
-async function sendResult(chatId, userId) {
-  const session = sessions[userId];
-  if (!session) return;
-
-  const pool = session.questionsPool || questions;
-  const score = session.score;
-  const attempted = session.answers.length;
-  const correct = score;
-  const wrong = attempted - correct;
-  const skipped = pool.length - attempted;
-  const accuracy = attempted > 0 ? Math.round((correct / attempted) * 100) : 0;
-  const bar = makeProgressBar(correct, attempted, 10);
-
-  let summaryText = `${t(userId, "testFinished")}\n\n`;
-  summaryText += `${t(userId, "summaryHeading")}\n\n`;
-  summaryText += `🎯 ${t(userId, "scoreLabel")}: ${correct}/${attempted}\n`;
-  summaryText += `📝 ${t(userId, "attemptedLabel")}: ${attempted}/${pool.length}\n`;
-  summaryText += `⏭️ ${t(userId, "skippedLabel")}: ${skipped}\n`;
-  summaryText += `❌ ${t(userId, "wrongLabel")}: ${wrong}\n`;
-  summaryText += `📈 ${t(userId, "accuracyLabel")}: ${accuracy}%\n\n`;
-  summaryText += `Progress: ${bar}\n\n`;
-
-  // Personalized motivation
-  const motiv = getPersonalizedMotivation(userId, correct, pool.length);
-  summaryText += motiv;
-
-  // Update user data
-  if (!session.isWrongRetake) {
-    const testData = {
-      score: correct,
-      attempted,
-      correct,
+  // Map indices back to question objects, and assign a unique session qIndex
+  const pool = selectedIndices.map(index => {
+    const q = filteredQuestions[index];
+    return {
+        // qIndex is the index in the global 'questions' array. This is the key we need for error reporting.
+        qIndex: questions.findIndex(globalQ => globalQ.question === q.question),
+        ...q 
     };
+  });
 
-    const result = recordTestResult(userId, testData);
+  return pool;
+}
 
-    if (result.streak >= 3) {
-      if (result.streak === 3) summaryText += "\n\n💪 3-day streak — nice momentum!";
-      else if (result.streak === 7) summaryText += "\n\n✨ 7 days in a row — real discipline!";
-      else if (result.streak === 14) summaryText += "\n\n🏆 14-day streak — top 10% behavior!";
-    }
-
-    // Store wrong questions
-    const wrongIds = session.answers
-      .filter((a) => !a.correct)
-      .map((a) => pool[a.qIndex]?.id)
-      .filter((id) => id != null);
-
-    if (wrongIds.length > 0) {
-      updateWrongBank(userId, wrongIds);
-    }
+/**
+ * Sends the current question in the session to the chat.
+ * @param {number} chatId Telegram chat ID
+ */
+async function sendQuestion(chatId) {
+  const session = sessions[chatId];
+  if (!session || session.questionsPool.length === 0) {
+    return bot.sendMessage(chatId, "Error: Could not start the test. Please try /start or /practice again.");
   }
 
-  // Store results
-  const baseResult = {
-    answers: session.answers,
-    questionsPool: pool,
+  const qData = session.questionsPool[session.currentIndex];
+  // The unique identifier of the question in the global list for error reporting
+  const globalQIndex = qData.qIndex; 
+
+  const currentQNum = session.currentIndex + 1;
+  const totalQNum = session.questionsPool.length;
+
+  const text = [
+    `*Question ${currentQNum}/${totalQNum}*`,
+    "---",
+    `*${qData.question}*`,
+    "",
+    ...qData.options.map((opt, i) => `${letters[i]}) ${opt}`)
+  ].join("\n");
+
+  const optionButtons = qData.options.map((_, i) => ({
+    // ans_{subjectId}_{globalQIndex}_{chosenOptionIndex}
+    text: letters[i],
+    callback_data: `ans_${session.subjectId}_${globalQIndex}_${i}` 
+  }));
+  
+  // Add the Error Report Button
+  const errorReportButton = {
+      text: getLocalizedText(session.userId, 'reportErrorButton'),
+      // report_{subjectId}_{globalQIndex}
+      callback_data: `report_${session.subjectId}_${globalQIndex}`
   };
 
-  lastResults[userId] = baseResult;
-  if (!session.isWrongRetake) {
-    mainResults[userId] = baseResult;
+  const keyboard = {
+    reply_markup: {
+      inline_keyboard: [
+          optionButtons, // Row 1: A, B, C, D
+          [errorReportButton] // Row 2: Report Error
+      ]
+    },
+    parse_mode: 'Markdown'
+  };
+
+  if (session.messageId) {
+    try {
+      await bot.editMessageText(text, {
+        chat_id: chatId,
+        message_id: session.messageId,
+        ...keyboard,
+        parse_mode: 'Markdown'
+      });
+    } catch (error) {
+      if (!error.message.includes('message is not modified') && !error.message.includes('message to edit not found')) {
+        console.error("Error editing message:", error.message);
+      }
+      const sentMessage = await bot.sendMessage(chatId, text, keyboard);
+      session.messageId = sentMessage.message_id;
+    }
+  } else {
+    const sentMessage = await bot.sendMessage(chatId, text, keyboard);
+    session.messageId = sentMessage.message_id;
   }
+}
 
-  const hasWrong = session.answers.some((a) => !a.correct);
 
-  const reviewKeyboard = {
-    inline_keyboard: [
-      [
-        { text: "✅ Right answers", callback_data: "view_right" },
-        { text: "❌ Wrong answers", callback_data: "view_wrong" },
-      ],
-      [{ text: "🏠 Main Menu", callback_data: "done_results" }],
+// ================== MOTIVATION SYSTEM (MULTI-LANGUAGE) ==================
+
+const motivation = {
+  en: {
+    // ... (motivation content remains the same)
+    perfect: [
+      "Outstanding! You’re exam-ready 💯",
+      "Flawless performance! Keep this level 🔥",
+      "Perfect score! Top-class work 👏",
+      "Brilliant! You nailed every question 💎",
     ],
-  };
+    good: [
+      "Nice work! You’re improving 👍",
+      "Good attempt! Just a little more push 💪",
+      "You’re on the right track!",
+      "Strong effort! Keep revising.",
+    ],
+    low: [
+      "No worries — learning starts here 🌱",
+      "Every mistake today helps tomorrow.",
+      "Don’t be discouraged, keep going 💪",
+      "Progress takes time — you’re trying!",
+    ]
+  },
 
-  if (hasWrong && isPremiumUser(userId)) {
-    reviewKeyboard.inline_keyboard.splice(1, 0, [
-      { text: "🔄 Retake wrong-only", callback_data: "retake_wrong" }
-    ]);
+  kn: {
+    // ... (motivation content remains the same)
+    perfect: [
+      "ಅದ್ಭುತ! ನೀವು examಗೆ ರೆಡಿಯಾಗಿದ್ದೀರಾ 💯",
+      "ಚನ್ನಾಗಿ attempt ಮಾಡಿದ್ದೀರಾ, ಇಂತಹ ಮಟ್ಟ ನಿಂತರೆ 90+ ಖಾತ್ರಿ 🔥",
+      "ಪರ್ಫೆಕ್ಟ್ ಸ್ಕೋರ್! ಟಾಪ್ ಕ್ಲಾಸ್ ಕೆಲಸ 👏",
+      "ಎಲ್ಲಾ ಪ್ರಶ್ನೆಗಳನ್ನೂ ಸೂಪರ್‌ಗಾ ಮಾಡಿದೀರಾ 💎",
+    ],
+    good: [
+      "ಚೆನ್ನಾಗಿದೆ! ನಿಮ್ಮ progress ಸ್ಪಷ್ಟವಾಗಿದೆ 👍",
+      "ಒಳ್ಳೆಯ ಪ್ರಯತ್ನ! ಇನ್ನೂ ಸ್ವಲ್ಪ ರಿವಿಷನ್ ಮಾಡಿದ್ರೆ ಇನ್ನೂ better 💪",
+      "ಸರಿಯಾದ ದಾರಿಯಲ್ಲಿದ್ದೀರಾ, ಹೀಗೆ continue ಮಾಡಿ!",
+      "ಸಾಲಿಡ್ effort! ದಿನವೂ ಸ್ವಲ್ಪ practice ಮಾಡಿದ್ರೆ ಸಾಕು.",
+    ],
+    low: [
+      "ಟೆನ್ಷನ್ ಬೇಡ — ಇಲ್ಲಿ‌ನಿಂದಲೇ ನಿಜವಾದ learning ಶುರು ಆಗುತ್ತದೆ 🌱",
+      "ಇಂದಿನ ತಪ್ಪುಗಳು ನಾಳೆಯ examನಲ್ಲಿ کمک ಮಾಡುತ್ತವೆ.",
+      "ಹೊಸದು practice ಮಾಡ್ತೀರಾ, ತಪ್ಪು ಬರೋದ್ರಲ್ಲಿ ತಪ್ಪಿಲ್ಲ 💪",
+      "ಹಿಂದೇಟು ಅಂತಾನೇನಿಲ್ಲ, ಮುಂದಕ್ಕೆ ಹೋಗೋಕ್ಕೆ ಇವು ಸಹಾಯಕ.",
+    ]
+  },
+
+  ur: {
+    // ... (motivation content remains the same)
+    perfect: [
+      "کمال! آپ امتحان کے لیے تیار ہیں 💯",
+      "بہترین کارکردگی! اسی لیول پر رہے تو 90+ یقینی 🔥",
+      "پورا نمبر! زبردست محنت 👏",
+      "ہر سوال شاندار طریقے سے حل کیا 💎",
+    ],
+    good: [
+      "اچھی کوشش! آپ کی پیش رفت صاف نظر آرہی ہے 👍",
+      "بہت اچھا! تھوڑی سی اور مشق سے اور مضبوط ہو جائیں گے 💪",
+      "آپ صحیح راستے پر ہیں، بس جاری رکھیں!",
+      "مزبوط کوشش! روز تھوڑا سا دہرائیں، کافی ہے۔",
+    ],
+    low: [
+      "فکر مت کریں — اصل سیکھنا یہیں سے شروع ہوتا ہے 🌱",
+      "آج کی غلطیاں، کل کے امتحان میں مدد کریں گی۔",
+      "غلطیاں برا نہیں، کوشش نہ کرنا برا ہے 💪",
+      "پیچھے ہٹنا نہیں، آہستہ آہستہ ہی سہی، آگے بڑھ رہے ہیں۔",
+    ]
   }
+};
 
-  await sendWithInlineKeyboard(chatId, summaryText, {
-    parse_mode: "Markdown",
-    reply_markup: reviewKeyboard,
+function pickRandom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function getMotivation(score, total, uiLang) {
+  const ratio = score / total;
+  const lang = motivation[uiLang] ? uiLang : 'en';
+
+  if (ratio === 1) return pickRandom(motivation[lang].perfect);
+  if (ratio >= 0.5) return pickRandom(motivation[lang].good);
+  return pickRandom(motivation[lang].low);
+}
+
+
+/**
+ * Ends the test session and sends the results summary.
+ * @param {number} chatId Telegram chat ID
+ */
+async function sendResult(chatId) {
+  const session = sessions[chatId];
+  if (!session) return;
+  
+  const userId = session.userId || chatId; 
+
+  const total = session.questionsPool.length;
+  const score = session.score;
+  const percentage = (score / total) * 100;
+  const timeTaken = (Date.now() - session.startTime) / 1000; // seconds
+
+  // Update last result (for progress tracking)
+  lastResults[chatId] = { score, total, percentage, timeTaken, endTime: Date.now(), subjectId: session.subjectId };
+
+  // Generate summary text (Using English in summary for now, as UI Text is for menus)
+  const summaryText = [
+    "🎉 *Test Completed!*",
+    "---",
+    `✅ *Score:* ${score} out of ${total} in *${AVAILABLE_SUBJECTS[session.subjectId].name}*`,
+    `📈 *Accuracy:* ${percentage.toFixed(0)}%`,
+    `⏱️ *Time Taken:* ${timeTaken.toFixed(1)} seconds`,
+    "---",
+  ].join("\n");
+
+  // Get user's UI language and motivation line
+  const uiLang = getUiLang(userId); 
+  const motivationLine = getMotivation(score, total, uiLang);
+
+  // Send the final result message with motivation line in the correct language
+  await bot.sendMessage(chatId, summaryText + "\n\n" + motivationLine, {
+    parse_mode: 'Markdown'
   });
 
-  await showMainMenu(chatId, userId);
-
-  delete sessions[userId];
+  // Clean up session
+  delete sessions[chatId];
 }
 
-function startDailyPracticeTest(chatId, user) {
-  const userId = user.id;
-  const userData = getUserData(userId);
-  const mode = userData.prefs?.eng2Mode || "mixed";
 
-  const filteredPool = filterQuestionsByMode(questions, mode);
-  const effectivePool = filteredPool.length ? filteredPool : questions;
+// ================== TELEGRAM HANDLERS (MENUS) ==================
 
-  // Premium: full pool
-  if (isPremiumUser(userId)) {
-    const premiumPool = applyDifficultyRamp(shuffleArray(effectivePool));
-    startTest(chatId, user, premiumPool, false);
-    return;
-  }
-
-  // Free: check daily limit
-  const testsToday = checkDailyLimit(userId);
-
-  if (testsToday >= FREE_DAILY_MINI_TESTS) {
-    bot.sendMessage(chatId, t(userId, "freeLimitReached"), {
-      parse_mode: "Markdown",
-      reply_markup: buildMainMenuInline(userId),
-    });
-    return;
-  }
-
-  incrementDailyUse(userId);
-
-  const pretty = getPrettyModeName(mode);
-  const dailyPool = buildPracticePool(userId, effectivePool, MINI_TEST_SIZE);
-
-  bot.sendMessage(
-    chatId,
-    `🧪 Starting today's *free* ${MINI_TEST_SIZE}-question practice test\nin *${pretty}*...`,
-    { parse_mode: "Markdown" }
-  );
-
-  startTest(chatId, user, dailyPool, true);
-}
-
-function askEnglishMode(chatId, user) {
-  const userId = user.id;
-  setUserState(userId, UserState.CHOOSING_MODE);
-
-  const name = getDisplayName(user);
-  const text =
-    `Hi ${name}! 👋\n` +
-    "You chose *English Language — II*.\n" +
-    "Let's personalise your practice.\n\n" +
-    "What would you like to practise today?";
-
-  const inlineKeyboard = [
-    [{ text: "📖 Reading Comprehension", callback_data: "eng2_mode_rc" }],
-    [{ text: "✏️ Grammar & Structure", callback_data: "eng2_mode_grammar" }],
-    [{ text: "📝 Poetry", callback_data: "eng2_mode_poetry" }],
-    [{ text: "👩‍🏫 Pedagogy", callback_data: "eng2_mode_pedagogy" }],
-    [{ text: "🔤 Vocabulary", callback_data: "eng2_mode_vocab" }],
-    [{ text: "🔀 Mixed (All Types)", callback_data: "eng2_mode_mixed" }],
-  ];
-
-  sendWithInlineKeyboard(chatId, text, {
-    parse_mode: "Markdown",
-    reply_markup: { inline_keyboard: inlineKeyboard },
-  });
-}
-
-// ═══════════════════════════════════════════════════════════════════════
-// BOT COMMANDS
-// ═══════════════════════════════════════════════════════════════════════
-
+// Handle /start
 bot.onText(/\/start/, async (msg) => {
   const chatId = msg.chat.id;
   const userId = msg.from.id;
 
-  await clearAllInlineKeyboards(chatId);
+  if (!userPrefs[userId] || !userPrefs[userId].uiLang) {
+      setUiLang(userId, 'en');
+  }
 
-  const userData = getUserData(userId);
-  const hasLang = Boolean(userData.prefs?.lang);
+  const t = uiText.en; // Use English for the initial language selector menu
 
-  if (!hasLang) {
-    setUserState(userId, UserState.CHOOSING_LANGUAGE);
-    const pack = uiText.en;
-    const text = `${pack.startGreeting}\n\n${pack.startSub}\n\n*${pack.chooseLanguage}*`;
+  const text = [
+    t.startGreeting,
+    "",
+    t.startSub,
+    "",
+    `*${t.chooseLanguage}*`
+  ].join("\n");
 
-    await sendWithInlineKeyboard(chatId, text, {
-      reply_markup: buildLanguageInlineKeyboard(),
-      parse_mode: "Markdown",
+  const keyboard = {
+    reply_markup: {
+      inline_keyboard: [
+        [{ text: t.langEnglishButton, callback_data: 'set_lang_en' }],
+        [{ text: t.langKannadaButton, callback_data: 'set_lang_kn' }],
+        [{ text: t.langUrduButton, callback_data: 'set_lang_ur' }]
+      ]
+    },
+    parse_mode: 'Markdown'
+  };
+
+  bot.sendMessage(chatId, text, keyboard);
+});
+
+// Sends the main menu based on current user language preference (The new 3-button HOME)
+async function sendMainMenu(chatId, userId, messageId) {
+    const t = uiText.en;
+    const introText = getLocalizedText(userId, 'mainMenuIntro');
+    
+    // Get localized button texts
+    const practiceText = getLocalizedText(userId, 'practiceButton');
+    const progressText = getLocalizedText(userId, 'progressButton');
+    const weakAreasText = getLocalizedText(userId, 'weakAreasButton');
+    const moreOptionsText = getLocalizedText(userId, 'moreOptionsButton');
+
+    const keyboard = {
+        reply_markup: {
+            inline_keyboard: [
+                [{ text: practiceText, callback_data: 'menu_subject_select' }],
+                [{ text: progressText, callback_data: 'menu_progress' }],
+                [{ text: weakAreasText, callback_data: 'menu_weak_areas' }],
+                [{ text: moreOptionsText, callback_data: 'menu_more_options' }]
+            ]
+        },
+        parse_mode: 'Markdown'
+    };
+
+    if (messageId) {
+        try {
+            await bot.editMessageText(introText, {
+                chat_id: chatId,
+                message_id: messageId,
+                ...keyboard,
+                parse_mode: 'Markdown'
+            });
+        } catch (e) {
+            await bot.sendMessage(chatId, introText, keyboard);
+        }
+    } else {
+        await bot.sendMessage(chatId, introText, keyboard);
+    }
+}
+
+// Sends the secondary "More Options" menu
+async function sendMoreOptions(chatId, userId, messageId) {
+    const t = uiText.en;
+    const introText = getLocalizedText(userId, 'moreOptionsButton'); // Using the button text as the title
+
+    // Get localized button texts
+    const mockText = getLocalizedText(userId, 'mockButton');
+    const leaderboardText = getLocalizedText(userId, 'leaderboardButton');
+    const profileText = getLocalizedText(userId, 'profileButton');
+    const settingsText = getLocalizedText(userId, 'settingsButton');
+    const helpText = getLocalizedText(userId, 'helpButton');
+    
+    const keyboard = {
+        reply_markup: {
+            inline_keyboard: [
+                [{ text: mockText, callback_data: 'menu_full_mock' }],
+                [{ text: leaderboardText, callback_data: 'menu_leaderboard' }],
+                [{ text: profileText, callback_data: 'menu_profile' }],
+                [{ text: settingsText, callback_data: 'menu_change_lang' }],
+                [{ text: helpText, callback_data: 'menu_help' }],
+                [{ text: '🔙 Back to Home', callback_data: 'menu_main_home' }]
+            ]
+        },
+        parse_mode: 'Markdown'
+    };
+
+    if (messageId) {
+        try {
+            await bot.editMessageText(`*${introText}*`, {
+                chat_id: chatId,
+                message_id: messageId,
+                ...keyboard,
+                parse_mode: 'Markdown'
+            });
+        } catch (e) {
+            await bot.sendMessage(chatId, `*${introText}*`, keyboard);
+        }
+    } else {
+        await bot.sendMessage(chatId, `*${introText}*`, keyboard);
+    }
+}
+
+
+// === Sends the subject selection menu ===
+async function sendSubjectMenu(chatId, userId, messageId) {
+    const t = uiText.en; // Use English as the primary language for subject names
+    const introText = getLocalizedText(userId, 'subjectMenuIntro');
+    
+    const subjectButtons = Object.entries(AVAILABLE_SUBJECTS).map(([id, subject]) => {
+        // Check if full test is paid (or if access is needed)
+        const isPaid = !hasAccessToSubject(userId, id, true); 
+        const buttonText = `${subject.icon} ${subject.name} ${isPaid ? '🔒' : '✅'}`;
+        return [{ text: buttonText, callback_data: `select_subject_${id}` }];
+    });
+
+    const keyboard = {
+        reply_markup: { 
+            inline_keyboard: [
+                ...subjectButtons,
+                // Back button to Main Menu
+                [{ text: '🔙 Back to Home', callback_data: 'menu_main_home' }]
+            ] 
+        },
+        parse_mode: 'Markdown'
+    };
+
+    // Try to edit the previous message, if available, otherwise send new
+    if (messageId) {
+        try {
+            await bot.editMessageText(introText, {
+                chat_id: chatId,
+                message_id: messageId,
+                ...keyboard,
+                parse_mode: 'Markdown'
+            });
+        } catch (e) {
+            await bot.sendMessage(chatId, introText, keyboard);
+        }
+    } else {
+        await bot.sendMessage(chatId, introText, keyboard);
+    }
+}
+
+
+// === Sends the quiz mode selection menu for a SPECIFIC SUBJECT ===
+async function sendQuizMenu(chatId, userId, subjectId, messageId) {
+    const t = uiText.en;
+    const subject = AVAILABLE_SUBJECTS[subjectId];
+    if (!subject) return;
+
+    const subjectName = subject.name;
+    const introText = getLocalizedText(userId, 'quizMenuIntro').replace('{subjectName}', subjectName);
+    
+    // Check if the user has bought the full access for this specific subject
+    const isSubjectFullAccess = hasAccessToSubject(userId, subjectId, true);
+    
+    const modeButtons = [
+        // Detailed modes usually require full module access
+        [{ text: isSubjectFullAccess ? t.modeGrammar : `🔒 ${t.modeGrammar}`, callback_data: isSubjectFullAccess ? `start_quiz_${subjectId}_grammar` : `pitch_subject_${subjectId}` }],
+        [{ text: isSubjectFullAccess ? t.modeRC : `🔒 ${t.modeRC}`, callback_data: isSubjectFullAccess ? `start_quiz_${subjectId}_rc` : `pitch_subject_${subjectId}` }],
+        [{ text: isSubjectFullAccess ? t.modePedagogy : `🔒 ${t.modePedagogy}`, callback_data: isSubjectFullAccess ? `start_quiz_${subjectId}_pedagogy` : `pitch_subject_${subjectId}` }],
+        // Mixed bag is also usually tied to the full content library
+        [{ text: isSubjectFullAccess ? t.modeMixed : `🔒 ${t.modeMixed}`, callback_data: isSubjectFullAccess ? `start_quiz_${subjectId}_mixed` : `pitch_subject_${subjectId}` }],
+    ];
+    
+    // Mini Test (always free, but tied to the subject ID)
+    modeButtons.push(
+        [{ text: t.modeMiniTest, callback_data: `start_test_${subjectId}_mini` }]
+    );
+    
+    // Full Test is only available if access is purchased
+    modeButtons.push(
+        [{ text: isSubjectFullAccess ? t.modeFullTest : `🔒 ${t.modeFullTest}`, callback_data: isSubjectFullAccess ? `start_test_${subjectId}_full` : `pitch_subject_${subjectId}` }]
+    );
+
+    const keyboard = {
+        reply_markup: { 
+            inline_keyboard: [
+                ...modeButtons,
+                // Back button to Subject Select
+                [{ text: '🔙 Back to Subjects', callback_data: 'menu_subject_select' }] 
+            ]
+        },
+        parse_mode: 'Markdown'
+    };
+
+    if (messageId) {
+        try {
+            await bot.editMessageText(introText, {
+                chat_id: chatId,
+                message_id: messageId,
+                ...keyboard,
+                parse_mode: 'Markdown'
+            });
+        } catch (e) {
+            await bot.sendMessage(chatId, introText, keyboard);
+        }
+    } else {
+        await bot.sendMessage(chatId, introText, keyboard);
+    }
+}
+
+
+// ================== TELEGRAM HANDLERS (CALLBACKS) ==================
+
+// Handle callback queries (button clicks)
+bot.on('callback_query', async (cbq) => {
+  const data = cbq.data;
+  const chatId = cbq.message.chat.id;
+  const userId = cbq.from.id;
+  const username = cbq.from.username || 'N/A';
+  const msg = cbq.message;
+  
+  await bot.answerCallbackQuery(cbq.id);
+
+  // ================== ERROR REPORTING ==================
+  if (data.startsWith('report_')) {
+      const parts = data.split('_');
+      const subjectId = parts[1];
+      const qIndex = parseInt(parts[2], 10);
+      
+      const reportedQ = questions[qIndex];
+      
+      if (ADMIN_ID) {
+          const reportMessage = [
+              "🚨 *NEW QUESTION ERROR REPORTED*",
+              "---",
+              `*User:* ${userId} (@${username})`,
+              `*Subject:* ${AVAILABLE_SUBJECTS[subjectId].name}`,
+              `*Question Index (Global):* ${qIndex}`,
+              `*Reported Question:* ${reportedQ.question.substring(0, 100)}...`,
+              `*Full Text:* ${reportedQ.question}`,
+              "---",
+              "Review this question and correct the content file."
+          ].join("\n");
+          
+          await bot.sendMessage(ADMIN_ID, reportMessage, { parse_mode: 'Markdown' });
+      }
+
+      const reportSuccessMessage = getLocalizedText(userId, 'errorReported');
+      // A small notification that disappears
+      await bot.answerCallbackQuery(cbq.id, { text: reportSuccessMessage, show_alert: false }); 
+      return;
+  }
+  
+  // ================== LANGUAGE HANDLING ==================
+  
+  if (data.startsWith('set_lang_')) {
+    const lang = data.split('_')[2];
+    
+    if ((lang === 'kn' || lang === 'ur') && !premiumUsers.has(userId)) {
+      const t = uiText[lang];
+      await bot.sendMessage(chatId, t.premiumLangPitch, {
+        reply_markup: {
+          inline_keyboard: [
+            [{ text: t.upgradeButton.replace('{subjectName}', 'All Subjects'), callback_data: 'go_premium' }],
+            [{ text: t.continueEnglishButton, callback_data: 'set_lang_en' }]
+          ]
+        },
+        parse_mode: 'Markdown'
+      });
+      return;
+    }
+    
+    setUiLang(userId, lang);
+    try { await bot.deleteMessage(chatId, msg.message_id); } catch (e) {}
+    await sendMainMenu(chatId, userId);
+    return;
+  }
+  
+  // ================== MAIN MENU NAVIGATION (New Structure) ==================
+  
+  if (data === 'menu_main_home') {
+      await sendMainMenu(chatId, userId, msg.message_id);
+      return;
+  }
+
+  if (data === 'menu_more_options') {
+      await sendMoreOptions(chatId, userId, msg.message_id);
+      return;
+  }
+  
+  if (data === 'menu_subject_select') {
+      await sendSubjectMenu(chatId, userId, msg.message_id);
+      return;
+  } 
+  
+  if (data.startsWith('select_subject_')) {
+      const subjectId = data.split('_')[2];
+      if (AVAILABLE_SUBJECTS[subjectId]) {
+          await sendQuizMenu(chatId, userId, subjectId, msg.message_id);
+          return;
+      }
+  }
+  
+  // ================== FEATURE PLACEHOLDERS ==================
+
+  if (data === 'menu_progress') {
+      // Basic progress tracking for demo
+      const lastResult = lastResults[chatId];
+      const t = getLocalizedText(userId, 'progressTitle');
+
+      if (!lastResult) {
+          bot.sendMessage(chatId, t + "\n" + getLocalizedText(userId, 'progressNoData'), { parse_mode: 'Markdown' });
+          return;
+      }
+      
+      const summary = getLocalizedText(userId, 'progressLast')
+          .replace('{score}', lastResult.score)
+          .replace('{total}', lastResult.total)
+          .replace('{percent}', lastResult.percentage.toFixed(0));
+
+      bot.sendMessage(chatId, t + "\n\n" + summary + "\n\n" + getLocalizedText(userId, 'progressImprovement'), { parse_mode: 'Markdown' });
+      return;
+  }
+
+  if (data === 'menu_weak_areas') {
+      const placeholderText = getLocalizedText(userId, 'weakAreasPlaceholder');
+      bot.sendMessage(chatId, placeholderText, { parse_mode: 'Markdown' });
+      return;
+  }
+  
+  if (data === 'menu_leaderboard') {
+      const placeholderText = getLocalizedText(userId, 'leaderboardPlaceholder');
+      bot.sendMessage(chatId, placeholderText, { parse_mode: 'Markdown' });
+      return;
+  }
+
+  if (data === 'menu_profile') {
+      const joinDate = '28 Nov 2025'; // Mocked
+      const placeholderText = getLocalizedText(userId, 'profilePlaceholder').replace('{joinDate}', joinDate);
+      bot.sendMessage(chatId, placeholderText, { parse_mode: 'Markdown' });
+      return;
+  }
+
+  if (data === 'menu_help') {
+      const placeholderText = getLocalizedText(userId, 'helpPlaceholder');
+      bot.sendMessage(chatId, placeholderText, { parse_mode: 'Markdown' });
+      return;
+  }
+
+  if (data === 'menu_full_mock') {
+      bot.sendMessage(chatId, "Mock Test is coming soon. We are planning a full-length, timed, weekly test!");
+      return;
+  }
+  
+  if (data === 'menu_change_lang') {
+      // Re-send the initial language selector menu from the More Options section
+      await bot.editMessageText(uiText.en.chooseLanguage, {
+        chat_id: chatId,
+        message_id: msg.message_id,
+        reply_markup: {
+          inline_keyboard: [
+            [{ text: uiText.en.langEnglishButton, callback_data: 'set_lang_en' }],
+            [{ text: uiText.en.langKannadaButton, callback_data: 'set_lang_kn' }],
+            [{ text: uiText.en.langUrduButton, callback_data: 'set_lang_ur' }],
+            [{ text: '🔙 Back to More Options', callback_data: 'menu_more_options' }]
+          ]
+        },
+        parse_mode: 'Markdown'
+      });
+      return;
+  }
+
+
+  // ================== PREMIUM PITCH LOGIC (SUBJECT SPECIFIC) ==================
+  
+  if (data.startsWith('pitch_subject_')) {
+    const subjectId = data.split('_')[2];
+    const subjectName = AVAILABLE_SUBJECTS[subjectId]?.name || 'this subject';
+
+    const pitchText = getLocalizedText(userId, 'premiumPitch').replace(/{subjectName}/g, subjectName);
+    const upgradeButtonText = getLocalizedText(userId, 'upgradeButton').replace('{subjectName}', subjectName);
+    const continueFreeButtonText = getLocalizedText(userId, 'continueFreeButton');
+    
+    await bot.editMessageText(pitchText, {
+        chat_id: chatId,
+        message_id: msg.message_id,
+        reply_markup: {
+            inline_keyboard: [
+                [{ text: upgradeButtonText, callback_data: `start_payment_${subjectId}` }], // Trigger payment flow
+                [{ text: continueFreeButtonText, callback_data: `start_test_${subjectId}_mini` }] // Back to free mini test
+            ]
+        },
+        parse_mode: 'Markdown'
     });
     return;
   }
+  
+  // ================== QUIZ START ==================
+  
+  if (data.startsWith('start_test_') || data.startsWith('start_quiz_')) {
+    const parts = data.split('_');
+    const subjectId = parts[2];
+    const mode = parts[3]; // 'mini', 'full', 'grammar', 'rc', 'pedagogy', 'mixed'
 
-  await showMainMenu(chatId, userId);
-});
+    let testSize;
+    let isFullTest = false;
+    
+    if (mode === 'mini') {
+        testSize = MINI_TEST_SIZE;
+        // Check for daily limit in a real app (requires DB tracking of daily free tests)
+        // Currently skipping limit check for demo
+    } else if (mode === 'full') {
+        testSize = 15; // Mock full test size
+        isFullTest = true;
+    } else {
+        // Detailed modes (grammar, rc, pedagogy, mixed) - full size
+        testSize = 15;
+        isFullTest = true;
+    }
 
-bot.onText(/\/help/, (msg) => {
-  const chatId = msg.chat.id;
-  const userId = msg.from.id;
+    // Double check access if it's a paid mode
+    if (isFullTest && !hasAccessToSubject(userId, subjectId, true)) {
+        await bot.answerCallbackQuery(cbq.id, { 
+            text: `Access Denied. Please purchase the ${AVAILABLE_SUBJECTS[subjectId].name} module.`, 
+            show_alert: true 
+        });
+        // Reroute back to pitch page
+        await sendQuizMenu(chatId, userId, subjectId, msg.message_id);
+        return;
+    }
 
-  const text =
-    `*Help — Namma KARTET English Mentor*\n\n` +
-    "Commands:\n" +
-    "/start — Show main menu\n" +
-    "/help — Show this help\n" +
-    "/status — Check your account status\n\n" +
-    "Daily flow:\n" +
-    "1️⃣ Choose Daily Practice Test\n" +
-    "2️⃣ Select area (RC/Grammar/Poetry/etc)\n" +
-    "3️⃣ Complete 5-question test\n" +
-    "4️⃣ Review mistakes & progress";
+    // 1. Create Question Pool
+    const pool = createQuestionPool(testSize, subjectId, mode);
 
-  bot.sendMessage(chatId, text, { parse_mode: "Markdown" });
-});
+    if (pool.length === 0) {
+        await bot.sendMessage(chatId, `Sorry, no questions found for *${AVAILABLE_SUBJECTS[subjectId].name}* in *${mode}* mode.`, { parse_mode: 'Markdown' });
+        return;
+    }
 
-bot.onText(/\/status/, (msg) => {
-  const chatId = msg.chat.id;
-  const userId = msg.from.id;
-  const isPrem = isPremiumUser(userId);
-  const name = getDisplayName(msg.from);
-  const userData = getUserData(userId);
+    // 2. Initialize Session
+    sessions[chatId] = {
+      questionsPool: pool,
+      currentIndex: 0,
+      score: 0,
+      subjectId: subjectId,
+      startTime: Date.now(),
+      userId: userId,
+      messageId: msg.message_id // Use the menu message to display the first question
+    };
 
-  let message = `*Your Account Status*\n\n`;
-  message += `👤 Name: *${name}*\n`;
-  message += `📦 Plan: *${isPrem ? "⭐ Premium (Mentor+)" : "Free User"}*\n`;
-  message += `🔥 Current Streak: *${userData.streaks.currentStreak} days*\n`;
-  message += `📊 Tests taken: *${userData.stats.attempts}*\n\n`;
-
-  if (isPrem) {
-    message += "You have access to:\n" +
-      "• Unlimited tests & mocks\n" +
-      "• Full explanations\n" +
-      "• Topic-wise analysis\n" +
-      "• Wrong-only practice\n";
-  } else {
-    message += "Free plan:\n" +
-      `• 1 mini-test (${MINI_TEST_SIZE} questions) per day\n` +
-      "• Score + accuracy summary\n" +
-      "• Wrong-answers preview\n";
+    // 3. Start Test
+    await sendQuestion(chatId);
+    return;
   }
 
-  bot.sendMessage(chatId, message, { parse_mode: "Markdown" });
-});
+  // ================== QUIZ ANSWER ==================
 
-// ═══════════════════════════════════════════════════════════════════════
-// CALLBACK HANDLERS
-// ═══════════════════════════════════════════════════════════════════════
+  if (data.startsWith('ans_')) {
+    const parts = data.split('_');
+    const subjectId = parts[1];
+    const qIndex = parseInt(parts[2], 10); // Global Question Index
+    const chosenIndex = parseInt(parts[3], 10);
 
-bot.on("callback_query", async (callbackQuery) => {
-  try {
-    const data = callbackQuery.data;
-    const msg = callbackQuery.message;
-    const chatId = msg.chat.id;
-    const userId = callbackQuery.from.id;
-    const isPrem = isPremiumUser(userId);
-
-    // Validate callback
-    if (!isCallbackValid(callbackQuery)) {
-      await bot.answerCallbackQuery(callbackQuery.id, {
-        text: "This button is no longer active. Use /start",
-        show_alert: true,
-      });
+    const session = sessions[chatId];
+    if (!session || questions[qIndex] === undefined) {
+      await bot.answerCallbackQuery(cbq.id, { text: "Session error. Please start a new test.", show_alert: true });
       return;
     }
-
-    // Language selection
-    if (data && data.startsWith("set_lang_")) {
-      const lang = data.split("_")[2];
-
-      if ((lang === "kn" || lang === "ur") && !isPrem) {
-        const pack = uiText[lang === "kn" ? "kn" : "ur"];
-        await sendWithInlineKeyboard(chatId, pack.premiumLangPitch, {
-          reply_markup: {
-            inline_keyboard: [
-              [{ text: pack.upgradeButton, callback_data: "go_premium" }],
-              [{ text: pack.continueEnglishButton, callback_data: "set_lang_en" }],
-            ],
-          },
-          parse_mode: "Markdown",
-        });
+    
+    // Check if the current question being answered is actually the one visible
+    const expectedQIndex = session.questionsPool[session.currentIndex]?.qIndex;
+    if (qIndex !== expectedQIndex) {
+        // User clicked an old button, ignore silently or give a quick message
+        await bot.answerCallbackQuery(cbq.id, { text: "Please answer the current question only.", show_alert: false });
         return;
-      }
-
-      await clearAllInlineKeyboards(chatId);
-      setUiLang(userId, lang);
-      setUserState(userId, UserState.IDLE);
-      await showMainMenu(chatId, userId);
-      await bot.answerCallbackQuery(callbackQuery.id);
-      return;
     }
 
-    // Main menu navigation
-    if (data === "menu_practice") {
-      await bot.answerCallbackQuery(callbackQuery.id);
-      askEnglishMode(chatId, callbackQuery.from);
-      return;
-    }
+    const q = questions[qIndex];
+    const isCorrect = chosenIndex === q.correctIndex;
+    
+    // 1. Update Score and Answers (Crucial for DB persistence later)
+    if (isCorrect) session.score++;
+    
+    // NOTE: This array push is incomplete without full session management in DB
+    // session.answers.push({
+    //   qIndex,
+    //   chosen: chosenIndex,
+    //   correctIndex: q.correctIndex,
+    //   correct: isCorrect,
+    // });
 
-    if (data === "menu_progress") {
-      await bot.answerCallbackQuery(callbackQuery.id);
-      // sendMyProgress(chatId, userId); // Implement this
-      bot.sendMessage(chatId, "Progress tracking coming soon! 📊");
-      return;
-    }
+    // 2. Provide Quick Feedback
+    const reaction = isCorrect
+      ? correctReactions[Math.floor(Math.random() * correctReactions.length)]
+      : wrongReactions[Math.floor(Math.random() * wrongReactions.length)];
 
-    if (data === "menu_weak") {
-      await bot.answerCallbackQuery(callbackQuery.id);
-      // sendMyWeakAreas(chatId, userId); // Implement this
-      bot.sendMessage(chatId, "Weak areas analysis coming soon! 🔍");
-      return;
-    }
-
-    if (data === "menu_more") {
-      await bot.answerCallbackQuery(callbackQuery.id);
-      // showMoreOptions(chatId, userId); // Implement this
-      bot.sendMessage(chatId, "More options coming soon! 📂");
-      return;
-    }
-
-    // Mode selection
-    if (data && data.startsWith("eng2_mode_")) {
-      if (getUserState(userId) !== UserState.CHOOSING_MODE) {
-        await bot.answerCallbackQuery(callbackQuery.id, {
-          text: "This option is no longer available.",
-          show_alert: false,
-        });
-        return;
-      }
-
-      const mode = data.replace("eng2_mode_", "");
-      updateUserData(userId, { prefs: { eng2Mode: mode } });
-
-      const pretty = getPrettyModeName(mode);
-      await bot.answerCallbackQuery(callbackQuery.id, {
-        text: `Mode set to: ${pretty}`,
-        show_alert: false,
-      });
-
-      await clearAllInlineKeyboards(chatId);
-      await bot.sendMessage(chatId, `Nice! We'll practise *${pretty}* questions now.`, {
-        parse_mode: "Markdown",
-      });
-
-      startDailyPracticeTest(chatId, callbackQuery.from);
-      return;
-    }
-
-    // Answer selection
-    if (/^\d+:\d+$/.test(data)) {
-      const session = sessions[userId];
-
-      if (!session || getUserState(userId) !== UserState.IN_TEST) {
-        await bot.answerCallbackQuery(callbackQuery.id, {
-          text: "No active test. Start a new one with /start",
-          show_alert: true,
-        });
-        return;
-      }
-
-      const [qIndexStr, optIndexStr] = data.split(":");
-      const qIndex = parseInt(qIndexStr, 10);
-      const chosen = parseInt(optIndexStr, 10);
-
-      if (qIndex !== session.currentIndex) {
-        await bot.answerCallbackQuery(callbackQuery.id, {
-          text: "This question has already been answered.",
-          show_alert: false,
-        });
-        return;
-      }
-
-      const pool = session.questionsPool || questions;
-      const q = pool[qIndex];
-      const correct = chosen === q.correctIndex;
-
-      session.answers.push({
-        qIndex,
-        chosen,
-        correct,
-        subjectId: q.subjectId,
-        categoryId: q.categoryId,
-        topicId: q.topicId,
-      });
-
-      if (correct) session.score++;
-
-      await bot.answerCallbackQuery(callbackQuery.id, {
-        text: correct ? pickRandom(correctReactions) : pickRandom(wrongReactions),
-        show_alert: false,
-      });
-
-      session.currentIndex++;
-
-      if (session.currentIndex < pool.length) {
-        sendQuestion(chatId, userId);
-      } else {
-        setUserState(userId, UserState.VIEWING_RESULTS);
-        sendResult(chatId, userId);
-      }
-
-      return;
-    }
-
-    // Skip/Finish
-    if (data.startsWith("skip:") || data.startsWith("finish_now:")) {
-      const session = sessions[userId];
-
-      if (!session || getUserState(userId) !== UserState.IN_TEST) {
-        await bot.answerCallbackQuery(callbackQuery.id, {
-          text: "No active test.",
-          show_alert: false,
-        });
-        return;
-      }
-
-      const qIndexStr = data.split(":")[1];
-      const pressedIndex = parseInt(qIndexStr, 10);
-
-      if (pressedIndex !== session.currentIndex) {
-        await bot.answerCallbackQuery(callbackQuery.id, {
-          text: "This question is already handled.",
-          show_alert: false,
-        });
-        return;
-      }
-
-      if (data.startsWith("skip:")) {
-        session.currentIndex++;
-        if (session.currentIndex < (session.questionsPool || questions).length) {
-          sendQuestion(chatId, userId);
-        } else {
-          setUserState(userId, UserState.VIEWING_RESULTS);
-          sendResult(chatId, userId);
-        }
-      } else {
-        setUserState(userId, UserState.VIEWING_RESULTS);
-        sendResult(chatId, userId);
-      }
-
-      await bot.answerCallbackQuery(callbackQuery.id);
-      return;
-    }
-
-    // Done with results
-    if (data === "done_results") {
-      await clearAllInlineKeyboards(chatId);
-      setUserState(userId, UserState.IDLE);
-      await showMainMenu(chatId, userId);
-      await bot.answerCallbackQuery(callbackQuery.id);
-      return;
-    }
-
-    // View results
-    if (data === "view_right" || data === "view_wrong") {
-      await bot.answerCallbackQuery(callbackQuery.id);
-      bot.sendMessage(chatId, "Detailed review coming soon! 📚");
-      return;
-    }
-
-    // Retake wrong
-    if (data === "retake_wrong") {
-      await bot.answerCallbackQuery(callbackQuery.id);
-      bot.sendMessage(chatId, "Wrong-only retake coming soon! 🔄");
-      return;
-    }
-
-  } catch (err) {
-    console.error("Error in callback_query handler:", err);
-    await bot.answerCallbackQuery(callbackQuery.id, {
-      text: "An error occurred. Please try /start",
-      show_alert: true,
+    await bot.answerCallbackQuery(cbq.id, {
+      text: isCorrect ? `Correct! ${reaction}` : `Wrong… ${reaction}`,
+      show_alert: false,
     });
+
+    // 3. Move to next question or end test
+    session.currentIndex++;
+
+    if (session.currentIndex < session.questionsPool.length) {
+      // Small delay to ensure the answer feedback registers before the message update
+      setTimeout(() => sendQuestion(chatId), 50); 
+    } else {
+      sendResult(chatId);
+    }
+    return;
   }
+
 });
-
-// ═══════════════════════════════════════════════════════════════════════
-// GRACEFUL SHUTDOWN
-// ═══════════════════════════════════════════════════════════════════════
-
-async function shutdown() {
-  console.log("🛑 Shutting down...");
-
-  if (isDirty) {
-    await saveDatabase();
-  }
-
-  await createBackup();
-  console.log("✅ Shutdown complete");
-  process.exit(0);
-}
-
-process.on("SIGINT", shutdown);
-process.on("SIGTERM", shutdown);
-
-// ═══════════════════════════════════════════════════════════════════════
-// START BOT
-// ═══════════════════════════════════════════════════════════════════════
-
-(async () => {
-  try {
-    await initDatabase();
-    console.log("🤖 Bot is running...");
-    console.log("✨ Namma KARTET English Mentor - Your Personal Teaching Companion");
-  } catch (err) {
-    console.error("❌ Failed to start bot:", err);
-    process.exit(1);
-  }
-})();
